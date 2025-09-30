@@ -9,6 +9,6 @@
 
 |    Nom    |  Cognom   |        nom        |  github   |    web    |    web    |
 |-----------|-----------|-------------------|-----------|-----------|-----------|
-| Jan       |  Palahi   | janpalahi-commits | https://github.com/janpalahi-commits    | Dato 5    | Dato 6    |
+| Jan       |  Palahi   | janpalahi-commits | https://github.com/janpalahi-commits    |    |    |
 
 
