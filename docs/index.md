@@ -13,7 +13,7 @@
 
 <nav>
   <a href="./index.md">🏠 Inici</a> |
-  <a href="./calculadoras.html">🧮 Calculadores</a> |
+  <a href="./calculadoras">🧮 Calculadores</a> |
   <a href="./lab.md">🧪 LAB</a> |
   <a href="./fases.md">📆 Fases</a> |
   <a href="./tecnologies.md">💻 Tecnologies</a> |
