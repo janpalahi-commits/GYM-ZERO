@@ -1,6 +1,3 @@
----
-title: GYM ZERO — Memòria
----
 
 # 🏋️‍♂️ GYM ZERO — Projecte Intermodular SMX2
 
