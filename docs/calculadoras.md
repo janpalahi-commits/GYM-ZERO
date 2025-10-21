@@ -65,4 +65,4 @@ title: Calculadores
 <p id="resTDEE"></p>
 
 <!-- Carga del JS externo (usa ruta absoluta para Pages) -->
-<script src="/GYM-ZERO/docs/js/calculadoras.js"></script>
+<script src="/GYM-ZERO/docs/calculadora.js"></script>
