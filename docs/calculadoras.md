@@ -1,5 +1,5 @@
 ---
-# Calculadores i eines
+title:  Calculadores i eines
 ---
 Inclou:
 - **1RM** (Epley i Brzycki)

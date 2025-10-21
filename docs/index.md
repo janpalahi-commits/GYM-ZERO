@@ -1,6 +1,7 @@
 ---
-# Gimnàs 4.0 — Memòria Tècnica
+title: GYM ZERO — Memòria
 ---
+
 # 🏋️‍♂️ GYM ZERO — Projecte Intermodular SMX2
 
 <div style="background:#004aad;color:white;text-align:center;padding:10px;border-radius:8px;margin-bottom:15px;">
@@ -8,19 +9,15 @@
   <p><b>Autor:</b> Jan Palahí &nbsp;|&nbsp; <b>Curs:</b> SMX2 (2025–26)</p>
 </div>
 
----
-
 ## 📚 Menú principal
-
 <nav style="text-align:center;">
-  <a href="./">🏠 Inici</a> |
-  <a href="./calculadoras">🧮 Calculadores</a> |
-  <a href="./lab">🧪 LAB</a> |
-  <a href="./fases">📆 Fases</a> |
-  <a href="./tecnologies">💻 Tecnologies</a> |
-  <a href="./modulos-smx">📘 Mòduls SMX</a>
+  <a href="/GYM-ZERO/index.html">🏠 Inici</a> |
+  <a href="/GYM-ZERO/calculadoras.html">🧮 Calculadores</a> |
+  <a href="/GYM-ZERO/lab.html">🧪 LAB</a> |
+  <a href="/GYM-ZERO/fases.html">📆 Fases</a> |
+  <a href="/GYM-ZERO/tecnologies.html">💻 Tecnologies</a> |
+  <a href="/GYM-ZERO/modulos-smx.html">📘 Mòduls SMX</a>
 </nav>
-
 
 ---
 
