@@ -70,7 +70,7 @@ Pots fer servir el menú superior per accedir a cada secció:
 
 ## 🔗 Enllaços directes
 
-- [🧮 Calculadores](/GYM-ZERO/calculadoras)  
+- [🧮 Calculadores](/calculadoras)  
 - [🧪 LAB — Centre científic](./lab)  
 - [📆 Fases i planificació](./fases)  
 - [💻 Tecnologies i arquitectura](./tecnologies)  
