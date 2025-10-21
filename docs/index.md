@@ -11,14 +11,15 @@
 
 ## 📚 Menú principal
 
-<nav>
-  <a href="./index.md">🏠 Inici</a> |
+<nav style="text-align:center;">
+  <a href="./">🏠 Inici</a> |
   <a href="./calculadoras">🧮 Calculadores</a> |
-  <a href="./lab.md">🧪 LAB</a> |
-  <a href="./fases.md">📆 Fases</a> |
-  <a href="./tecnologies.md">💻 Tecnologies</a> |
-  <a href="./modulos-smx.md">📘 Mòduls SMX</a>
+  <a href="./lab">🧪 LAB</a> |
+  <a href="./fases">📆 Fases</a> |
+  <a href="./tecnologies">💻 Tecnologies</a> |
+  <a href="./modulos-smx">📘 Mòduls SMX</a>
 </nav>
+
 
 ---
 
@@ -74,11 +75,11 @@ Pots fer servir el menú superior per accedir a cada secció:
 
 ## 🔗 Enllaços directes
 
-- [🧮 Calculadores](./calculadoras.html)  
-- [🧪 LAB — Centre científic](./lab.md)  
-- [📆 Fases i planificació](./fases.md)  
-- [💻 Tecnologies i arquitectura](./tecnologies.md)  
-- [📘 Mòduls SMX aplicats](./modulos-smx.md)
+- [🧮 Calculadores](./calculadoras)  
+- [🧪 LAB — Centre científic](./lab)  
+- [📆 Fases i planificació](./fases)  
+- [💻 Tecnologies i arquitectura](./tecnologies)  
+- [📘 Mòduls SMX aplicats](./modulos-smx)
 
 ---
 
