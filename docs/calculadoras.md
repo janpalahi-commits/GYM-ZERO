@@ -1,5 +1,6 @@
+---
 # Calculadores i eines
-
+---
 Inclou:
 - **1RM** (Epley i Brzycki)
 - **Taula RPE → %1RM**

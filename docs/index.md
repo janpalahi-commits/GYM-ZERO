@@ -1,5 +1,6 @@
+---
 # Gimnàs 4.0 — Memòria Tècnica
-
+---
 # 🏋️‍♂️ GYM ZERO — Projecte Intermodular SMX2
 
 <div style="background:#004aad;color:white;text-align:center;padding:10px;border-radius:8px;margin-bottom:15px;">
