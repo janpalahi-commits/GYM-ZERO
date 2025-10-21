@@ -12,7 +12,7 @@ title: GYM ZERO — Memòria
 ## 📚 Menú principal
 <nav style="text-align:center;">
   <a href="/GYM-ZERO/index.html">🏠 Inici</a> |
-  <a href="/GYM-ZERO/calculadoras.html">🧮 Calculadores</a> |
+  <a href="/GYM-ZERO/calculadoras.md">🧮 Calculadores</a> |
   <a href="/GYM-ZERO/lab.html">🧪 LAB</a> |
   <a href="/GYM-ZERO/fases.html">📆 Fases</a> |
   <a href="/GYM-ZERO/tecnologies.html">💻 Tecnologies</a> |
