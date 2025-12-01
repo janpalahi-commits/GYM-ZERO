@@ -3,22 +3,14 @@
 
 # Projecte Intermodular
 
-
-## Taula de dades
-
-
-|    Nom    |  Cognom   |        nom        |  github   |    web    |    web    |
-|-----------|-----------|-------------------|-----------|-----------|-----------|
-| Jan       |  Palahi   | janpalahi-commits | https://github.com/janpalahi-commits    |    |    |
-
-# Context i situació inicial
+## Context i situació inicial
 
 El projecte GYM ZERO neix amb l’objectiu de modernitzar un gimnàs tradicional que actualment no disposa de tecnología.
 Aquest gimnàs treballa de manera completament analògica: els registres de socis, els pagaments i les reserves de classes es fan manualment, no hi ha ordinadors ni wifi, i la comunicació amb els clients es realitza de manera presencial o telefònica
 
 Aquesta manca de digitalització genera problemes com:
 
-    Errors en la gestió de cobraments i quotes.
+Errors en la gestió de cobraments i quotes.
 
     Dificultats per controlar l’ocupació de les sales i els horaris dels entrenadors.
 
