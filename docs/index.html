@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GYM ZERO — Gimnàs 4.0</title>
+  <style>
+    :root {
+      --primary: #004aad;
+      --primary-soft: #e3efff;
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --text: #222222;
+      --muted: #666666;
+      --radius: 14px;
+      --shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1.2rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .nav-logo span.icon {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.3rem 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: 0.15s;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    /* LAYOUT */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.2rem 3rem;
+    }
+
+    section {
+      margin-top: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .section-title span.emoji {
+      font-size: 1.4rem;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.8fr);
+      gap: 1.8rem;
+      margin-top: 1.8rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: 2.1rem;
+      margin: 0.7rem 0 0.3rem;
+      color: var(--primary);
+    }
+
+    .hero-sub {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(0,74,173,0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary-soft);
+    }
+
+    .hero-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.2rem 1.1rem;
+    }
+
+    .hero-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .hero-pill {
+      background: var(--primary-soft);
+      border-radius: 999px;
+      padding: 0.25rem 0.6rem;
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1.1rem;
+      margin-top: 1rem;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 1rem;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    li {
+      margin-bottom: 0.3rem;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      margin-top: 0.5rem;
+    }
+
+    th, td {
+      border: 1px solid #e0e4f0;
+      padding: 0.4rem 0.55rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f0f3ff;
+      font-weight: 600;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      border-left: 3px solid var(--primary-soft);
+      margin-left: 0.5rem;
+      padding-left: 1rem;
+    }
+
+    .timeline-item {
+      margin-bottom: 1.1rem;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -1.23rem;
+      top: 0.25rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .timeline-range {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 1.5rem 0 2rem;
+    }
+
+    footer a { color: var(--primary); }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .hero-card {
+        order: -1;
+      }
+      .two-cols {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="nav-logo">
+        <span class="icon">GYM</span>
+        <span>ZERO · 4.0</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#inici">Inici</a>
+        <a href="#context">Context</a>
+        <a href="#fases">Fases</a>
+        <a href="#infra">Infraestructura</a>
+        <a href="#lab">LAB</a>
+        <a href="#moduls">Mòduls SMX</a>
+        <a href="#links">Enllaços</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- INICI / HERO -->
+    <section id="inici">
+      <div class="hero">
+        <div>
+          <div class="hero-badge">
+            <span>SMX2 · Projecte Intermodular</span>
+          </div>
+          <h1>GYM ZERO — De gimnàs 0.0 a Gimnàs 4.0</h1>
+          <p class="hero-sub">
+            Transformació d’un gimnàs totalment analògic en un centre digitalitzat i connectat,
+            aplicant els coneixements de tots els mòduls de SMX: xarxes, sistemes, serveis de
+            xarxa, seguretat, web i laboratori de dades.
+          </p>
+          <div class="hero-meta">
+            <b>Autor:</b> Jan Palahí · <b>Curs:</b> SMX2 (2025–26)
+          </div>
+
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="#context">Veure el projecte</a>
+            <a class="btn btn-outline" href="/GYM-ZERO/calculadoras.html">🧮 Calculadores d’entrenament</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h3>Resum ràpid</h3>
+          <p>Projecte educatiu que integra infraestructura de xarxa, servidors, web i LAB de rendiment esportiu simulat.</p>
+          <div class="hero-grid">
+            <div>
+              <div class="hero-pill">Gimnàs 4.0</div><br>
+              <small>Digitalització completa de processos interns: socis, reserves, incidències i informes.</small>
+            </div>
+            <div>
+              <div class="hero-pill">Laboratori científic</div><br>
+              <small>Dades simulades de rendiment per generar gràfics, estadístiques i informes.</small>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CONTEXT -->
+    <section id="context">
+      <h2 class="section-title"><span class="emoji">🧭</span>Context i situació inicial</h2>
+      <div class="card">
+        <p>
+          El projecte <b>GYM ZERO</b> parteix d’un gimnàs que funciona de manera completament analògica:
+          els registres de socis, els pagaments i les reserves es fan en paper, no hi ha ordinadors ni
+          xarxa Wi-Fi i la comunicació amb els clients és bàsicament presencial o telefònica.
+        </p>
+        <p>
+          Aquesta situació provoca problemes freqüents: errors en el cobrament de quotes, dificultat per
+          controlar l’ocupació de les sales, pèrdua d’informació, falta de traçabilitat i impossibilitat
+          d’oferir serveis més moderns com reserves online, informes personalitzats o notificacions digitals.
+        </p>
+        <p>
+          L’objectiu del projecte és transformar el GYM ZERO en un <b>Gimnàs 4.0</b>, amb una infraestructura
+          informàtica pròpia, una web pública, un panell intern per al personal i un <b>Laboratori científic
+          simulat</b> capaç de treballar amb dades d’entrenament.
+        </p>
+      </div>
+    </section>
+
+    <!-- FASES -->
+    <section id="fases">
+      <h2 class="section-title"><span class="emoji">📆</span>Fases del projecte</h2>
+      <div class="card">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-title">Fase 1 — Disseny i implementació de la infraestructura bàsica</div>
+            <div class="timeline-range">Instal·lació inicial</div>
+            <p>
+              En aquesta fase es dissenya i desplega tota la <b>infraestructura física i lògica mínima</b>.
+              Es crea la xarxa local del gimnàs (router, switch i punts Wi-Fi), es configura un <b>servidor
+              principal amb Ubuntu Server</b> que allotja el servidor web intern, la base de dades i el sistema
+              de fitxers compartits, i es connecten els equips de recepció i entrenadors.
+            </p>
+            <p>
+              També es publica la <b>web pública</b> mitjançant GitHub Pages (amb calculadores d’entrenament
+              en JavaScript) i es desenvolupa una primera versió del <b>panell intern</b> per gestionar socis,
+              reserves i incidències. Es posa en marxa una política bàsica de còpies de seguretat i s’aplica una
+              configuració mínima de seguretat al servidor.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-title">Fase 2 — Optimització, seguretat i consolidació</div>
+            <div class="timeline-range">Polir, assegurar i documentar</div>
+            <p>
+              Amb el sistema ja en funcionament, la Fase 2 se centra en fer-lo <b>més segur, estable i fàcil de
+              mantenir</b>. Es configuren tallafocs (UFW), eines com <b>fail2ban</b>, gestió d’usuaris i permisos
+              per rols, i s’estableix una estratègia de còpies de seguretat més formal (inspirada en la regla 3-2-1).
+            </p>
+            <p>
+              Es millora el rendiment i la usabilitat del panell intern, es refina la web pública segons el feedback
+              i s’automatitzen tasques habituals (còpies, neteja de logs) mitjançant scripts i cron. Paral·lelament,
+              es completa la <b>documentació tècnica</b> de la infraestructura i dels procediments de manteniment.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-title">Fase 3 — Expansió i millores avançades</div>
+            <div class="timeline-range">Evolució cap al Gimnàs 4.0 complet</div>
+            <p>
+              La última fase explora funcionalitats més avançades: ampliació del <b>Laboratori científic</b> amb
+              noves dades simulades, gràfics més complets, informes automàtics i la possible integració de càlculs
+              avançats amb <b>C++ o Python</b>.
+            </p>
+            <p>
+              Es planteja també la simulació de <b>dispositius IoT</b> (ocupació de sales, temperatura, ús de màquines)
+              i s’esbossen possibles millores futures reals: control d’accés amb targetes, integració amb passarel·les
+              de pagament o aplicació mòbil pròpia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFRAESTRUCTURA -->
+    <section id="infra">
+      <h2 class="section-title"><span class="emoji">🧱</span>Infraestructura de la Fase 1</h2>
+      <div class="card two-cols">
+        <div>
+          <h3>Xarxa i servidors</h3>
+          <ul>
+            <li><b>Router principal</b> amb accés a internet i funcions bàsiques de tallafocs.</li>
+            <li><b>Switch gestionable</b> per connectar servidor, recepció, entrenadors i APs.</li>
+            <li>1–2 <b>punts d’accés Wi-Fi</b> amb SSID per personal i convidats.</li>
+            <li><b>Servidor Ubuntu</b> (mini PC o VM) amb:
+              <ul>
+                <li>Servidor web intern (panell entrenadors).</li>
+                <li>Base de dades MySQL/MariaDB.</li>
+                <li>Compartició de fitxers (Samba/NFS).</li>
+                <li>Scripts de còpies de seguretat i cron.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Postos i perifèrics</h3>
+          <ul>
+            <li><b>PC de recepció</b> per a l’alta de socis i consulta ràpida.</li>
+            <li><b>PC per entrenadors</b> per accedir al panell, LAB i informes.</li>
+            <li><b>Impressora multifunció</b> (contractes, informes, horaris).</li>
+            <li><b>Disc dur extern</b> (≥1 TB) per a còpies de seguretat setmanals.</li>
+            <li>Cablejat <b>Ethernet Cat6</b> i, opcionalment, un petit rack per organitzar-ho.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAB -->
+    <section id="lab">
+      <h2 class="section-title"><span class="emoji">🧪</span>LAB — Laboratori científic simulat</h2>
+      <div class="card">
+        <p>
+          El <b>Laboratori científic</b> del GYM ZERO és un entorn simulat on es treballa amb dades de
+          rendiment (salt, càrregues, velocitat, etc.) per generar informes i gràfics. Encara que el maquinari
+          real no s’instal·la, el sistema es dissenya com si fos un LAB professional.
+        </p>
+        <ul>
+          <li>Programes que <b>generen dades simulades</b> (CSV, scripts o C++).</li>
+          <li>Ingesta de dades al servidor i <b>emmagatzematge a la base de dades</b>.</li>
+          <li>Panell amb <b>gràfics i estadístiques</b> per atleta o per sessió.</li>
+          <li>Generació d’<b>informes</b> bàsics per a entrenadors i clients.</li>
+        </ul>
+        <p>
+          L’objectiu del LAB és demostrar el flux complet: <b>dades → servidor → base de dades → visualització →
+          informe</b>, utilitzant coneixements de programació, BD i serveis de xarxa.
+        </p>
+      </div>
+    </section>
+
+    <!-- MODULS SMX -->
+    <section id="moduls">
+      <h2 class="section-title"><span class="emoji">📘</span>Relació amb els mòduls de SMX</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Mòdul</th>
+              <th>Aplicació al projecte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>M1 — Montatge i manteniment</td>
+              <td>Selecció i muntatge de PC de recepció, servidor i perifèrics.</td>
+            </tr>
+            <tr>
+              <td>M2 — Sistemes operatius monopost</td>
+              <td>Instal·lació i configuració de Windows/Ubuntu als llocs de treball.</td>
+            </tr>
+            <tr>
+              <td>M3 — Aplicacions ofimàtiques</td>
+              <td>Creació de plantilles d’informes, quadres de seguiment i documentació.</td>
+            </tr>
+            <tr>
+              <td>M4 — Xarxes locals</td>
+              <td>Disseny de la LAN, router, switch, Wi-Fi i (si escau) VLANs.</td>
+            </tr>
+            <tr>
+              <td>M5 — SO en xarxa</td>
+              <td>Servidor Ubuntu: usuaris, permisos, serveis, compartició d’arxius.</td>
+            </tr>
+            <tr>
+              <td>M6 — Seguretat informàtica</td>
+              <td>UFW, fail2ban, política de còpies, contrasenyes i rols d’usuari.</td>
+            </tr>
+            <tr>
+              <td>M7 — Serveis de xarxa</td>
+              <td>Servidor web intern, base de dades, possible servidor de correu simulat.</td>
+            </tr>
+            <tr>
+              <td>M8 — Aplicacions web</td>
+              <td>Web pública (GitHub Pages), panell intern i calculadores en JS.</td>
+            </tr>
+            <tr>
+              <td>M9 — Anglès tècnic</td>
+              <td>Ús de documentació tècnica i, si cal, README parcial en anglès.</td>
+            </tr>
+            <tr>
+              <td>M10 — Empresa</td>
+              <td>Estimació de costos d’infraestructura, rols i model bàsic de negoci.</td>
+            </tr>
+            <tr>
+              <td>M12 — Síntesi</td>
+              <td>Integració de tots els elements en un projecte realista i documentat.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ENLLAÇOS -->
+    <section id="links">
+      <h2 class="section-title"><span class="emoji">🔗</span>Enllaços útils</h2>
+      <div class="card">
+        <ul>
+          <li><b>Repositori del projecte:</b> <a href="https://github.com/janpalahi-commits/GYM-ZERO" target="_blank">github.com/janpalahi-commits/GYM-ZERO</a></li>
+          <li><b>Web del projecte (GitHub Pages):</b> <a href="https://janpalahi-commits.github.io/GYM-ZERO/" target="_blank">janpalahi-commits.github.io/GYM-ZERO</a></li>
+          <li><b>Calculadores d’entrenament:</b> <a href="/GYM-ZERO/calculadoras.html">/GYM-ZERO/calculadoras.html</a></li>
+        </ul>
+        <p>
+          Aquesta pàgina forma part de la memòria tècnica del projecte intermodular i es pot complementar
+          amb altres pàgines més detallades (fases, LAB, tecnologies, etc.) dins la carpeta <code>/docs</code>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Jan Palahí · Projecte Intermodular SMX2 — GYM ZERO · Web allotjada a <b>GitHub Pages</b>
+  </footer>
+
+  <script>
+    // Opcional: resaltar en el futur la secció activa, etc.
+    // Ara només deixem l'scroll suau via CSS.
+  </script>
+</body>
+</html>
