@@ -24,7 +24,7 @@ El projecte planteja la transformació del GYM ZERO en un Gimnàs 4.0, capaç d�
 
 A més, el nou gimnàs incorporarà un Laboratori Científic Simulat on s’analitzaran dades de rendiment i condició física dels usuaris (de forma simulada) per oferir un servei més personalitzat i basat en dades.
 
-Abast del projecte
+### Abast del projecte
 
 L’abast del projecte cobreix tots els àmbits essencials d’una transformació digital dins d’un entorn de formació professional de SMX.
 Concretament, el projecte inclou:
@@ -40,7 +40,7 @@ Concretament, el projecte inclou:
 
 -Simulació del Laboratori Científic (LAB) per al càlcul i anàlisi de dades esportives mitjançant programes desenvolupats en Python, JavaScript o C++ (principalment seria C++).
 
-Àmbit de seguretat i manteniment
+#### Àmbit de seguretat i manteniment
 
 -Polítiques de còpies de seguretat 3-2-1, control d’usuaris i permisos, i protecció bàsica de la xarxa amb tallafocs i contrasenyes segures.
 
@@ -48,7 +48,7 @@ Concretament, el projecte inclou:
 
 -Formació mínima del personal per fer ús dels nous sistemes digitals.
 
-Àmbit funcional
+#### Àmbit funcional
 
 -Digitalització del registre de socis i de les quotes.
 
@@ -58,7 +58,7 @@ Concretament, el projecte inclou:
 
 -Creació d’un sistema centralitzat de dades per facilitar la gestió i els informes.
 
-Limitacions
+#### Limitacions
 
 -No s’instal·larà equipament físic real (és una simulació educativa).
 
