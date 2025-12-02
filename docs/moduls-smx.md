@@ -1,9 +1,9 @@
 
-### `docs/modulos-smx.md` (mapa de módulos → entregables)
+### `docs/moduls-smx.md` (mapa de moduls → entregables)
 ```markdown
 # Mòduls SMX aplicats
 
-- **M1 Montatge**: Inventari de HW i muntatge bàsic (recepció/kiosc/servidor).
+- **M1 Muntatge**: Inventari de HW i muntatge bàsic (recepció/kiosc/servidor).
 - **M2 SO Monopost**: Instal·lació i configuració Windows/Ubuntu en llocs.
 - **M3 Ofimàtica**: Plantilles d'informes LAB (ODS/PDF) i quadres.
 - **M4 Xarxes**: Topologia LAN, VLAN convidats/IoT (si s’usa), WiFi.
