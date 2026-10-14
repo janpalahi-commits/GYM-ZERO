@@ -1,0 +1,17 @@
+CREATE DATABASE IF NOT EXISTS gymzero_db
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE gymzero_db;
+
+CREATE TABLE IF NOT EXISTS reserves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL,
+  activitat VARCHAR(100) NOT NULL,
+  data_reserva DATE NOT NULL,
+  hora_reserva TIME NOT NULL,
+  observacions TEXT,
+  data_creacio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
