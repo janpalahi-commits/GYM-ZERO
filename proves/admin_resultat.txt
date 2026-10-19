@@ -1,0 +1,51 @@
+Proves de la Fase 4 (2026-10-19, PHP 8.3.6, MariaDB 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl, amb la BD i les dades de prova de la Fase 2.
+
+1. Anònim a /admin/:
+   302 -> http://127.0.0.1:8089/compte/login.php
+2. Client (Marc) entra i prova /admin/:
+   302 -> http://127.0.0.1:8089/client/
+No tens permís per entrar a aquesta pàgina.   403 
+   Client no veu l'enllaç Administració: 0 coincidències
+3. Admin entra (ha d'anar a /admin/):
+   302 -> http://127.0.0.1:8089/admin/
+   Xifres:  3 clients actius, 5 classes programades, 4 reserves confirmades
+4. Crear classe Cross Training demà 20:00 amb places buides:
+   ok: Classe creada.
+5. Crear-la repetida:
+   error: Ja hi ha una classe d'aquesta activitat a aquesta hora.
+6. Crear-ne una en el passat:
+   error: La classe ha de ser en una data futura.
+7. Data inventada (31/02):
+   error: La data o l'hora no són vàlides.
+   classe nova id=6 places=12
+8. Marc reserva la classe nova:
+   ok: Reserva confirmada: Cross Training, 20/10/2026 20:00.
+9. Admin veu qui ha reservat la classe nova:
+   Marc Puig Serra|marc@example.com
+10. Admin cancel·la la classe nova:
+   ok: Classe cancel·lada. S'ha avisat 1 client(s).
+11. Avís a l'àrea de Marc:
+   Classe cancel·lada pel gimnàs: Cross Training, 20/10/2026 20:00.
+    La classe ja no surt a Classes: 0 botons
+12. Tornar a cancel·lar-la:
+   error: Aquesta classe no es pot cancel·lar (no existeix, ja ha passat o ja està cancel·lada).
+13. Crear activitat Ioga:
+   ok: Activitat creada.
+14. Crear-la repetida:
+   error: Ja hi ha una activitat amb aquest nom.
+15. Desactivar Mobilitat (id 5):
+   ok: Activitat actualitzada.
+    Mobilitat surt a Classes: 0
+16. Admin intenta desactivar-se a si mateix:
+   error: No pots canviar el teu propi compte des d'aquí.
+17. Admin desactiva la Laia (id 3) i ella intenta entrar:
+   ok: Compte actualitzat.
+   class="error">Correu o contrasenya incorrectes.
+18. Admin fa admin el Pau (id 4) i després el torna client; Marc continua sense accés:
+   ok: Rol actualitzat.
+   ok: Rol actualitzat.
+   Marc a /admin/: 403
+19. Admin treu el rol d'admin mentre té la sessió oberta (simulat a la BD):
+   403
+20. POST d'admin sense CSRF:
+   400

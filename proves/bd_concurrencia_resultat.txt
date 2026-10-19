@@ -1,0 +1,21 @@
+Prova executada el 2026-10-14 a MariaDB 10.11.14-MariaDB-0ubuntu0.24.04.1. Classe 5 (Mobilitat): 2 places, 1 ja reservada. Tres usuaris (1, 2 i 3) reserven alhora.
+
+--- php prova_concurrencia.php <usuari> 5 0   (x3 alhora)
+usuari 1: RESERVA FETA (n'hi havia 1 de 2)
+usuari 2: RESERVA FETA (n'hi havia 1 de 2)
+usuari 3: RESERVA FETA (n'hi havia 1 de 2)
++----------------------+--------+
+| reserves_confirmades | places |
++----------------------+--------+
+|                    4 |      2 |
++----------------------+--------+
+
+--- php prova_concurrencia.php <usuari> 5 1   (x3 alhora)
+usuari 3: RESERVA FETA (n'hi havia 1 de 2)
+usuari 2: SENSE PLAÇA (ocupades 2 de 2)
+usuari 1: SENSE PLAÇA (ocupades 2 de 2)
++----------------------+--------+
+| reserves_confirmades | places |
++----------------------+--------+
+|                    2 |      2 |
++----------------------+--------+
