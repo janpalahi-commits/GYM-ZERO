@@ -24,7 +24,7 @@ Aquest curs mantinc la mateixa idea, però em centro en serveis que pugui demost
 
 | Part | Estat | Comentari |
 |---|---|---|
-| Web pública (gym-zero.cat) | Implementada | HTML, CSS i JavaScript, allotjada a Dinahosting |
+| Web pública (gymzero.cat) | Implementada | HTML, CSS i JavaScript, allotjada a Dinahosting |
 | Calculadores (1RM, IMC, TDEE, RPE) | Implementades | En JavaScript, dins la web |
 | Formulari de reserves | Implementat (versió antiga) | PHP + MariaDB. Guarda la reserva però no controla places ni duplicats |
 | Base de dades nova | Dissenyada i provada en local | 9 taules, provada a XAMPP. Encara no és a Dinahosting |
