@@ -1,1 +1,11 @@
 notes.txt
+
+# Dades de connexió reals: mai a GitHub
+www/inc/config.php
+
+# Còpies de seguretat i registres
+*.sql.gz
+copies.log
+
+# Simulador compilat
+simulador/simulador

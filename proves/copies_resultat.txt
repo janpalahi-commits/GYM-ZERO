@@ -1,0 +1,18 @@
+Proves de les còpies de seguretat · 19/10/2026
+(BD gymzero_db amb les dades de prova + les sèries del simulador)
+
+1. copia_bd.sh fa la còpia: "OK: gymzero_db_2026-10-19_161249.sql.gz (8.0K, 9 taules)"
+2. Deixa un avís 'sistema' a l'administrador i surt al panell (captura-panell-copia-ok.png)
+3. restaura_bd.sh <còpia> la restaura a gymzero_prova sense tocar la real:
+   usuaris 4, classes 5, reserves 4, series 16, repeticions 128 (iguals que a gymzero_db)
+   la vista v_resum_series també es restaura (16 sèries) i els accents es mantenen (Musculació)
+4. Rotació: guardant-ne 3 i fent-ne 6, queden les 3 últimes i al log surten les 3 esborrades
+5. Error: si mysqldump falla (base de dades inexistent) no queda cap fitxer a mitges,
+   s'apunta l'error a copies.log i el script surt amb codi 1
+6. Panell amb una còpia fallida: surt en vermell (captura-panell-copia-error.png)
+7. Desastre simulat: s'esborren totes les reserves i repeticions (0 i 0);
+   restaura_bd.sh <còpia> gymzero_db demana escriure SI:
+   - amb "no" -> Cancel·lat, no toca res
+   - amb "SI" -> reserves 4, repeticions 128 recuperades
+8. Fitxer malmès -> "El fitxer està malmès, no es pot restaurar."
+9. Sense arguments -> ensenya com s'usa i les últimes còpies

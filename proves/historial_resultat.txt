@@ -1,0 +1,9 @@
+Proves de "El meu entrenament" · 19/10/2026 16:07
+(BD acabada d'importar + 6 sèries del Marc enviades avui amb el simulador a PRESS-01, SQUAT-01 i REM-01)
+
+1. Marc veu les xifres (3 dies, 16 sèries, 8.960 kg), un gràfic per màquina i l'historial dels 3 dies: OK
+   captures: captura-entrenament-escriptori.png, captura-entrenament-mobil.png
+2. Pau (sense sèries) veu "Encara no tens cap entrenament registrat": OK
+3. Sense iniciar sessió, client/entrenament.php redirigeix al login (302): OK
+4. Mòbil (390 px): sense scroll horitzontal, etiquetes del gràfic llegibles: OK
+5. L'àrea del client té l'enllaç "Veure el meu entrenament": OK (captura-area-client.png)

@@ -1,0 +1,35 @@
+Proves de l'API de les màquines · 19/10/2026 15:57
+(base de dades acabada d'importar: gymzero_bd.sql + dades_prova.sql)
+
+1. GET (no permès):
+   {"ok":false,"error":"Només s'accepta POST."} [HTTP 405]
+2. JSON trencat:
+   {"ok":false,"error":"El cos de la petició no és un JSON vàlid."} [HTTP 400]
+3. Sense clau:
+   {"ok":false,"error":"Màquina o clau incorrectes."} [HTTP 401]
+4. Clau d'una altra màquina:
+   {"ok":false,"error":"Màquina o clau incorrectes."} [HTTP 401]
+5. Màquina que no existeix:
+   {"ok":false,"error":"Màquina o clau incorrectes."} [HTTP 401]
+6. Targeta desconeguda:
+   {"ok":false,"error":"Targeta desconeguda o compte desactivat."} [HTTP 404]
+7. Càrrega negativa:
+   {"ok":false,"error":"La càrrega ha de ser un número entre 0 i 500 kg."} [HTTP 422]
+8. Sense repeticions:
+   {"ok":false,"error":"Hi ha d'haver entre 1 i 50 repeticions."} [HTTP 422]
+9. Velocitat impossible (9 m/s):
+   {"ok":false,"error":"Repetició 1: el camp 'velocitat' ha de ser entre 0.01 i 5."} [HTTP 422]
+10. Sèrie correcta (Marc, press):
+   {"ok":true,"usuari":"Marc","serie_id":11,"num_serie":1,"repeticions":3,"velocitat_mitjana":0.73,"perdua_velocitat_pct":17.5} [HTTP 201]
+11. Segona sèrie (ha de ser la 2):
+   {"ok":true,"usuari":"Marc","serie_id":12,"num_serie":2,"repeticions":3,"velocitat_mitjana":0.73,"perdua_velocitat_pct":17.5} [HTTP 201]
+12. Primera sèrie a la sentadilla:
+   {"ok":true,"usuari":"Marc","serie_id":13,"num_serie":1,"repeticions":3,"velocitat_mitjana":0.73,"perdua_velocitat_pct":17.5} [HTTP 201]
+13. 5 sèries alhora de la Laia (números 1..5 sense repetir):
+   1,2,3,4,5
+14. Màquina en manteniment:
+   {"ok":false,"error":"Aquesta màquina no està activa (manteniment)."} [HTTP 403]
+15. Entrenaments d'avui (un per persona):
+nom	data	series
+Marc	2026-10-19	3
+Laia	2026-10-19	5
