@@ -277,6 +277,20 @@ h3 {
   font-weight: 700;
 }
 
+/* Càlculs */
+.resultat {
+  background: #f0f4fb;
+  color: #222;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+.resultat b {
+  color: #004aad;
+}
+
 @media (max-width: 600px) {
   .amaga-mobil { display: none; }
   .barra { padding: 12px 16px; }

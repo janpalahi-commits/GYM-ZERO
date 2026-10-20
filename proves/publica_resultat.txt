@@ -1,0 +1,18 @@
+GYM-ZERO · Fase 8 · Proves de la web pública (2026-10-20)
+Servidor de proves: PHP 8.3 + MariaDB 10.11, base de dades nova amb gymzero_bd.sql + dades_prova.sql
+
+Portada (index.php)                      200  xifres de la BD, properes classes, sense Palamós
+Activitats (activitats/)                 200  5 activitats, "1 lliure" / "N lliures" / "complet"
+Càlculs (calculs/)                       200
+  60 kg x 8 al press de banca (coef 34)  74,1 kg
+  60 kg x 8 a la sentadilla (coef 35)    73,7 kg
+  60 kg x 8 un altre exercici (30)       76,0 kg
+  60 kg x 40 al press                    130,6 kg + avís "poc fiable" (ja no hi ha màxim)
+  Màquina 99 (no existeix)               missatge d'error
+  2,5 repeticions                        missatge d'error
+  IMC 80 kg, 178 cm                      25,2 (sobrepès)
+  Calories 80 kg, 178 cm, 19 anys, home, 3-5 dies   basal 1.823 kcal, total 2.825 kcal
+  Marc connectat                         press 65 kg x 9 = 82,2 kg; sentadilla 85 kg x 8 = 104,4 kg
+actualitza_fase8.sql                     executat dues vegades sobre una BD amb dades: no falla i no esborra res
+Resta de pàgines amb la capçalera nova   admin/*, client/*, reserves/ -> totes 200
+Captures: portada, activitats i càlculs en ordinador i mòbil (*.png)
