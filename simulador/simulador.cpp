@@ -1,7 +1,7 @@
 // GYM-ZERO · Simulador de màquina intel·ligent
 //
 // Fa el que faria la màquina real (dissenyada però no construïda):
-//   1. L'usuari "passa la targeta" (aquí s'escriu el codi de la targeta).
+//   1. L'usuari acosta la polsera RFID al lector (aquí s'escriu el codi de la polsera).
 //   2. Fa una sèrie: el simulador inventa les dades de cada repetició
 //      (velocitat, recorregut i durada), com les mesuraria el sensor.
 //   3. Envia la sèrie a l'API PHP en JSON i ensenya la resposta.
@@ -143,11 +143,11 @@ int main(int argc, char* argv[])
 
     cout << "=== GYM-ZERO · Simulador de la màquina " << maquina << " ===\n";
     cout << "API: " << url << "\n";
-    cout << "Targetes de prova: 04A1B2C3 (Marc), 04D4E5F6 (Laia), 04078899 (Pau)\n";
+    cout << "Polseres de prova: 04A1B2C3 (Marc), 04D4E5F6 (Laia), 04078899 (Pau)\n";
 
     while (true) {
         string targeta;
-        cout << "\nPassa la targeta (escriu el codi, o 'q' per sortir): ";
+        cout << "\nAcosta la polsera (escriu el codi, o 'q' per sortir): ";
         if (!(cin >> targeta) || targeta == "q") {
             break;
         }

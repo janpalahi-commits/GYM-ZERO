@@ -8,7 +8,7 @@ echo "2. JSON trencat:";                  envia token-PRESS-01 '{maquina:'
 echo "3. Sense clau:";                    envia '' "{\"maquina\":\"PRESS-01\",\"targeta\":\"04A1B2C3\",\"carrega_kg\":60,\"repeticions\":$REPS}"
 echo "4. Clau d'una altra màquina:";      envia token-SQUAT-01 "{\"maquina\":\"PRESS-01\",\"targeta\":\"04A1B2C3\",\"carrega_kg\":60,\"repeticions\":$REPS}"
 echo "5. Màquina que no existeix:";       envia token-PRESS-01 "{\"maquina\":\"XXX-99\",\"targeta\":\"04A1B2C3\",\"carrega_kg\":60,\"repeticions\":$REPS}"
-echo "6. Targeta desconeguda:";           envia token-PRESS-01 "{\"maquina\":\"PRESS-01\",\"targeta\":\"FFFFFFFF\",\"carrega_kg\":60,\"repeticions\":$REPS}"
+echo "6. Polsera desconeguda:";           envia token-PRESS-01 "{\"maquina\":\"PRESS-01\",\"targeta\":\"FFFFFFFF\",\"carrega_kg\":60,\"repeticions\":$REPS}"
 echo "7. Càrrega negativa:";              envia token-PRESS-01 "{\"maquina\":\"PRESS-01\",\"targeta\":\"04A1B2C3\",\"carrega_kg\":-5,\"repeticions\":$REPS}"
 echo "8. Sense repeticions:";             envia token-PRESS-01 '{"maquina":"PRESS-01","targeta":"04A1B2C3","carrega_kg":60,"repeticions":[]}'
 echo "9. Velocitat impossible (9 m/s):";  envia token-PRESS-01 '{"maquina":"PRESS-01","targeta":"04A1B2C3","carrega_kg":60,"repeticions":[{"velocitat":9,"recorregut":0.4,"durada":0.5}]}'

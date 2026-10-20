@@ -16,3 +16,12 @@ Càlculs (calculs/)                       200
 actualitza_fase8.sql                     executat dues vegades sobre una BD amb dades: no falla i no esborra res
 Resta de pàgines amb la capçalera nova   admin/*, client/*, reserves/ -> totes 200
 Captures: portada, activitats i càlculs en ordinador i mòbil (*.png)
+
+Polsera RFID en lloc de targeta (2026-10-20)
+  admin/usuaris.php "04:aa:bb:cc" al Pau  -> "Polsera 04AABBCC assignada." (treu els separadors i ho posa en majúscules)
+  04A1B2C3 al Pau (ja és del Marc)        -> "Aquesta polsera ja és d'un altre usuari."
+  "123"                                   -> error: han de ser 8, 14 o 20 xifres hexadecimals
+  buit                                    -> "Polsera treta." (targeta_rfid = NULL)
+  API amb una polsera que no existeix     -> 404 "Polsera desconeguda o compte desactivat."
+  Simulador recompilat (g++ -Wall)        -> sense avisos; demana "Acosta la polsera"
+Captura: admin-polsera.png

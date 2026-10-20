@@ -1,4 +1,4 @@
-Proves de l'API de les màquines · 19/10/2026 15:57
+Proves de l'API de les màquines · 20/10/2026 19:14
 (base de dades acabada d'importar: gymzero_bd.sql + dades_prova.sql)
 
 1. GET (no permès):
@@ -11,8 +11,8 @@ Proves de l'API de les màquines · 19/10/2026 15:57
    {"ok":false,"error":"Màquina o clau incorrectes."} [HTTP 401]
 5. Màquina que no existeix:
    {"ok":false,"error":"Màquina o clau incorrectes."} [HTTP 401]
-6. Targeta desconeguda:
-   {"ok":false,"error":"Targeta desconeguda o compte desactivat."} [HTTP 404]
+6. Polsera desconeguda:
+   {"ok":false,"error":"Polsera desconeguda o compte desactivat."} [HTTP 404]
 7. Càrrega negativa:
    {"ok":false,"error":"La càrrega ha de ser un número entre 0 i 500 kg."} [HTTP 422]
 8. Sense repeticions:
@@ -31,5 +31,5 @@ Proves de l'API de les màquines · 19/10/2026 15:57
    {"ok":false,"error":"Aquesta màquina no està activa (manteniment)."} [HTTP 403]
 15. Entrenaments d'avui (un per persona):
 nom	data	series
-Marc	2026-10-19	3
-Laia	2026-10-19	5
+Marc	2026-10-20	3
+Laia	2026-10-20	5
