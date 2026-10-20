@@ -277,6 +277,21 @@ h3 {
   font-weight: 700;
 }
 
+/* Polsera a la llista d'usuaris */
+form.polsera {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+form.polsera input {
+  width: 9.5em;
+  margin-top: 0;
+  padding: 6px 8px;
+  font-family: monospace;
+  font-size: 14px;
+}
+
 /* Càlculs */
 .resultat {
   background: #f0f4fb;

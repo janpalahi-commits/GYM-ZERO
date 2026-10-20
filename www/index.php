@@ -54,7 +54,7 @@ require __DIR__ . '/inc/capcalera.php';
 <a class="btn" href="reserves/">Veure totes les classes i reservar</a>
 
 <h2>Sala de força</h2>
-<p>Les màquines de la sala de força tenen un lector de targetes. Passes la teva targeta abans de començar i la màquina apunta cada sèrie: el pes, les repeticions i a quina velocitat has mogut la barra. Després ho pots consultar a <a href="client/entrenament.php">El meu entrenament</a>.</p>
+<p>Les màquines de la sala de força tenen un lector RFID. Hi acostes la teva polsera abans de començar i la màquina apunta cada sèrie: el pes, les repeticions i a quina velocitat has mogut la barra. Després ho pots consultar a <a href="client/entrenament.php">El meu entrenament</a>.</p>
 <p>A <a href="calculs/">Càlculs</a> pots estimar el teu pes màxim (1RM), l'IMC i les calories que gastes cada dia.</p>
 
 <h2>Horari</h2>
@@ -65,5 +65,5 @@ require __DIR__ . '/inc/capcalera.php';
 </table>
 
 <h2>Com començar</h2>
-<p>Crea un compte a <a href="compte/registre.php">Registrar-se</a>. A recepció et donem la targeta per a les màquines. Amb el compte ja pots reservar classes.</p>
+<p>Crea un compte a <a href="compte/registre.php">Registrar-se</a>. A recepció et donem la polsera per a les màquines. Amb el compte ja pots reservar classes.</p>
 <?php require __DIR__ . '/inc/peu.php'; ?>

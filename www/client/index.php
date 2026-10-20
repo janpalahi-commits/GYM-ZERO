@@ -59,7 +59,7 @@ require __DIR__ . '/../inc/capcalera.php';
 <?php endif; ?>
 
 <h2>El meu entrenament</h2>
-<p>Les sèries que fas a les màquines intel·ligents amb la teva targeta.</p>
+<p>Les sèries que fas a les màquines intel·ligents amb la teva polsera.</p>
 <a class="btn btn-secundari" href="entrenament.php">Veure el meu entrenament</a>
 
 <h2>Avisos</h2>

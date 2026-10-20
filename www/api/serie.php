@@ -7,7 +7,7 @@
 //   Cos (JSON):
 //   {
 //     "maquina":    "PRESS-01",
-//     "targeta":    "04A1B2C3",          <- UID de la targeta RFID de l'usuari
+//     "targeta":    "04A1B2C3",          <- UID del xip RFID de la polsera de l'usuari
 //     "carrega_kg": 62.5,
 //     "repeticions": [
 //       {"velocitat": 0.77, "recorregut": 0.41, "durada": 0.52},
@@ -61,12 +61,12 @@ if ($maquina['estat'] !== 'activa') {
     error_api(403, 'Aquesta màquina no està activa (' . $maquina['estat'] . ').');
 }
 
-// 2. Qui entrena (per la targeta)
+// 2. Qui entrena (pel codi de la polsera)
 $st = $connexio->prepare('SELECT id, nom FROM usuaris WHERE targeta_rfid = ? AND actiu = 1');
 $st->execute([(string) ($dades['targeta'] ?? '')]);
 $usuari = $st->fetch();
 if (!$usuari) {
-    error_api(404, 'Targeta desconeguda o compte desactivat.');
+    error_api(404, 'Polsera desconeguda o compte desactivat.');
 }
 
 // 3. Comprovar les dades de la sèrie

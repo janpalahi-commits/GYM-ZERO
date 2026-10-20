@@ -104,7 +104,7 @@ require __DIR__ . '/../inc/capcalera.php';
 <p><a href="./">&larr; Tornar a la meva àrea</a></p>
 
 <?php if (!$historial): ?>
-  <p>Encara no tens cap entrenament registrat. Quan facis servir una màquina intel·ligent amb la teva targeta, les sèries sortiran aquí.</p>
+  <p>Encara no tens cap entrenament registrat. Quan facis servir una màquina intel·ligent amb la teva polsera, les sèries sortiran aquí.</p>
 <?php else: ?>
   <div class="xifres">
     <div class="xifra"><b><?= (int) $xifres['dies'] ?></b><span>dies entrenats (30 dies)</span></div>
