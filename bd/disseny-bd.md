@@ -18,7 +18,7 @@ Fitxers:
 | `activitats` | Tipus d'activitat: Musculació, Cross Training, etc. | Reserves |
 | `classes` | Una activitat en un dia i hora concrets, amb un nombre de places. | Reserves |
 | `reserves` | Quin usuari ha reservat a quina classe i si està confirmada o cancel·lada. | Reserves |
-| `maquines` | Les màquines intel·ligents (codi, tipus, estat). | Màquines |
+| `maquines` | Les màquines intel·ligents (codi, tipus, estat) i el número de la fórmula del 1RM de cada exercici (`coef_1rm`). | Màquines |
 | `entrenaments` | El dia que un usuari entrena. Agrupa les sèries d'aquell dia. | Màquines i historial |
 | `series` | Una sèrie en una màquina: càrrega i número de sèrie. | Màquines i historial |
 | `repeticions` | Cada repetició que envia la màquina: velocitat, recorregut i durada. | Màquines i anàlisi |
@@ -68,6 +68,12 @@ Mentre una reserva no fa `COMMIT`, les altres de la mateixa classe s'esperen al 
 **Un entrenament per usuari i dia.** Quan arriba la primera sèrie del dia, l'API crea l'entrenament; les següents s'hi afegeixen.
 
 **Clau de cada màquina.** Cada màquina (o el simulador) s'identifica a l'API amb un token. A la base de dades només es guarda el hash, igual que les contrasenyes.
+
+**1RM diferent a cada màquina.** Amb el mateix pes i les mateixes repeticions, el pes màxim (1RM) no és igual en tots els exercicis. Per això cada màquina guarda el seu número de la fórmula (`coef_1rm`):
+
+`1RM = pes × (1 + repeticions / coef_1rm)`
+
+És la fórmula d'Epley, que fa servir 30 per a tots els exercicis. Els números de cada màquina surten de les taules de Nuzzo et al. (2023, *Sports Medicine*), que recullen quantes repeticions fa la gent al 70% i al 80% del seu màxim: al press de banca en fan una mica menys (34) que a la majoria d'exercicis (35), i a la premsa de cames moltes més (48). Per al rem no hi ha dades pròpies i es fa servir el general. Si cal, el número de cada màquina es pot canviar a la base de dades.
 
 **Còpies de seguretat.** No són una taula: es faran amb `mysqldump` des del servidor (ho veurem a la fase de backups).
 

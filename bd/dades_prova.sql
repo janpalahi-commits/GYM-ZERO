@@ -31,10 +31,11 @@ INSERT INTO reserves (usuari_id, classe_id) VALUES
  (2, 1), (3, 1), (2, 3), (4, 5);
 
 -- Tokens de prova de les màquines: token-PRESS-01, token-SQUAT-01, token-REM-01
-INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash) VALUES
- (1, 'PRESS-01', 'Press de banca intel·ligent', 'press de banca', 'Sala de força', '$2y$10$sF5gXHi2ts6Z8f4jUe9kEuSITWYPg4po5ez/cO/LPnOY155gp08n6'),
- (2, 'SQUAT-01', 'Rack de sentadilla intel·ligent', 'sentadilla', 'Sala de força', '$2y$10$Zib2GmLU20H7qVzRSFsp7.WIRZZq2VYDHcJDal/1/ONpyeYc5zDYO'),
- (3, 'REM-01', 'Rem assegut intel·ligent', 'rem', 'Sala de màquines', '$2y$10$rEMI8etkhnKc8gCR9CxNK.GbsFDvPX9qNjeAEHsyBkswZI2k.u/MG');
+-- coef_1rm: número de la fórmula del 1RM per a cada exercici (vegeu disseny-bd.md)
+INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash, coef_1rm) VALUES
+ (1, 'PRESS-01', 'Press de banca intel·ligent', 'press de banca', 'Sala de força', '$2y$10$sF5gXHi2ts6Z8f4jUe9kEuSITWYPg4po5ez/cO/LPnOY155gp08n6', 34),
+ (2, 'SQUAT-01', 'Rack de sentadilla intel·ligent', 'sentadilla', 'Sala de força', '$2y$10$Zib2GmLU20H7qVzRSFsp7.WIRZZq2VYDHcJDal/1/ONpyeYc5zDYO', 35),
+ (3, 'REM-01', 'Rem assegut intel·ligent', 'rem', 'Sala de màquines', '$2y$10$rEMI8etkhnKc8gCR9CxNK.GbsFDvPX9qNjeAEHsyBkswZI2k.u/MG', 35);
 
 -- Dos entrenaments del Marc (fa 7 dies i fa 2 dies), dades com les enviaria el simulador
 INSERT INTO entrenaments (id, usuari_id, data) VALUES

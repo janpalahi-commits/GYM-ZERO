@@ -1,6 +1,9 @@
 <?php
 // Capçalera comuna. Abans d'incloure-la cal definir $titol.
+// Les pàgines que són dins d'una carpeta (reserves/, client/...) no cal que facin res més.
+// La portada (index.php) és a l'arrel i posa $arrel = '' perquè els enllaços no portin ../
 $u = usuari_actual();
+$arrel = $arrel ?? '../';
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -8,23 +11,25 @@ $u = usuari_actual();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= h($titol) ?> — GYM ZERO</title>
-  <link rel="stylesheet" href="../css/area.css">
+  <link rel="stylesheet" href="<?= $arrel ?>css/area.css">
 </head>
 <body>
   <header class="barra">
-    <a class="logo" href="../index.html">GYM ZERO</a>
+    <a class="logo" href="<?= $arrel ?: './' ?>">GYM ZERO</a>
     <nav>
-      <a href="../reserves/">Classes</a>
+      <a href="<?= $arrel ?>activitats/">Activitats</a>
+      <a href="<?= $arrel ?>calculs/">Càlculs</a>
+      <a href="<?= $arrel ?>reserves/">Classes</a>
       <?php if ($u): ?>
-        <a href="../client/">La meva àrea</a>
+        <a href="<?= $arrel ?>client/">La meva àrea</a>
         <?php if ($u['rol'] === 'admin'): ?>
-          <a href="../admin/">Administració</a>
+          <a href="<?= $arrel ?>admin/">Administració</a>
         <?php endif; ?>
         <span class="qui"><?= h($u['nom']) ?></span>
-        <a href="../compte/logout.php">Sortir</a>
+        <a href="<?= $arrel ?>compte/logout.php">Sortir</a>
       <?php else: ?>
-        <a href="../compte/login.php">Entrar</a>
-        <a href="../compte/registre.php">Registrar-se</a>
+        <a href="<?= $arrel ?>compte/login.php">Entrar</a>
+        <a href="<?= $arrel ?>compte/registre.php">Registrar-se</a>
       <?php endif; ?>
     </nav>
   </header>
