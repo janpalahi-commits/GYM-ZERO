@@ -25,3 +25,11 @@ Polsera RFID en lloc de targeta (2026-10-20)
   API amb una polsera que no existeix     -> 404 "Polsera desconeguda o compte desactivat."
   Simulador recompilat (g++ -Wall)        -> sense avisos; demana "Acosta la polsera"
 Captura: admin-polsera.png
+
+20 màquines, dues per grup muscular (2026-10-20)
+  dades_prova.sql                         -> 20 màquines
+  afegeix_maquines.sql sobre la BD plena  -> continua amb 20 (INSERT IGNORE, es pot repetir)
+  afegeix_maquines.sql amb només PRESS-01 -> 18 (afegeix les 17 noves)
+  API amb CURL-01 i token-CURL-01, Laia   -> 201, sèrie guardada
+  Càlculs: 25 kg x 10 a CURL-01           -> 32,1 kg (coef 35)
+  Portada                                 -> "20 màquines que registren les sèries"
