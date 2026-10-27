@@ -29,7 +29,6 @@ $arrel = $arrel ?? '../';
         <a href="<?= $arrel ?>compte/logout.php">Sortir</a>
       <?php else: ?>
         <a href="<?= $arrel ?>compte/login.php">Entrar</a>
-        <a href="<?= $arrel ?>compte/registre.php">Registrar-se</a>
       <?php endif; ?>
     </nav>
   </header>

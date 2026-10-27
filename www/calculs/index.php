@@ -24,25 +24,21 @@ function xifra($valor, $decimals = 1)
     return number_format($valor, $decimals, ',', '.');
 }
 
-// Pes màxim estimat per a 1 repetició (1RM): 1RM = pes x (1 + reps / coef).
-// És la fórmula d'Epley, que fa servir 30 per a tot. Aquí cada màquina té el
-// seu número (coef_1rm a la taula maquines), perquè amb el mateix pes i les
-// mateixes repeticions el 1RM no és igual a tots els exercicis.
-// Com més repeticions, menys fiable (a partir d'unes 12 l'error ja és gran).
-const COEF_GENERAL = 30;
-
-function u_rm($kg, $reps, $coef)
+// Pes màxim estimat per a 1 repetició (1RM) amb la fórmula d'Epley:
+// 1RM = pes x (1 + reps / 30). Es fa servir la mateixa per a totes les màquines.
+// És una estimació: com més repeticions, menys fiable (a partir d'unes 12 l'error ja és gran).
+function u_rm($kg, $reps)
 {
     if ($reps == 1) {
         return $kg;
     }
-    return $kg * (1 + $reps / $coef);
+    return $kg * (1 + $reps / 30);
 }
 
 // Al revés: quantes repeticions es poden fer amb un % del 1RM
-function reps_amb($pct, $coef)
+function reps_amb($pct)
 {
-    return max(1, round($coef * (100 / $pct - 1)));
+    return max(1, round(30 * (100 / $pct - 1)));
 }
 
 // Arrodoneix al pes que es pot posar amb discos (de 2,5 en 2,5 kg)
@@ -54,24 +50,15 @@ function discos($kg)
 $calcul = $_GET['calcul'] ?? '';
 $errors = [];
 
-// Màquines per triar a la calculadora, amb el seu número de la fórmula
-$maquines = $connexio->query(
-    "SELECT id, nom, coef_1rm FROM maquines WHERE estat <> 'baixa' ORDER BY nom"
-)->fetchAll(PDO::FETCH_UNIQUE);
-
 // --- 1RM ---
 $rm = null;
 if ($calcul === '1rm') {
-    $kg      = numero('kg', 1, 500);
-    $reps    = numero('reps', 1, PHP_INT_MAX);
-    $maquina = (int) ($_GET['maquina'] ?? 0);   // 0 = un altre exercici
+    $kg   = numero('kg', 1, 500);
+    $reps = numero('reps', 1, PHP_INT_MAX);
     if ($kg === null || $reps === null || $reps != (int) $reps) {
         $errors['1rm'] = 'Posa un pes entre 1 i 500 kg i un nombre de repeticions sencer (1 o més).';
-    } elseif ($maquina !== 0 && !isset($maquines[$maquina])) {
-        $errors['1rm'] = 'Aquesta màquina no existeix.';
     } else {
-        $coef = $maquina ? (float) $maquines[$maquina]['coef_1rm'] : COEF_GENERAL;
-        $rm   = u_rm($kg, (int) $reps, $coef);
+        $rm = u_rm($kg, (int) $reps);
     }
 }
 
@@ -125,13 +112,13 @@ if ($calcul === 'kcal') {
 $meus_rm = [];
 if ($u) {
     $st = $connexio->prepare(
-        'SELECT m.nom, m.coef_1rm, v.data, v.carrega_kg, v.repeticions
+        'SELECT m.nom, v.data, v.carrega_kg, v.repeticions
            FROM v_resum_series v JOIN maquines m ON m.codi = v.maquina
           WHERE v.usuari_id = ? AND v.data >= CURDATE() - INTERVAL 90 DAY'
     );
     $st->execute([$u['id']]);
     foreach ($st->fetchAll() as $s) {
-        $estimat = u_rm((float) $s['carrega_kg'], (int) $s['repeticions'], (float) $s['coef_1rm']);
+        $estimat = u_rm((float) $s['carrega_kg'], (int) $s['repeticions']);
         if (!isset($meus_rm[$s['nom']]) || $estimat > $meus_rm[$s['nom']]['rm']) {
             $meus_rm[$s['nom']] = $s + ['rm' => $estimat];
         }
@@ -151,16 +138,9 @@ require __DIR__ . '/../inc/capcalera.php';
 <p>Són estimacions orientatives. Si tens alguna lesió o dubte, pregunta a un entrenador abans de fer servir aquests números.</p>
 
 <h2>Pes màxim (1RM)</h2>
-<p>Amb el pes que has aixecat i quantes repeticions has fet, calcula el pes que podries aixecar una sola vegada. Depèn de l'exercici: amb el mateix pes i les mateixes repeticions, cada màquina dona un resultat diferent.</p>
+<p>Amb el pes que has aixecat i quantes repeticions has fet, calcula el pes que podries aixecar una sola vegada. Fa servir la fórmula d'Epley.</p>
 <form method="GET" action="#rm" id="rm">
   <input type="hidden" name="calcul" value="1rm">
-  <label for="maquina">Màquina</label>
-  <select id="maquina" name="maquina">
-    <?php foreach ($maquines as $id => $m): ?>
-      <option value="<?= $id ?>" <?= (int) ($_GET['maquina'] ?? 0) === (int) $id ? 'selected' : '' ?>><?= h($m['nom']) ?></option>
-    <?php endforeach; ?>
-    <option value="0" <?= ($_GET['maquina'] ?? '') === '0' ? 'selected' : '' ?>>Un altre exercici (fórmula general)</option>
-  </select>
   <div class="fila-camps">
     <div><label for="kg">Pes aixecat (kg)</label><input id="kg" name="kg" inputmode="decimal" value="<?= $calcul === '1rm' ? valor('kg') : '' ?>" required></div>
     <div><label for="reps">Repeticions</label><input id="reps" name="reps" type="number" min="1" value="<?= $calcul === '1rm' ? valor('reps') : '' ?>" required></div>
@@ -170,13 +150,13 @@ require __DIR__ . '/../inc/capcalera.php';
 <?php if (isset($errors['1rm'])): ?>
   <div class="error"><?= h($errors['1rm']) ?></div>
 <?php elseif ($rm !== null): ?>
-  <div class="resultat">1RM estimat<?= $maquina ? ' a ' . h($maquines[$maquina]['nom']) : '' ?>: <b><?= xifra($rm) ?> kg</b>
+  <div class="resultat">1RM estimat: <b><?= xifra($rm) ?> kg</b>
     <?php if ($reps > 12): ?><br><span class="subtil">Amb més de 12 repeticions l'estimació és poc fiable.</span><?php endif; ?>
   </div>
   <table>
     <tr><th>% del 1RM</th><th>Pes (arrodonit a 2,5 kg)</th><th>Repeticions aproximades</th></tr>
     <?php foreach ([95, 90, 85, 80, 75, 70] as $pct): ?>
-      <tr><td><?= $pct ?>%</td><td><?= xifra(discos($rm * $pct / 100)) ?> kg</td><td><?= reps_amb($pct, $coef) ?></td></tr>
+      <tr><td><?= $pct ?>%</td><td><?= xifra(discos($rm * $pct / 100)) ?> kg</td><td><?= reps_amb($pct) ?></td></tr>
     <?php endforeach; ?>
   </table>
 <?php endif; ?>

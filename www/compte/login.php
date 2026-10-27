@@ -53,5 +53,5 @@ require __DIR__ . '/../inc/capcalera.php';
 
   <button type="submit">Entrar</button>
 </form>
-<p>No tens compte? <a href="registre.php">Registra't</a>.</p>
+<p class="subtil">No tens compte? Te'l fem a recepció quan t'apuntes al gimnàs.</p>
 <?php require __DIR__ . '/../inc/peu.php'; ?>

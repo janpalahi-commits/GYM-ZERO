@@ -65,5 +65,5 @@ require __DIR__ . '/inc/capcalera.php';
 </table>
 
 <h2>Com començar</h2>
-<p>Crea un compte a <a href="compte/registre.php">Registrar-se</a>. A recepció et donem la polsera per a les màquines. Amb el compte ja pots reservar classes.</p>
+<p>Apunta't a recepció: pagues la quota, et donem la polsera per a les màquines i et fem el compte de la web. Amb el compte pots reservar classes i veure les teves sèries.</p>
 <?php require __DIR__ . '/inc/peu.php'; ?>

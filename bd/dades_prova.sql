@@ -33,28 +33,27 @@ INSERT INTO reserves (usuari_id, classe_id) VALUES
 
 -- 20 màquines, dues per grup muscular (vegeu xarxa/disseny-xarxa.md)
 -- Clau de prova de cada màquina: token-<CODI> (ex.: token-PRESS-01, token-CURL-01)
--- coef_1rm: número de la fórmula del 1RM per a cada exercici (vegeu disseny-bd.md)
-INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash, coef_1rm) VALUES
- (1, 'PRESS-01', 'Press de banca intel·ligent', 'press de banca', 'Sala de força · tren superior', '$2y$10$sF5gXHi2ts6Z8f4jUe9kEuSITWYPg4po5ez/cO/LPnOY155gp08n6', 34),
- (2, 'SQUAT-01', 'Rack de sentadilla intel·ligent', 'sentadilla', 'Sala de força · cames', '$2y$10$Zib2GmLU20H7qVzRSFsp7.WIRZZq2VYDHcJDal/1/ONpyeYc5zDYO', 35),
- (3, 'REM-01', 'Rem assegut intel·ligent', 'rem', 'Sala de força · tren superior', '$2y$10$rEMI8etkhnKc8gCR9CxNK.GbsFDvPX9qNjeAEHsyBkswZI2k.u/MG', 35),
- (4, 'CONTR-01', 'Contractora de pit intel·ligent', 'contractora de pit', 'Sala de força · tren superior', '$2y$10$5gEwkwUrNsXMocF6PCTlY.O34i0K2QYMzI4JlOIzVb0MxEeI.Te8G', 35),
- (5, 'JALO-01', 'Jaló al pit intel·ligent', 'jaló al pit', 'Sala de força · tren superior', '$2y$10$HDEuBgUBQbmuoeH7fdKhf.FqYKDwmL0OdegX22fedYN3Nsm8PBygO', 35),
- (6, 'MILITAR-01', 'Press militar intel·ligent', 'press militar', 'Sala de força · tren superior', '$2y$10$GHiXQ5H2oAA0TpicBz7.U.MS.L.BibgrW97ks16zbxJ31Tuycuw3u', 35),
- (7, 'LATERAL-01', 'Elevacions laterals intel·ligent', 'elevacions laterals', 'Sala de força · tren superior', '$2y$10$Wb/eMCEXXAwLTs3YGqzl0uxkvdpbNFvbOm2EN9CQAfPLTh8UaYnPK', 35),
- (8, 'CURL-01', 'Curl de bíceps intel·ligent', 'curl de bíceps', 'Sala de força · tren superior', '$2y$10$4I90ZRBfqMEjuJetiWNCl.vdj0NQrdEEdSoXucjCtLraFctz7a45m', 35),
- (9, 'CURLP-01', 'Curl de bíceps en politja intel·ligent', 'curl de bíceps en politja', 'Sala de força · tren superior', '$2y$10$gvH5C0gjKGCJazHlWJSo7.OsUrvWZvCHVDb3AzgduVodfs3f0UmAK', 35),
- (10, 'TRICEP-01', 'Extensió de tríceps intel·ligent', 'extensió de tríceps', 'Sala de força · tren superior', '$2y$10$IUfW48f4.M67IXoqww9QIOHSe9GEaA.IT.EZ8Gg446LH/vlH9WUHu', 35),
- (11, 'FONS-01', 'Fons en màquina intel·ligent', 'fons', 'Sala de força · tren superior', '$2y$10$TiFN5AK3s6zOEVxtwLW4CuftSd/Hv6mdtW62HlXdmuBG6SKfolyRS', 35),
- (12, 'EXTQ-01', 'Extensió de quàdriceps intel·ligent', 'extensió de quàdriceps', 'Sala de força · cames', '$2y$10$kJWfUd1ZeuoEJwduxRDH2.UMvyz8cv4y5i8MhH1R0.lnUol9xi7bO', 35),
- (13, 'FEMS-01', 'Curl femoral assegut intel·ligent', 'curl femoral assegut', 'Sala de força · cames', '$2y$10$BSCumrNm01YKwsfacYCOE./Y4iTa3/ox/CsDgcD7JOVXNl7RIXLs.', 35),
- (14, 'FEME-01', 'Curl femoral estirat intel·ligent', 'curl femoral estirat', 'Sala de força · cames', '$2y$10$T9uA2xOnySRid7SCAUoU..3L6ICwpCHKMgt47bHZpEEjodihK4PKG', 35),
- (15, 'HIP-01', 'Hip thrust intel·ligent', 'hip thrust', 'Sala de força · cames', '$2y$10$sDgJbEF3aGcXDPD2dINN1O28dlQg5cCnpeZRaCtzpLgf11RIz59lu', 35),
- (16, 'ABDUC-01', 'Abductora intel·ligent', 'abductora', 'Sala de força · cames', '$2y$10$QmyWFOs4PzjnXaSXaxSclueacaNXFlc2v0uaIouHHIe7bxrm2qZcO', 35),
- (17, 'TALOD-01', 'Elevació de talons dempeus intel·ligent', 'elevació de talons dempeus', 'Sala de força · cames', '$2y$10$qtUPRzYF/SGSNaOr2sq9GO2Wx8tGPez7LB5/Trk10lVuh.qGTirMK', 35),
- (18, 'TALOA-01', 'Elevació de talons asseguda intel·ligent', 'elevació de talons asseguda', 'Sala de força · cames', '$2y$10$WnTrKQdO56I28m1v8iIKgukxQ9UamFb7qIMjee5w14Oe0eO6UUovq', 35),
- (19, 'CRUNCH-01', 'Crunch en màquina intel·ligent', 'crunch', 'Sala de força · cames', '$2y$10$idmlWkdiHrPLnwRZzawol.j5NuRRwAo2qzT.gE1cOJ/t.tf8Zza1K', 35),
- (20, 'ROTA-01', 'Rotació de tronc intel·ligent', 'rotació de tronc', 'Sala de força · cames', '$2y$10$g9SQl1jNhcr85M0uD9o/t.3qt7u/NaYgI7ekDDCXRbrPOBny3xNFC', 35);
+INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash) VALUES
+ (1, 'PRESS-01', 'Press de banca intel·ligent', 'press de banca', 'Sala de força · tren superior', '$2y$10$sF5gXHi2ts6Z8f4jUe9kEuSITWYPg4po5ez/cO/LPnOY155gp08n6'),
+ (2, 'SQUAT-01', 'Rack de sentadilla intel·ligent', 'sentadilla', 'Sala de força · cames', '$2y$10$Zib2GmLU20H7qVzRSFsp7.WIRZZq2VYDHcJDal/1/ONpyeYc5zDYO'),
+ (3, 'REM-01', 'Rem assegut intel·ligent', 'rem', 'Sala de força · tren superior', '$2y$10$rEMI8etkhnKc8gCR9CxNK.GbsFDvPX9qNjeAEHsyBkswZI2k.u/MG'),
+ (4, 'CONTR-01', 'Contractora de pit intel·ligent', 'contractora de pit', 'Sala de força · tren superior', '$2y$10$5gEwkwUrNsXMocF6PCTlY.O34i0K2QYMzI4JlOIzVb0MxEeI.Te8G'),
+ (5, 'JALO-01', 'Jaló al pit intel·ligent', 'jaló al pit', 'Sala de força · tren superior', '$2y$10$HDEuBgUBQbmuoeH7fdKhf.FqYKDwmL0OdegX22fedYN3Nsm8PBygO'),
+ (6, 'MILITAR-01', 'Press militar intel·ligent', 'press militar', 'Sala de força · tren superior', '$2y$10$GHiXQ5H2oAA0TpicBz7.U.MS.L.BibgrW97ks16zbxJ31Tuycuw3u'),
+ (7, 'LATERAL-01', 'Elevacions laterals intel·ligent', 'elevacions laterals', 'Sala de força · tren superior', '$2y$10$Wb/eMCEXXAwLTs3YGqzl0uxkvdpbNFvbOm2EN9CQAfPLTh8UaYnPK'),
+ (8, 'CURL-01', 'Curl de bíceps intel·ligent', 'curl de bíceps', 'Sala de força · tren superior', '$2y$10$4I90ZRBfqMEjuJetiWNCl.vdj0NQrdEEdSoXucjCtLraFctz7a45m'),
+ (9, 'CURLP-01', 'Curl de bíceps en politja intel·ligent', 'curl de bíceps en politja', 'Sala de força · tren superior', '$2y$10$gvH5C0gjKGCJazHlWJSo7.OsUrvWZvCHVDb3AzgduVodfs3f0UmAK'),
+ (10, 'TRICEP-01', 'Extensió de tríceps intel·ligent', 'extensió de tríceps', 'Sala de força · tren superior', '$2y$10$IUfW48f4.M67IXoqww9QIOHSe9GEaA.IT.EZ8Gg446LH/vlH9WUHu'),
+ (11, 'FONS-01', 'Fons en màquina intel·ligent', 'fons', 'Sala de força · tren superior', '$2y$10$TiFN5AK3s6zOEVxtwLW4CuftSd/Hv6mdtW62HlXdmuBG6SKfolyRS'),
+ (12, 'EXTQ-01', 'Extensió de quàdriceps intel·ligent', 'extensió de quàdriceps', 'Sala de força · cames', '$2y$10$kJWfUd1ZeuoEJwduxRDH2.UMvyz8cv4y5i8MhH1R0.lnUol9xi7bO'),
+ (13, 'FEMS-01', 'Curl femoral assegut intel·ligent', 'curl femoral assegut', 'Sala de força · cames', '$2y$10$BSCumrNm01YKwsfacYCOE./Y4iTa3/ox/CsDgcD7JOVXNl7RIXLs.'),
+ (14, 'FEME-01', 'Curl femoral estirat intel·ligent', 'curl femoral estirat', 'Sala de força · cames', '$2y$10$T9uA2xOnySRid7SCAUoU..3L6ICwpCHKMgt47bHZpEEjodihK4PKG'),
+ (15, 'HIP-01', 'Hip thrust intel·ligent', 'hip thrust', 'Sala de força · cames', '$2y$10$sDgJbEF3aGcXDPD2dINN1O28dlQg5cCnpeZRaCtzpLgf11RIz59lu'),
+ (16, 'ABDUC-01', 'Abductora intel·ligent', 'abductora', 'Sala de força · cames', '$2y$10$QmyWFOs4PzjnXaSXaxSclueacaNXFlc2v0uaIouHHIe7bxrm2qZcO'),
+ (17, 'TALOD-01', 'Elevació de talons dempeus intel·ligent', 'elevació de talons dempeus', 'Sala de força · cames', '$2y$10$qtUPRzYF/SGSNaOr2sq9GO2Wx8tGPez7LB5/Trk10lVuh.qGTirMK'),
+ (18, 'TALOA-01', 'Elevació de talons asseguda intel·ligent', 'elevació de talons asseguda', 'Sala de força · cames', '$2y$10$WnTrKQdO56I28m1v8iIKgukxQ9UamFb7qIMjee5w14Oe0eO6UUovq'),
+ (19, 'CRUNCH-01', 'Crunch en màquina intel·ligent', 'crunch', 'Sala de força · cames', '$2y$10$idmlWkdiHrPLnwRZzawol.j5NuRRwAo2qzT.gE1cOJ/t.tf8Zza1K'),
+ (20, 'ROTA-01', 'Rotació de tronc intel·ligent', 'rotació de tronc', 'Sala de força · cames', '$2y$10$g9SQl1jNhcr85M0uD9o/t.3qt7u/NaYgI7ekDDCXRbrPOBny3xNFC');
 
 -- Dos entrenaments del Marc (fa 7 dies i fa 2 dies), dades com les enviaria el simulador
 INSERT INTO entrenaments (id, usuari_id, data) VALUES

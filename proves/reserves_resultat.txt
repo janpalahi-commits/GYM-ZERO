@@ -1,47 +1,62 @@
-Proves de la Fase 3 (2026-10-14, PHP 8.3.6, MariaDB 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova de la Fase 2.
+Proves de la Fase 3 i de la quota a les reserves (Fase 10, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova. Els comptes nous els crea l'admin a /admin/alta.php.
 
 1. Anònim a /reserves/:
    files taula: 6
    botons: 0
 2. Anònim a /client/:
-   302 -> http://127.0.0.1:8088/compte/login.php
-3. Registre nou:
-   302 -> http://127.0.0.1:8088/client/
-   ok: Compte creat. Benvingut/da a GYM ZERO!
-4. Registre amb email repetit:
+   302 -> http://127.0.0.1:8091/compte/login.php
+3. Recepció dona d'alta el Jan i cobra el primer mes:
+   ok: Compte de Jan Prova creat. Ja pot entrar a la web amb el seu correu.
+   login del Jan: 302 -> http://127.0.0.1:8091/client/
+4. Alta amb email repetit:
    class="error">Ja hi ha un compte amb aquest correu.
-5. Registre contrasenyes diferents:
-   class="error">Les dues contrasenyes no coincideixen.
+5. Anònim a l'antic /compte/registre.php:
+   302 -> http://127.0.0.1:8091/compte/login.php
+   error: El compte te&#039;l fem a recepció quan t&#039;apuntes al gimnàs.
 6. Login contrasenya incorrecta:
    class="error">Correu o contrasenya incorrectes.
 7. Login correcte (Marc):
-   302 -> http://127.0.0.1:8088/client/
+   302 -> http://127.0.0.1:8091/client/
 8. Marc reserva Cross Training (classe 2):
-   ok: Reserva confirmada: Cross Training, 15/10/2026 19:00.
+   ok: Reserva confirmada: Cross Training, 28/10/2026 19:00.
 9. Marc la torna a reservar:
    error: Ja tens una reserva per a aquesta classe.
 10. Marc reserva Mobilitat (classe 5, 2 places, 1 ocupada):
-   ok: Reserva confirmada: Mobilitat, 17/10/2026 10:00.
+   ok: Reserva confirmada: Mobilitat, 30/10/2026 10:00.
 11. Jan reserva Mobilitat (ja plena):
    error: No queden places per a aquesta classe.
 12. Marc cancel·la Mobilitat:
-   ok: Reserva cancel·lada: Mobilitat, 17/10/2026 10:00.
+   ok: Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.
 13. Jan reserva Mobilitat ara:
-   ok: Reserva confirmada: Mobilitat, 17/10/2026 10:00.
+   ok: Reserva confirmada: Mobilitat, 30/10/2026 10:00.
 14. Jan cancel·la una classe que no té (classe 3):
    error: No tens cap reserva activa per a aquesta classe.
 15. POST sense token CSRF:
    400
 16. Àrea de Marc:
-   Musculació|15/10/2026 18:00|Cross Training|15/10/2026 19:00|Powerlifting|16/10/2026 18:00|Reserva cancel·lada: Mobilitat, 17/10/2026 10:00.|14/10/2026 18:25|Reserva confirmada: Mobilitat, 17/10/2026 10:00.|14/10/2026 18:25|Reserva confirmada: Cross Training, 15/10/2026 19:00.|14/10/2026 18:25|Reserva confirmada: Musculació, demà a les 18:00.|14/10/2026 18:25
+   Musculació|28/10/2026 18:00|Cross Training|28/10/2026 19:00|Powerlifting|29/10/2026 18:00|Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:07|Reserva confirmada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:07|Reserva confirmada: Cross Training, 28/10/2026 19:00.|27/10/2026 11:07|Reserva confirmada: Musculació, demà a les 18:00.|27/10/2026 11:07
 17. Logout i tornar a /client/:
-   302 -> http://127.0.0.1:8088/compte/login.php
-18. Estat a la BD:
+   302 -> http://127.0.0.1:8091/compte/login.php
+18. Client donat d'alta sense pagar (Nil) reserva Hipertrofia (classe 4):
+   error: Per reservar has de tenir la quota pagada. Passa per recepció.
+   error: Per reservar has de tenir la quota pagada. Passa per recepció.
+19. Pàgina de classes del Nil:
+   4 >Sense quota<
+   1 class="error">Per reservar has de tenir la quota pagada. Passa per recepció.
+20. Laia (quota caducada fa 3 dies) reserva Hipertrofia (classe 4):
+   error: Per reservar has de tenir la quota pagada. Passa per recepció.
+   error: Per reservar has de tenir la quota pagada. Passa per recepció.
+21. Pau amb la quota fins demà reserva Powerlifting (classe 3, d'aquí a 2 dies):
+   error: La teva quota acaba el 28/10, abans d&#039;aquesta classe. Renova-la a recepció per poder-la reservar.
+22. Pau reserva Musculació (classe 1, demà):
+   ok: Reserva confirmada: Musculació, 28/10/2026 18:00.
+23. Estat a la BD:
 +------------------+-----------+------------+
 | email            | classe_id | estat      |
 +------------------+-----------+------------+
 | laia@example.com |         1 | confirmada |
 | marc@example.com |         1 | confirmada |
+| pau@example.com  |         1 | confirmada |
 | marc@example.com |         2 | confirmada |
 | marc@example.com |         3 | confirmada |
 | jan@example.com  |         5 | confirmada |
