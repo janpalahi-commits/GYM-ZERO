@@ -3,7 +3,8 @@
 Estat: **dissenyada i provada en local** (MariaDB 10.11). Encara no està a Dinahosting.
 
 Fitxers:
-- `gymzero_bd.sql`: crea les 9 taules i la vista.
+- `gymzero_bd.sql`: crea les 11 taules i la vista.
+- `actualitza_fase9.sql`: afegeix la quota i les taules del torn a una base de dades que ja existeix, sense esborrar res.
 - `dades_prova.sql`: usuaris, classes, reserves i entrenaments d'exemple.
 - `diagrama-bd.png` / `diagrama-bd.svg`: diagrama entitat-relació.
 - `proves/prova_concurrencia.php` i `proves/resultat_prova.txt`: prova del límit de places.
@@ -14,7 +15,7 @@ Fitxers:
 
 | Taula | Què guarda | Servei |
 |---|---|---|
-| `usuaris` | Clients i administradors. Rol `client` o `admin`. | Usuaris i login |
+| `usuaris` | Clients i administradors. Rol `client` o `admin`. Codi de la polsera i fins quan té pagada la quota (`quota_fins`). | Usuaris i login |
 | `activitats` | Tipus d'activitat: Musculació, Cross Training, etc. | Reserves |
 | `classes` | Una activitat en un dia i hora concrets, amb un nombre de places. | Reserves |
 | `reserves` | Quin usuari ha reservat a quina classe i si està confirmada o cancel·lada. | Reserves |
@@ -23,6 +24,8 @@ Fitxers:
 | `series` | Una sèrie en una màquina: càrrega i número de sèrie. | Màquines i historial |
 | `repeticions` | Cada repetició que envia la màquina: velocitat, recorregut i durada. | Màquines i anàlisi |
 | `notificacions` | Avisos per a l'usuari (reserva confirmada, classe cancel·lada...). | Notificacions |
+| `torns` | Els torns d'accés amb lector de polsera (codi, estat i clau de l'API). | Control d'accés |
+| `entrades` | Cada vegada que algú acosta la polsera al torn: qui, quan, si ha passat i per què. | Control d'accés |
 
 A més, la vista `v_resum_series` calcula el resum de cada sèrie: repeticions, velocitat mitjana, velocitat màxima i **pèrdua de velocitat** (de la repetició més ràpida a l'última). És el que farà servir l'historial del client.
 
@@ -33,6 +36,7 @@ A més, la vista `v_resum_series` calcula el resum de cada sèrie: repeticions, 
 - Usuaris i classes queden relacionats N:M a través de `reserves`.
 - Un entrenament té moltes sèries; una sèrie té moltes repeticions (1:N).
 - Una màquina té moltes sèries (1:N).
+- Un torn i un usuari tenen moltes entrades (1:N). Si la polsera no és de ningú, l'entrada es guarda sense usuari.
 
 ## 3. Decisions i per què
 
@@ -61,7 +65,7 @@ Mentre una reserva no fa `COMMIT`, les altres de la mateixa classe s'esperen al 
 
 **Contrasenyes.** Es guarda `password_hash`, mai la contrasenya. A PHP es fa amb `password_hash()` i es comprova amb `password_verify()`.
 
-**Targeta RFID.** Cada usuari pot tenir el codi (UID) d'una targeta. La màquina l'envia per saber qui entrena. Al projecte la targeta és **simulada**: el simulador envia aquest codi.
+**Polsera RFID.** Cada usuari pot tenir el codi (UID) d'una polsera, a la columna `targeta_rfid`. La màquina i el torn l'envien per saber qui és. Al projecte la polsera és **simulada**: els simuladors envien aquest codi.
 
 **Repeticions per separat.** Guardant cada repetició es pot calcular la pèrdua de velocitat dins d'una sèrie i comparar sessions. Són càlculs simples sobre dades guardades; no es fa cap diagnòstic.
 
@@ -74,6 +78,8 @@ Mentre una reserva no fa `COMMIT`, les altres de la mateixa classe s'esperen al 
 `1RM = pes × (1 + repeticions / coef_1rm)`
 
 És la fórmula d'Epley, que fa servir 30 per a tots els exercicis. Els números de cada màquina surten de les taules de Nuzzo et al. (2023, *Sports Medicine*), que recullen quantes repeticions fa la gent al 70% i al 80% del seu màxim: al press de banca en fan una mica menys (34) que a la majoria d'exercicis (35), i a la premsa de cames moltes més (48). Per al rem no hi ha dades pròpies i es fa servir el general. Si cal, el número de cada màquina es pot canviar a la base de dades.
+
+**Quota i entrades.** La quota és una data (`quota_fins`), no una taula de pagaments: la web només ha de saber si avui la té pagada. Les entrades es guarden també quan el torn no deixa passar, per saber qui ho ha intentat i per què. Si s'esborra un usuari, les seves entrades es queden sense usuari (`ON DELETE SET NULL`) en lloc d'esborrar-se.
 
 **Còpies de seguretat.** No són una taula: es faran amb `mysqldump` des del servidor (ho veurem a la fase de backups).
 

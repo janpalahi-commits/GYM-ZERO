@@ -12,7 +12,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP VIEW  IF EXISTS v_resum_series;
-DROP TABLE IF EXISTS notificacions, repeticions, series, entrenaments,
+DROP TABLE IF EXISTS entrades, torns, notificacions, repeticions, series, entrenaments,
                      maquines, reserves, classes, activitats, usuaris;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -26,8 +26,9 @@ CREATE TABLE usuaris (
   email          VARCHAR(150) NOT NULL,
   password_hash  VARCHAR(255) NOT NULL,          -- password_hash() de PHP, mai la contrasenya
   rol            ENUM('client','admin') NOT NULL DEFAULT 'client',
-  targeta_rfid   VARCHAR(32)  NULL,              -- UID de la targeta (simulada) per identificar-se a la màquina
+  targeta_rfid   VARCHAR(32)  NULL,              -- UID del xip de la polsera, per passar el torn i fer servir les màquines
   actiu          TINYINT(1)   NOT NULL DEFAULT 1,
+  quota_fins     DATE         NULL,              -- últim dia amb la quota pagada (NULL: no l'ha pagada mai)
   data_registre  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT uq_usuaris_email UNIQUE (email),
   CONSTRAINT uq_usuaris_rfid  UNIQUE (targeta_rfid)
@@ -160,6 +161,37 @@ CREATE TABLE notificacions (
   CONSTRAINT fk_notificacions_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE,
   INDEX ix_notificacions_usuari_llegida (usuari_id, llegida)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- TORNS: torns d'accés amb lector de polsera (dissenyats; les dades són simulades)
+-- ---------------------------------------------------------------------
+CREATE TABLE torns (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  codi        VARCHAR(20)  NOT NULL,             -- ex.: TORN-01
+  nom         VARCHAR(80)  NOT NULL,
+  estat       ENUM('activa','baixa') NOT NULL DEFAULT 'activa',
+  token_hash  VARCHAR(255) NOT NULL,             -- clau de l'API del lector, guardada amb hash
+  CONSTRAINT uq_torns_codi UNIQUE (codi)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- ENTRADES: cada vegada que algú acosta la polsera a un torn,
+-- tant si el deixa passar com si no (així es veu qui ho ha intentat i per què no ha pogut)
+-- ---------------------------------------------------------------------
+CREATE TABLE entrades (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  torn_id     INT UNSIGNED NOT NULL,
+  usuari_id   INT UNSIGNED NULL,                 -- NULL si la polsera no és de ningú
+  targeta     VARCHAR(32)  NOT NULL,             -- codi llegit, encara que no sigui de ningú
+  data_hora   DATETIME     NOT NULL,
+  permesa     TINYINT(1)   NOT NULL,
+  motiu       VARCHAR(60)  NOT NULL,             -- Quota pagada, Quota sense pagar, Polsera desconeguda...
+  CONSTRAINT fk_entrades_torn FOREIGN KEY (torn_id)
+    REFERENCES torns(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_entrades_usuari FOREIGN KEY (usuari_id)
+    REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE SET NULL,
+  INDEX ix_entrades_data (data_hora)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

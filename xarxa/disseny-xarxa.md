@@ -11,6 +11,7 @@
 | Impressora | Imprimir horaris, rebuts i fulls d'inscripció (des dels dos PCs) |
 | Tauleta dels entrenadors | A la sala de força, per mirar l'historial d'un client mentre l'entrena |
 | Màquines intel·ligents (20) | Envien cada sèrie a l'API de gymzero.cat per HTTPS |
+| Torn d'entrada a les sales | Pregunta a l'API de gymzero.cat si una polsera pot passar |
 | Mòbils dels clients | Wifi per als clients: reservar classes i mirar el seu entrenament |
 
 Els PCs i la tauleta fan servir la mateixa web que els clients, amb un compte d'administrador. No cal cap programa instal·lat a part del navegador.
@@ -30,15 +31,15 @@ Les línies contínues són cable (Ethernet) i les de punts, wifi.
 | ONT de fibra | La de l'operador | Connexió a Internet | (de l'operador) |
 | Router i tallafoc | TP-Link ER605 | Separa les xarxes (VLAN), fa de DHCP i decideix qui pot parlar amb qui | 60 € |
 | Switch | TP-Link TL-SG2210P (8 ports, gestionable, PoE) | Connecta els equips i dona corrent als punts d'accés pel mateix cable | 100 € |
-| Punts d'accés wifi (3) | TP-Link EAP225 | Un a recepció i sala de classes i dos a la sala de força (20 màquines repartides en dues zones). Cada xarxa wifi va a la seva VLAN | 3 × 70 € |
+| Punts d'accés wifi (4) | TP-Link EAP225 | Un a recepció, dos a la sala de força (20 màquines repartides en dues zones) i un a la sala de classes. Cada xarxa wifi va a la seva VLAN | 4 × 70 € |
 | PCs (2) | PC de sobretaula senzill amb Ubuntu | Recepció i despatx | 2 × 450 € |
 | Impressora | Multifunció làser amb xarxa | Imprimir i escanejar | 150 € |
 | Tauleta | Tauleta Android de 10" | Entrenadors a la sala | 180 € |
 | Lector RFID USB | Lector 13,56 MHz que fa de teclat | Llegir el codi de les polseres | 12 € |
 | Armari, cables i preses | Cable de categoria 6 | Instal·lació | 80 € |
-| **Total** | | | **≈ 1.690 €** |
+| **Total** | | | **≈ 1.760 €** |
 
-A més, 20 màquines intel·ligents a uns 59 € d'electrònica cadascuna (vegeu el disseny de la màquina): ≈ 1.180 €.
+A més, 20 màquines intel·ligents a uns 59 € d'electrònica cadascuna (vegeu el disseny de la màquina): ≈ 1.180 €. I el torn d'entrada a les sales amb la porta de pas ample (vegeu el disseny del control d'accés): ≈ 1.056 €.
 
 Els preus són orientatius. No s'ha comprat res.
 
@@ -49,7 +50,7 @@ Cada tipus d'equip va en una xarxa diferent. Si un mòbil d'un client té un vir
 | VLAN | Nom | Xarxa | Porta d'enllaç | Qui hi ha |
 |---|---|---|---|---|
 | 10 | Gestió | 192.168.10.0/24 | 192.168.10.1 | Router, switch, punts d'accés, PCs, impressora i tauleta |
-| 20 | Màquines | 192.168.20.0/24 | 192.168.20.1 | Les màquines intel·ligents |
+| 20 | Màquines | 192.168.20.0/24 | 192.168.20.1 | Les màquines intel·ligents i el lector del torn |
 | 30 | Clients | 192.168.30.0/24 | 192.168.30.1 | Mòbils dels clients |
 
 ## 5. Adreces IP
@@ -61,15 +62,17 @@ Cada tipus d'equip va en una xarxa diferent. Si un mòbil d'un client té un vir
 | AP 1 (recepció) | 192.168.10.3 | Fixa |
 | AP 2 (sala de força, tren superior) | 192.168.10.4 | Fixa |
 | AP 3 (sala de força, zona de cames) | 192.168.10.5 | Fixa |
+| AP 4 (sala de classes) | 192.168.10.6 | Fixa |
 | PC de recepció | 192.168.10.10 | Reserva DHCP |
 | PC del despatx | 192.168.10.11 | Reserva DHCP |
 | Impressora | 192.168.10.20 | Fixa |
 | Tauleta dels entrenadors | 192.168.10.30 | Reserva DHCP |
+| Lector del torn d'entrada a les sales | 192.168.20.10 | Reserva DHCP (per MAC) |
 | Màquines intel·ligents | 192.168.20.11 a 192.168.20.30 (taula de sota) | Reserva DHCP (per MAC) |
 | Lliures per a més màquines | 192.168.20.31 a 192.168.20.99 | |
 | Mòbils dels clients | 192.168.30.100 a 192.168.30.250 | DHCP |
 
-Les màquines tenen sempre la mateixa IP perquè, si una falla, a la llista del router es veu de seguida quina és.
+El lector i les màquines tenen sempre la mateixa IP perquè, si una falla, a la llista del router es veu de seguida quina és.
 
 ### Màquines intel·ligents
 
@@ -102,11 +105,22 @@ Dues per cada grup muscular. Totes 20 són a la base de dades de proves (`bd/dad
 
 | Nom (SSID) | VLAN | Seguretat | Notes |
 |---|---|---|---|
-| GYMZERO-MAQ | 20 | WPA2-PSK, contrasenya llarga que només té l'administrador | Només 2,4 GHz (l'ESP32 no fa servir 5 GHz). L'emeten l'AP 2 i l'AP 3, 10 màquines cadascun |
-| GYMZERO-STAFF | 10 | WPA2-PSK, contrasenya del personal | Per a la tauleta dels entrenadors. L'emeten els tres AP |
+| GYMZERO-MAQ | 20 | WPA2-PSK, contrasenya llarga que només té l'administrador | Només 2,4 GHz (l'ESP32 no fa servir 5 GHz). L'emeten l'AP 2 i l'AP 3 (10 màquines cadascun) i l'AP 1 (el lector del torn) |
+| GYMZERO-STAFF | 10 | WPA2-PSK, contrasenya del personal | Per a la tauleta dels entrenadors. L'emeten els quatre AP |
 | GYMZERO-CLIENTS | 30 | WPA2-PSK, contrasenya penjada a recepció | Aïllament de clients: un mòbil no veu els altres. Límit de 10 Mbps per mòbil |
 
 Els PCs i la impressora van per cable.
+
+### On va cada punt d'accés
+
+Els AP van al sostre. La posició surt de la maqueta 3D del gimnàs (`gimnas/`), comptant que cada AP cobreix uns 11 m al voltant. Amb aquesta posició no queda cap racó sense wifi.
+
+| AP | On és | Cobreix |
+|---|---|---|
+| AP 1 | Sobre el taulell de recepció | Entrada, recepció, despatx, vestidors i part del cardio |
+| AP 2 | Sala de força, entre les màquines de pit i d'esquena | Tren superior i vestidor 1 |
+| AP 3 | Sala de força, entre les màquines de glutis i de bessons | Cames, abdominals i pes lliure |
+| AP 4 | Al mig de la sala de classes | Sala de classes, cardio i pes lliure |
 
 ## 7. Ports del switch
 
@@ -116,10 +130,10 @@ Els PCs i la impressora van per cable.
 | 2 | PC de recepció | Accés: VLAN 10 |
 | 3 | PC del despatx | Accés: VLAN 10 |
 | 4 | Impressora | Accés: VLAN 10 |
-| 5 | AP 1 (recepció) | Tronc: VLAN 10 i 30, amb PoE |
+| 5 | AP 1 (recepció) | Tronc: VLAN 10, 20 i 30, amb PoE |
 | 6 | AP 2 (tren superior) | Tronc: VLAN 10, 20 i 30, amb PoE |
 | 7 | AP 3 (cames) | Tronc: VLAN 10, 20 i 30, amb PoE |
-| 8 | Lliure | Desactivat |
+| 8 | AP 4 (sala de classes) | Tronc: VLAN 10 i 30, amb PoE |
 
 ## 8. Regles del tallafoc
 
@@ -129,7 +143,7 @@ El router només deixa passar el que cal. Tot el que no és a la taula està pro
 |---|---|---|
 | Gestió (10) | Internet | Tot |
 | Gestió (10) | Màquines (20) | Sí, per comprovar si una màquina respon |
-| Màquines (20) | Internet | Només HTTPS (port 443) a gymzero.cat, DNS (53) i hora (NTP, 123) |
+| Màquines (20), també el lector del torn | Internet | Només HTTPS (port 443) a gymzero.cat, DNS (53) i hora (NTP, 123) |
 | Màquines (20) | Gestió (10) i Clients (30) | No |
 | Clients (30) | Internet | Web (80, 443) i DNS (53) |
 | Clients (30) | Gestió (10) i Màquines (20) | No |
@@ -155,6 +169,6 @@ El router només deixa passar el que cal. Tot el que no és a la taula està pro
 ## 11. Limitacions
 
 - Si cau la fibra, les màquines no poden enviar les sèries. Les guarden i les envien quan torna la connexió (vegeu el disseny de la màquina).
-- Tres punts d'accés és una estimació per a un gimnàs mitjà. Abans de muntar-ho caldria fer un estudi de cobertura amb el plànol real.
-- El switch té 8 ports i en queda un de lliure. Si calen més equips per cable, s'hauria de canviar per un de 16.
+- Els 11 m de cobertura de cada AP són una estimació. Les parets i les màquines de ferro la redueixen; abans de muntar-ho caldria fer un estudi de cobertura amb el plànol real.
+- El switch té 8 ports i ja els fa servir tots. Si calen més equips per cable, s'hauria de canviar per un de 16.
 - No s'ha muntat ni configurat cap equip. Els models són exemples de material que fa el que demana el disseny (VLAN, PoE, diverses wifi).

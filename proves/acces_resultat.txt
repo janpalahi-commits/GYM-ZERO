@@ -1,0 +1,38 @@
+1. GET (no permès):
+   {"ok":false,"error":"Només s'accepta POST."} [HTTP 405]
+2. JSON trencat:
+   {"ok":false,"error":"El cos de la petició no és un JSON vàlid."} [HTTP 400]
+3. Sense clau:
+   {"ok":false,"error":"Torn o clau incorrectes."} [HTTP 401]
+4. Clau d'una màquina:
+   {"ok":false,"error":"Torn o clau incorrectes."} [HTTP 401]
+5. Codi de polsera mal format:
+   {"ok":false,"error":"El codi de la polsera ha de tenir entre 8 i 20 xifres hexadecimals."} [HTTP 422]
+6. Polsera desconeguda:
+   {"ok":true,"obrir":false,"usuari":null,"missatge":"Polsera desconeguda. Passa per recepció","avis":""} [HTTP 200]
+7. Marc (quota pagada):
+   {"ok":true,"obrir":true,"usuari":"Marc","missatge":"Benvingut, Marc","avis":"La quota caduca el 31/10"} [HTTP 200]
+8. Marc en minúscules:
+   {"ok":true,"obrir":true,"usuari":"Marc","missatge":"Benvingut, Marc","avis":"La quota caduca el 31/10"} [HTTP 200]
+9. Laia (quota caducada):
+   {"ok":true,"obrir":false,"usuari":"Laia","missatge":"Quota sense pagar. Passa per recepció","avis":""} [HTTP 200]
+10. Pau (li caduca d'aquí a 5 dies):
+   {"ok":true,"obrir":true,"usuari":"Pau","missatge":"Benvingut, Pau","avis":"La quota caduca el 01/11"} [HTTP 200]
+11. Admin (personal, sense quota):
+   {"ok":true,"obrir":true,"usuari":"Admin","missatge":"Hola, Admin","avis":""} [HTTP 200]
+12. Pau amb el compte desactivat:
+   {"ok":true,"obrir":false,"usuari":"Pau","missatge":"Compte desactivat. Passa per recepció","avis":""} [HTTP 200]
+13. La Laia paga un mes i torna a provar:
+   {"ok":true,"obrir":true,"usuari":"Laia","missatge":"Benvingut, Laia","avis":""} [HTTP 200]
+14. Torn donat de baixa:
+   {"ok":false,"error":"Aquest torn està donat de baixa."} [HTTP 403]
+15. Entrades apuntades avui:
+hora	qui	permesa	motiu
+08:56:06	FFFFFFFF	0	Polsera desconeguda
+08:56:06	Marc	1	Quota pagada
+08:56:06	Marc	1	Quota pagada
+08:56:06	Laia	0	Quota sense pagar
+08:56:06	Pau	1	Quota pagada
+08:56:06	Admin	1	Personal
+08:56:06	Pau	0	Compte desactivat
+08:56:06	Laia	1	Quota pagada
