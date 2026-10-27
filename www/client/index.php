@@ -17,6 +17,14 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $reserves = $st->fetchAll();
 
+// La quota es mira a la base de dades: la pot haver canviat recepció mentre el client tenia la sessió oberta
+$st = $connexio->prepare(
+    'SELECT quota_fins, quota_fins >= CURDATE() AS al_dia, quota_fins <= CURDATE() + INTERVAL 7 DAY AS caduca_aviat
+       FROM usuaris WHERE id = ?'
+);
+$st->execute([$u['id']]);
+$quota = $st->fetch();
+
 $st = $connexio->prepare(
     'SELECT missatge, data FROM notificacions WHERE usuari_id = ? ORDER BY data DESC, id DESC LIMIT 5'
 );
@@ -31,6 +39,12 @@ require __DIR__ . '/../inc/capcalera.php';
 ?>
 <?php if ($u['rol'] === 'admin'): ?>
   <p>Has entrat com a <b>administrador</b>. <a href="../admin/">Anar al panell d'administració</a>.</p>
+<?php elseif (!$quota['al_dia']): ?>
+  <div class="error">No tens la quota pagada. Passa per recepció per pagar-la; mentrestant el torn d'entrada a les sales no et deixarà passar.</div>
+<?php elseif ($quota['caduca_aviat']): ?>
+  <p><span class="etiqueta groga">Quota</span> La teva quota caduca el <?= date('d/m/Y', strtotime($quota['quota_fins'])) ?>. Recorda pagar-la a recepció.</p>
+<?php else: ?>
+  <p><span class="etiqueta verda">Quota</span> Pagada fins al <?= date('d/m/Y', strtotime($quota['quota_fins'])) ?>.</p>
 <?php endif; ?>
 
 <h2>Les meves reserves</h2>

@@ -6,11 +6,12 @@
 -- =====================================================================
 SET NAMES utf8mb4;
 
-INSERT INTO usuaris (id, nom, cognoms, email, password_hash, rol, targeta_rfid) VALUES
- (1, 'Admin', 'GYM-ZERO', 'admin@gymzero.cat', '$2y$10$eRJUxortN4WJSfhhfLdcHuU75awd6ySVm8c1C6HF42c8V0D1dv5Qa', 'admin', NULL),
- (2, 'Marc', 'Puig Serra', 'marc@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04A1B2C3'),
- (3, 'Laia', 'Vidal Roca', 'laia@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04D4E5F6'),
- (4, 'Pau', 'Costa Mas', 'pau@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04078899');
+-- Quota: el Marc la té pagada fins a final de mes, la Laia la té caducada i al Pau li caduca d'aquí a 5 dies
+INSERT INTO usuaris (id, nom, cognoms, email, password_hash, rol, targeta_rfid, quota_fins) VALUES
+ (1, 'Admin', 'GYM-ZERO', 'admin@gymzero.cat', '$2y$10$eRJUxortN4WJSfhhfLdcHuU75awd6ySVm8c1C6HF42c8V0D1dv5Qa', 'admin', 'AD000001', NULL),
+ (2, 'Marc', 'Puig Serra', 'marc@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04A1B2C3', LAST_DAY(CURDATE())),
+ (3, 'Laia', 'Vidal Roca', 'laia@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04D4E5F6', CURDATE() - INTERVAL 3 DAY),
+ (4, 'Pau', 'Costa Mas', 'pau@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04078899', CURDATE() + INTERVAL 5 DAY);
 
 INSERT INTO activitats (id, nom, descripcio, durada_min, places_per_defecte) VALUES
  (1, 'Musculació', 'Entrenament de força guiat a la sala de màquines.', 60, 15),
@@ -158,6 +159,16 @@ INSERT INTO repeticions (serie_id, num_rep, velocitat_mitjana, recorregut_m, dur
  (10, 5, 0.54, 0.56, 1.04),
  (10, 6, 0.53, 0.56, 1.06),
  (10, 7, 0.50, 0.54, 1.07);
+
+-- El torn d'entrada a les sales. Clau de prova: token-TORN-01
+INSERT INTO torns (id, codi, nom, token_hash) VALUES
+ (1, 'TORN-01', 'Torn d''entrada a les sales', '$2y$10$VWAHG8kjSXJERqXJqkTLV.SOzmc.U91e/tdl0W1mUQaEDRLnd64f.');
+
+-- Entrades dels dies que el Marc va entrenar, i un intent de la Laia (quota caducada)
+INSERT INTO entrades (torn_id, usuari_id, targeta, data_hora, permesa, motiu) VALUES
+ (1, 2, '04A1B2C3', CURDATE() - INTERVAL 7 DAY + INTERVAL '17:58' HOUR_MINUTE, 1, 'Quota pagada'),
+ (1, 2, '04A1B2C3', CURDATE() - INTERVAL 2 DAY + INTERVAL '17:57' HOUR_MINUTE, 1, 'Quota pagada'),
+ (1, 3, '04D4E5F6', CURDATE() - INTERVAL 1 DAY + INTERVAL '19:12' HOUR_MINUTE, 0, 'Quota sense pagar');
 
 INSERT INTO notificacions (usuari_id, tipus, missatge) VALUES
  (2, 'reserva', 'Reserva confirmada: Musculació, demà a les 18:00.'),

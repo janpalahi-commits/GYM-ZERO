@@ -292,6 +292,32 @@ form.polsera input {
   font-size: 14px;
 }
 
+/* Taula ampla: en una pantalla estreta es pot fer lliscar de costat */
+.taula {
+  overflow-x: auto;
+}
+
+/* Quota a la llista d'usuaris */
+form.quota {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+form.quota input {
+  width: auto;
+  margin-top: 0;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.etiqueta.groga {
+  background: #fff4d6;
+  color: #8a5a00;
+}
+
 /* Càlculs */
 .resultat {
   background: #f0f4fb;

@@ -1,0 +1,708 @@
+<title>Maqueta GYM-ZERO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Pantalla sencera amb l'escena 3D; a sobre, una fitxa amb el títol i els controls i una altra amb les dades del que es toca */
+:root {
+  --bg: #e9ebe8;
+  --panel: #ffffff;
+  --fg: #1d2421;
+  --muted: #66706b;
+  --line: #d6dbd8;
+  --accent: #1f7a8c;
+  --on-accent: #ffffff;
+  --floor: #f4f2ed;
+  --ground: #dcdfdb;
+  --wall: #e3ded6;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "Barlow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141917; --panel: #1d2421; --fg: #e8ece9; --muted: #96a19b; --line: #2d3632; --accent: #4fb3c8; --on-accent: #0f1a1d;
+  --floor: #2a302e; --ground: #181d1b; --wall: #47504c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141917; --panel: #1d2421; --fg: #e8ece9; --muted: #96a19b; --line: #2d3632; --accent: #4fb3c8; --on-accent: #0f1a1d;
+  --floor: #2a302e; --ground: #181d1b; --wall: #47504c; color-scheme: dark }
+
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 14px; line-height: 1.4; overflow: hidden; }
+#escena { position: fixed; inset: 0; }
+#escena canvas { display: block; }
+#etiquetes { position: fixed; inset: 0; pointer-events: none; }
+
+.fitxa { position: fixed; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 4px 18px rgb(0 0 0 / .08); }
+#controls { top: 16px; left: max(16px, env(safe-area-inset-left, 0px)); width: 280px; max-width: calc(100vw - 32px); padding: 14px 14px 12px; display: grid; gap: 10px; }
+h1 { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1; margin: 0; letter-spacing: .5px; text-transform: uppercase; }
+.sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.fila { display: flex; flex-wrap: wrap; gap: 6px; }
+button { font: inherit; font-size: 13px; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.titolet { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 4px; }
+details summary { cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); list-style: none; }
+details summary::-webkit-details-marker { display: none; }
+details summary::after { content: " +"; }
+details[open] summary::after { content: " −"; }
+.llegenda { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; margin-top: 6px; font-size: 12.5px; }
+.llegenda span { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.llegenda i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.llegenda .linia i { height: 3px; border-radius: 1px; }
+.pista { font-size: 12px; color: var(--muted); }
+
+#info { right: max(16px, env(safe-area-inset-right, 0px)); bottom: 16px; width: 300px; max-width: calc(100vw - 32px); padding: 14px; }
+#info h2 { font-family: var(--display); font-weight: 800; font-size: 22px; margin: 0; letter-spacing: .4px; }
+#info .codi { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+#info dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; font-size: 13px; }
+#info dt { color: var(--muted); }
+#info dd { margin: 0; font-variant-numeric: tabular-nums; }
+#info p { margin: 0; font-size: 13px; }
+#info .nota { margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+.lbl { font-size: 11px; font-weight: 600; padding: 1px 5px; border-radius: 4px; background: var(--panel); color: var(--fg); border: 1px solid var(--line); white-space: nowrap; }
+.lbl.sala { background: transparent; border: 0; color: var(--muted); font-family: var(--display); font-size: 14px; letter-spacing: .8px; text-transform: uppercase; }
+.lbl.xarxa { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.lbl.grup { font-size: 11px; letter-spacing: .4px; }
+#error { position: fixed; inset: 0; display: none; place-items: center; padding: 16px; text-align: center; color: var(--muted); }
+
+@media (max-width: 700px) {
+  #controls { width: auto; right: max(16px, env(safe-area-inset-right, 0px)); padding: 10px 12px; gap: 8px; }
+  h1 { font-size: 22px; }
+  #info { left: max(16px, env(safe-area-inset-left, 0px)); width: auto; padding: 10px 12px; }
+  .pista, .lbl.grup { display: none; }
+}
+</style>
+
+<div id="escena"></div>
+<div id="etiquetes"></div>
+<div id="error">Aquest navegador no pot mostrar gràfics 3D (WebGL).</div>
+
+<div class="fitxa" id="controls">
+  <div>
+    <h1>GYM-ZERO</h1>
+    <div class="sub">Maqueta 3D del gimnàs · disseny, gimnàs fictici</div>
+  </div>
+  <div>
+    <div class="titolet">Vista</div>
+    <div class="fila" id="vistes">
+      <button data-vista="general" aria-pressed="true">General</button>
+      <button data-vista="planta" aria-pressed="false">Planta</button>
+      <button data-vista="forca" aria-pressed="false">Sala de força</button>
+    </div>
+  </div>
+  <div>
+    <div class="titolet">Mostrar</div>
+    <div class="fila">
+      <button id="b-noms" aria-pressed="true">Noms</button>
+      <button id="b-xarxa" aria-pressed="true">Xarxa</button>
+      <button id="b-wifi" aria-pressed="false">Cobertura wifi</button>
+    </div>
+  </div>
+  <details id="d-llegenda" open>
+    <summary>Llegenda</summary>
+    <div class="llegenda">
+      <span><i style="background:#5b8def"></i>Tren superior</span>
+      <span><i style="background:#e8913a"></i>Cames i abdominals</span>
+      <span><i style="background:#4caf7a"></i>Cardio</span>
+      <span><i style="background:#9b7fd4"></i>Sala de classes</span>
+      <span><i style="background:#8c96a0"></i>Pes lliure</span>
+      <span><i style="background:#c9a96e"></i>Recepció</span>
+      <span class="linia"><i style="background:#2aa198"></i>Cable de xarxa</span>
+      <span class="linia"><i style="background:repeating-linear-gradient(90deg,#5b8def 0 3px,transparent 3px 5px)"></i>Wifi màquines</span>
+    </div>
+  </details>
+  <div class="pista">Arrossega per girar, roda per apropar-te. Toca una màquina o un equip de xarxa.</div>
+</div>
+
+<div class="fitxa" id="info"></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+// Planta de 34 × 22 m. Coordenades del plànol: x d'esquerra a dreta, z del fons (0) a l'entrada (22)
+const W = 34, D = 22, H = 2.6;
+
+const COL = {
+  superior: '#5b8def', cames: '#e8913a', cardio: '#4caf7a', classes: '#9b7fd4',
+  lliure: '#8c96a0', recepcio: '#c9a96e', despatx: '#7f9aa8', vestidors: '#a9b4bb',
+  cable: '#2aa198', ap1: '#c9a227',
+};
+
+// Les 20 màquines intel·ligents (com a xarxa/disseny-xarxa.md): codi, nom, grup muscular, forma
+const MAQUINES = [
+  ['PRESS-01', 'Press de banca', 'Pit', 'banc'],
+  ['CONTR-01', 'Contractora de pit', 'Pit', 'pila'],
+  ['REM-01', 'Rem assegut', 'Esquena', 'pila'],
+  ['JALO-01', 'Jaló al pit', 'Esquena', 'politja'],
+  ['MILITAR-01', 'Press militar en màquina', 'Espatlla', 'pila'],
+  ['LATERAL-01', 'Elevacions laterals en màquina', 'Espatlla', 'pila'],
+  ['CURL-01', 'Curl de bíceps en màquina', 'Bíceps', 'pila'],
+  ['CURLP-01', 'Curl de bíceps en politja', 'Bíceps', 'politja'],
+  ['TRICEP-01', 'Extensió de tríceps en màquina', 'Tríceps', 'pila'],
+  ['FONS-01', 'Fons en màquina', 'Tríceps', 'pila'],
+  ['SQUAT-01', 'Rack de sentadilla', 'Quàdriceps', 'rack'],
+  ['EXTQ-01', 'Extensió de quàdriceps', 'Quàdriceps', 'pila'],
+  ['FEMS-01', 'Curl femoral assegut', 'Isquiotibials', 'pila'],
+  ['FEME-01', 'Curl femoral estirat', 'Isquiotibials', 'estirat'],
+  ['HIP-01', 'Hip thrust en màquina', 'Glutis', 'estirat'],
+  ['ABDUC-01', 'Abductora', 'Glutis', 'pila'],
+  ['TALOD-01', 'Elevació de talons dempeus', 'Bessons', 'pila'],
+  ['TALOA-01', 'Elevació de talons asseguda', 'Bessons', 'pila'],
+  ['CRUNCH-01', 'Crunch en màquina', 'Abdominals', 'pila'],
+  ['ROTA-01', 'Rotació de tronc', 'Abdominals', 'pila'],
+];
+
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+// --- Escena -------------------------------------------------------------
+const cont = document.getElementById('escena');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+} catch (e) {
+  document.getElementById('error').style.display = 'grid';
+  throw e;
+}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+cont.appendChild(renderer.domElement);
+
+const etiquetes = new CSS2DRenderer({ element: document.getElementById('etiquetes') });
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 400);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI / 2 - 0.05;
+controls.minDistance = 4;
+controls.maxDistance = 90;
+
+scene.add(new THREE.HemisphereLight('#ffffff', '#8a8f8c', 1.6));
+const sol = new THREE.DirectionalLight('#ffffff', 1.9);
+sol.position.set(-14, 30, 18);
+sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048);
+Object.assign(sol.shadow.camera, { left: -24, right: 24, top: 18, bottom: -18, near: 1, far: 80 });
+sol.shadow.bias = -0.0005;
+scene.add(sol);
+
+// Tot el gimnàs penja d'aquest grup, desplaçat perquè el centre quedi a l'origen
+const planta = new THREE.Group();
+planta.position.set(-W / 2, 0, -D / 2);
+scene.add(planta);
+
+const cache = {};
+const M = c => cache[c] ??= new THREE.MeshStandardMaterial({ color: c, roughness: 0.75 });
+const temes = { floor: new THREE.MeshStandardMaterial({ roughness: 0.95 }),
+                ground: new THREE.MeshStandardMaterial({ roughness: 1 }),
+                wall: new THREE.MeshStandardMaterial({ roughness: 0.9 }) };
+
+function box(w, h, d, mat, x, y, z, pare = planta) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y + h / 2, z);
+  m.castShadow = m.receiveShadow = true;
+  pare.add(m);
+  return m;
+}
+// Cilindre ajagut al llarg de l'eix x (barres i discos)
+function cilX(r, llarg, mat, x, y, z, pare) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, llarg, 20), mat);
+  m.rotation.z = Math.PI / 2;
+  m.position.set(x, y, z);
+  m.castShadow = true;
+  pare.add(m);
+  return m;
+}
+function etiqueta(text, classe, x, y, z, pare = planta) {
+  const div = document.createElement('div');
+  div.className = 'lbl ' + classe;
+  div.textContent = text;
+  const o = new CSS2DObject(div);
+  o.position.set(x, y, z);
+  pare.add(o);
+  return o;
+}
+
+// --- Terra, zones i parets ----------------------------------------------
+const terra = new THREE.Mesh(new THREE.PlaneGeometry(W + 30, D + 30), temes.ground);
+terra.rotation.x = -Math.PI / 2;
+terra.position.set(W / 2, -0.02, D / 2);
+terra.receiveShadow = true;
+planta.add(terra);
+const sol_ = new THREE.Mesh(new THREE.PlaneGeometry(W, D), temes.floor);
+sol_.rotation.x = -Math.PI / 2;
+sol_.position.set(W / 2, 0, D / 2);
+sol_.receiveShadow = true;
+planta.add(sol_);
+
+const ZONES = [
+  // [x1, z1, x2, z2, color, nom, [x, z] de l'etiqueta]
+  [6, 0, 18, 13, COL.superior, 'Força · tren superior', [12, 12.4]],
+  [18, 0, 30, 13, COL.cames, 'Força · cames', [24, 12.4]],
+  [30, 0, 34, 14, COL.lliure, 'Pes lliure', [32, 0.8]],
+  [16, 14, 24, 22, COL.cardio, 'Cardio', [20, 14.6]],
+  [24, 14, 34, 22, COL.classes, 'Sala de classes', [29, 21]],
+  [6, 13, 16, 22, COL.recepcio, 'Recepció', [11.5, 13.8]],
+  [0, 13, 6, 22, COL.despatx, 'Despatx', [3, 19]],
+  [0, 0, 6, 6.5, COL.vestidors, 'Vestidor 1', [3, 5.6]],
+  [0, 6.5, 6, 13, COL.vestidors, 'Vestidor 2', [3, 12.1]],
+];
+for (const [x1, z1, x2, z2, c, nom, [lx, lz]] of ZONES) {
+  const p = new THREE.Mesh(new THREE.PlaneGeometry(x2 - x1 - 0.1, z2 - z1 - 0.1),
+    new THREE.MeshStandardMaterial({ color: c, transparent: true, opacity: 0.22, roughness: 1 }));
+  p.rotation.x = -Math.PI / 2;
+  p.position.set((x1 + x2) / 2, 0.01, (z1 + z2) / 2);
+  p.receiveShadow = true;
+  planta.add(p);
+  etiqueta(nom, 'sala', lx, 0.05, lz);
+}
+
+// Parets: la de l'entrada i la de la dreta són baixes perquè es vegi l'interior
+function paret(x1, z1, x2, z2, alt = H) {
+  const llarg = Math.hypot(x2 - x1, z2 - z1);
+  const m = box(x1 === x2 ? 0.15 : llarg + 0.15, alt, x1 === x2 ? llarg + 0.15 : 0.15, temes.wall,
+                (x1 + x2) / 2, 0, (z1 + z2) / 2);
+  return m;
+}
+paret(0, 0, 34, 0);
+paret(0, 0, 0, 22);
+paret(34, 0, 34, 22, 1);
+paret(0, 22, 9.5, 22, 1);
+paret(12.5, 22, 34, 22, 1);
+paret(6, 0, 6, 2); paret(6, 3.2, 6, 9); paret(6, 10.2, 6, 13);   // vestidors, amb dues portes
+paret(0, 6.5, 6, 6.5);
+paret(0, 13, 6, 13);                                              // despatx
+paret(6, 13, 6, 15); paret(6, 16.2, 6, 22);
+paret(24, 14, 34, 14, 2.4);                                       // sala de classes
+paret(24, 14, 24, 17, 2.4); paret(24, 18.5, 24, 22, 2.4);
+// Porta d'entrada de vidre
+const vidre = new THREE.MeshStandardMaterial({ color: '#9fc6d4', transparent: true, opacity: 0.35, roughness: 0.1 });
+box(3, 2.2, 0.05, vidre, 11, 0, 22);
+etiqueta('Entrada', 'sala', 11, 0.05, 23.2);
+
+// --- Selecció -----------------------------------------------------------
+const clicables = [];
+const anell = new THREE.Mesh(new THREE.RingGeometry(1.15, 1.32, 48),
+  new THREE.MeshBasicMaterial({ color: css('--accent') || '#1f7a8c', side: THREE.DoubleSide }));
+anell.rotation.x = -Math.PI / 2;
+anell.visible = false;
+planta.add(anell);
+
+function clicable(obj, info) {
+  obj.userData.info = info;
+  clicables.push(obj);
+}
+
+// --- Màquines intel·ligents ---------------------------------------------
+const negre = M('#2b2f33'), acer = M('#a3abb2'), pila = M('#565c62'), coixi = M('#34383d');
+const pantalla = new THREE.MeshStandardMaterial({ color: '#7fe3f0', emissive: '#3fc6da', emissiveIntensity: 0.9 });
+const lector = M('#e9ecef');
+
+function maquina([codi, nom, grup, forma], i, x, z) {
+  const color = i < 10 ? COL.superior : COL.cames;
+  const marc = M(color);
+  const g = new THREE.Group();
+  g.position.set(x, 0, z);
+  planta.add(g);
+
+  if (forma === 'banc' || forma === 'rack') {
+    box(1.5, 0.05, 1.7, negre, 0, 0, 0, g);
+    if (forma === 'banc') {
+      box(0.36, 0.1, 1.3, coixi, 0, 0.42, 0.2, g);
+      box(0.3, 0.42, 0.08, marc, 0, 0, -0.3, g);
+      box(0.3, 0.42, 0.08, marc, 0, 0, 0.7, g);
+      for (const s of [-1, 1]) box(0.08, 1.2, 0.08, marc, s * 0.55, 0, -0.45, g);
+      cilX(0.025, 2.0, acer, 0, 1.15, -0.45, g);
+      for (const s of [-1, 1]) cilX(0.22, 0.06, negre, s * 0.82, 1.15, -0.45, g);
+    } else {
+      for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.08, 2.2, 0.08, marc, sx * 0.6, 0, sz * 0.6, g);
+      for (const sx of [-1, 1]) box(0.08, 0.08, 1.28, marc, sx * 0.6, 2.2, 0, g);
+      cilX(0.025, 2.0, acer, 0, 1.4, -0.3, g);
+      for (const s of [-1, 1]) cilX(0.22, 0.08, negre, s * 0.82, 1.4, -0.3, g);
+    }
+  } else {
+    // Màquina de pila de pesos: torre al darrere, seient o banc al davant
+    const alt = forma === 'politja' ? 2.3 : forma === 'estirat' ? 1.6 : 2.0;
+    box(1.2, 0.06, 1.8, negre, 0, 0, 0, g);
+    for (const s of [-1, 1]) box(0.08, alt, 0.08, marc, s * 0.3, 0.06, -0.7, g);
+    box(0.68, 0.08, 0.08, marc, 0, alt + 0.06, -0.7, g);
+    box(0.45, 0.8, 0.22, pila, 0, 0.1, -0.7, g);
+    if (forma === 'politja') {
+      box(0.08, 0.08, 0.6, marc, 0, alt - 0.1, -0.4, g);
+      box(0.02, alt - 0.9, 0.02, acer, 0, 0.9, -0.12, g);
+      cilX(0.02, 0.5, acer, 0, 0.9, -0.12, g);
+      box(0.5, 0.1, 0.45, coixi, 0, 0.45, 0.45, g);
+      box(0.08, 0.45, 0.08, marc, 0, 0.06, 0.45, g);
+    } else if (forma === 'estirat') {
+      box(0.5, 0.1, 1.5, coixi, 0, 0.6, 0.25, g);
+      box(0.08, 0.6, 0.08, marc, 0, 0.06, -0.25, g);
+      box(0.08, 0.6, 0.08, marc, 0, 0.06, 0.8, g);
+    } else {
+      box(0.08, 0.08, 1.0, marc, 0, 1.6, -0.25, g);
+      box(0.08, 0.45, 0.08, marc, 0, 0.06, 0.35, g);
+      box(0.5, 0.1, 0.5, coixi, 0, 0.5, 0.35, g);
+      box(0.5, 0.75, 0.1, coixi, 0, 0.6, 0.05, g);
+    }
+  }
+  // Caixa electrònica: ESP32, pantalla OLED i lector de la polsera, damunt d'un pal
+  box(0.05, 1.25, 0.05, negre, 0.66, 0, -0.62, g);
+  box(0.24, 0.17, 0.08, negre, 0.66, 1.25, -0.62, g);
+  box(0.16, 0.08, 0.01, pantalla, 0.66, 1.33, -0.575, g);
+  box(0.1, 0.04, 0.01, lector, 0.66, 1.27, -0.575, g);
+
+  const ip = '192.168.20.' + (11 + i);
+  const ap = i < 10 ? 2 : 3;
+  g.userData.caixa = new THREE.Vector3(x + 0.66, 1.35, z - 0.62);
+  g.userData.ap = ap;
+  g.userData.nom = etiqueta(codi, 'maq', 0, 2.55, 0, g);
+  clicable(g, { tipus: 'maquina', titol: nom, codi, files: [
+    ['Grup muscular', grup],
+    ['Zona', i < 10 ? 'Sala de força, tren superior' : 'Sala de força, cames'],
+    ['IP', ip],
+    ['Wifi', 'GYMZERO-MAQ, AP ' + ap],
+  ], nota: 'Polsera RFID, encoder i ESP32. Envia cada sèrie a gymzero.cat/api/serie.php.' });
+  return g;
+}
+
+// Cinc columnes per zona (un grup muscular per columna) i dues files
+const maquinesG = MAQUINES.map((m, i) => {
+  const zona = Math.floor(i / 10), col = Math.floor((i % 10) / 2), fila = i % 2;
+  return maquina(m, i, 7.4 + zona * 12 + col * 2.4, fila ? 9.2 : 3.4);
+});
+// Nom del grup muscular a terra, entre les dues files
+for (let k = 0; k < 10; k++) {
+  const grup = MAQUINES[k * 2][2];
+  etiqueta(grup, 'sala grup', 7.4 + Math.floor(k / 5) * 12 + (k % 5) * 2.4, 0.05, 10.8);
+}
+
+// --- Zones sense màquines intel·ligents ----------------------------------
+const verd = M(COL.cardio), gris = M('#6d757c'), fosc = M('#1e2124');
+function cinta(x, z) {
+  box(0.8, 0.2, 1.9, fosc, x, 0, z);
+  box(0.55, 0.02, 1.5, M('#3a3f44'), x, 0.2, z + 0.1);
+  for (const s of [-1, 1]) box(0.05, 1.1, 0.05, gris, x + s * 0.36, 0.2, z - 0.85);
+  box(0.8, 0.25, 0.12, verd, x, 1.2, z - 0.85);
+}
+function bici(x, z) {
+  box(0.5, 0.06, 1.2, fosc, x, 0, z);
+  box(0.12, 0.8, 0.12, verd, x, 0.06, z + 0.25);
+  box(0.28, 0.08, 0.32, fosc, x, 0.86, z + 0.25);
+  box(0.12, 1.0, 0.12, verd, x, 0.06, z - 0.4);
+  box(0.45, 0.06, 0.1, gris, x, 1.06, z - 0.4);
+  cilX(0.25, 0.08, gris, x, 0.35, z - 0.2, planta);
+}
+for (const x of [17.5, 19.3, 21.1]) cinta(x, 19.8);
+for (const x of [17.5, 19.3, 21.1, 22.9]) bici(x, 16.2);
+const cardioInfo = { tipus: 'altre', titol: 'Cardio', codi: 'Zona sense màquines intel·ligents',
+  text: 'Tres cintes i quatre bicicletes estàtiques. No porten electrònica de GYM-ZERO i no envien dades.' };
+const zonaCardio = box(8, 0.02, 8, new THREE.MeshBasicMaterial({ visible: false }), 20, 0, 18);
+clicable(zonaCardio, cardioInfo);
+
+// Pes lliure: prestatge de manuelles i dos bancs
+box(0.6, 0.8, 9, gris, 33.3, 0, 6.5);
+for (let k = 0; k < 10; k++) {
+  for (const y of [0.55, 0.85]) cilX(0.07, 0.4, fosc, 33.3, y, 2.4 + k * 0.9, planta);
+}
+for (const z of [3.5, 8]) {
+  box(0.35, 0.1, 1.3, coixi, 31.3, 0.42, z);
+  box(0.3, 0.42, 0.08, gris, 31.3, 0, z - 0.5);
+  box(0.3, 0.42, 0.08, gris, 31.3, 0, z + 0.5);
+}
+const zonaLliure = box(4, 0.02, 14, new THREE.MeshBasicMaterial({ visible: false }), 32, 0, 7);
+clicable(zonaLliure, { tipus: 'altre', titol: 'Pes lliure', codi: 'Zona sense màquines intel·ligents',
+  text: 'Manuelles i bancs. No porten electrònica i no envien dades.' });
+
+// Sala de classes: estores, mirall i equip de música
+const lila = M(COL.classes);
+for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) box(0.6, 0.02, 1.6, lila, 25.6 + c * 1.6, 0, 16.4 + r * 1.9);
+box(8.8, 1.8, 0.04, new THREE.MeshStandardMaterial({ color: '#c5d6de', metalness: 0.6, roughness: 0.15 }), 29, 0.3, 14.1);
+box(0.5, 0.9, 0.4, fosc, 33.4, 0, 15);
+
+// Vestidors: taquilles i bancs
+for (const z of [3.25, 9.75]) {
+  box(0.5, 1.9, 5, M('#8d99a3'), 0.35, 0, z);
+  box(0.4, 0.45, 3, coixi, 3, 0, z);
+}
+
+// Recepció: taulell, sofà
+box(4, 1.05, 0.6, M('#b89462'), 9, 0, 16.4);
+box(0.6, 1.05, 2, M('#b89462'), 7.3, 0, 17.4);
+box(2.2, 0.45, 0.8, M('#5b6770'), 14.2, 0, 21.1);
+box(2.2, 0.5, 0.2, M('#5b6770'), 14.2, 0.45, 21.45);
+
+// Despatx: taula, cadira
+box(1.6, 0.05, 0.8, M('#b89462'), 3, 0.72, 15.2);
+for (const sx of [-0.7, 0.7]) box(0.05, 0.72, 0.7, gris, 3 + sx, 0, 15.2);
+box(0.5, 0.5, 0.5, fosc, 3, 0, 16.1);
+
+// --- Xarxa ---------------------------------------------------------------
+const xarxa = new THREE.Group();
+planta.add(xarxa);
+const blanc = M('#f4f5f6');
+
+function equip(info, obj, nomEtiqueta, y) {
+  clicable(obj, info);
+  if (nomEtiqueta) obj.userData.nom = etiqueta(nomEtiqueta, 'xarxa', obj.position.x, y, obj.position.z);
+}
+const port = (n, mode) => ['Port del switch', n + ' (' + mode + ')'];
+
+// Armari de xarxa al despatx: fibra, router i switch
+const armari = box(0.6, 1.4, 0.6, fosc, 0.6, 0, 21.2);
+box(0.5, 0.06, 0.02, M('#2aa198'), 0.6, 1.0, 20.89);
+box(0.5, 0.06, 0.02, M('#e8913a'), 0.6, 0.85, 20.89);
+equip({ tipus: 'xarxa', titol: 'Armari de xarxa', codi: 'Despatx', files: [
+  ['Router', 'TP-Link ER605 · 192.168.10.1'],
+  ['Switch', 'TL-SG2210P, 8 ports PoE · 192.168.10.2'],
+  ['Internet', 'Fibra de l\'operador (ONT)'],
+], nota: 'El router separa les tres VLAN i fa de tallafoc. No hi ha cap servidor al gimnàs: la web i la base de dades són a Dinahosting.' },
+  armari, 'Router i switch', 1.9);
+
+const pcDespatx = box(0.5, 0.35, 0.05, fosc, 3, 0.77, 14.95);
+equip({ tipus: 'xarxa', titol: 'PC del despatx', codi: 'Gestió (VLAN 10)', files: [
+  ['IP', '192.168.10.11'], port(3, 'accés VLAN 10'),
+], nota: 'És l\'únic equip des d\'on s\'obren els panells del router, del switch i dels AP.' }, pcDespatx, 'PC despatx', 1.5);
+
+const impressora = box(0.5, 0.35, 0.45, M('#d9dcdf'), 5.2, 0.6, 21.3);
+box(0.55, 0.6, 0.5, gris, 5.2, 0, 21.3);
+equip({ tipus: 'xarxa', titol: 'Impressora', codi: 'Gestió (VLAN 10)', files: [
+  ['IP', '192.168.10.20'], port(4, 'accés VLAN 10'),
+], nota: 'Multifunció làser. S\'hi imprimeix des dels dos PCs.' }, impressora, 'Impressora', 1.3);
+
+const pcRecepcio = box(0.05, 0.35, 0.5, fosc, 7.2, 1.05, 17.6);
+box(0.1, 0.03, 0.16, lector, 7.4, 1.05, 16.9);
+equip({ tipus: 'xarxa', titol: 'PC de recepció', codi: 'Gestió (VLAN 10)', files: [
+  ['IP', '192.168.10.10'], port(2, 'accés VLAN 10'),
+], nota: 'Té el lector RFID USB per donar les polseres als clients (pàgina Usuaris del panell).' }, pcRecepcio, 'PC recepció', 1.8);
+
+// Torn d'entrada a les sales: recepció és lliure; per passar a les sales cal la polsera.
+// Vidre entre recepció i les sales, amb el torn i la porta de pas ample al mig.
+for (const [x1, z1, x2, z2] of [[6, 13, 10.85, 13], [13.05, 13, 16, 13], [16, 13, 16, 22]]) {
+  const llarg = Math.hypot(x2 - x1, z2 - z1);
+  box(x1 === x2 ? 0.05 : llarg, 2.2, x1 === x2 ? llarg : 0.05, vidre, (x1 + x2) / 2, 0, (z1 + z2) / 2);
+}
+const acerTorn = M('#b9c0c6');
+const torn = box(0.3, 1.0, 0.7, acerTorn, 11.0, 0, 13);
+const braços = new THREE.Group();
+braços.position.set(11.15, 0.95, 13);
+for (const angle of [0, 2 * Math.PI / 3, 4 * Math.PI / 3]) {
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.6, 8), acerTorn);
+  b.rotation.z = -Math.PI / 2 + angle;
+  b.position.set(0.3 * Math.cos(angle), 0.3 * Math.sin(angle), 0);
+  b.castShadow = true;
+  braços.add(b);
+}
+planta.add(braços);
+box(0.16, 0.12, 0.01, pantalla, 11.0, 0.8, 13.36);
+box(0.1, 0.05, 0.01, lector, 11.0, 0.68, 13.36);
+for (const x of [12.05, 13.0]) box(0.05, 1.0, 0.05, acerTorn, x, 0, 13);
+box(0.9, 0.9, 0.03, new THREE.MeshStandardMaterial({ color: '#b9c0c6', transparent: true, opacity: 0.5 }), 12.52, 0.05, 13);
+equip({ tipus: 'xarxa', titol: 'Torn d\'entrada a les sales', codi: 'TORN-01 · Màquines (VLAN 20)', files: [
+  ['IP', '192.168.20.10'], ['Wifi', 'GYMZERO-MAQ, AP 1'],
+], nota: 'Es desbloqueja si la polsera és d\'un client amb la quota pagada. Recepció i la porta del carrer són lliures. Al costat, una porta de pas ample per a cadires de rodes que obre recepció.' },
+  torn, 'Torn', 1.6);
+
+const tauleta = box(0.3, 0.02, 0.22, fosc, 18, 1.1, 11.6);
+box(0.05, 1.1, 0.05, gris, 18, 0, 11.6);
+equip({ tipus: 'xarxa', titol: 'Tauleta dels entrenadors', codi: 'Gestió (VLAN 10)', files: [
+  ['IP', '192.168.10.30'], ['Wifi', 'GYMZERO-STAFF'],
+], nota: 'Per mirar l\'historial d\'un client mentre l\'entrenen.' }, tauleta, 'Tauleta', 1.5);
+
+const APS = [
+  { n: 1, x: 9.5, z: 16.5, color: COL.ap1, ip: '192.168.10.3', port: 5, vlan: 'tronc VLAN 10 i 30',
+    zona: 'Entrada, recepció, despatx, vestidors i cardio', wifi: 'GYMZERO-MAQ (lector de la porta), GYMZERO-STAFF, GYMZERO-CLIENTS' },
+  { n: 2, x: 9.5, z: 5, color: COL.superior, ip: '192.168.10.4', port: 6, vlan: 'tronc VLAN 10, 20 i 30',
+    zona: 'Sala de força, tren superior', wifi: 'GYMZERO-MAQ, GYMZERO-STAFF, GYMZERO-CLIENTS' },
+  { n: 3, x: 26, z: 5, color: COL.cames, ip: '192.168.10.5', port: 7, vlan: 'tronc VLAN 10, 20 i 30',
+    zona: 'Sala de força, cames', wifi: 'GYMZERO-MAQ, GYMZERO-STAFF, GYMZERO-CLIENTS' },
+  { n: 4, x: 28, z: 18, color: COL.classes, ip: '192.168.10.6', port: 8, vlan: 'tronc VLAN 10 i 30',
+    zona: 'Sala de classes, cardio i pes lliure', wifi: 'GYMZERO-STAFF, GYMZERO-CLIENTS' },
+];
+const cobertura = new THREE.Group();
+planta.add(cobertura);
+for (const a of APS) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.05, 32), blanc);
+  m.position.set(a.x, H - 0.05, a.z);
+  xarxa.add(m);
+  const llum = new THREE.Mesh(new THREE.CircleGeometry(0.05, 16), new THREE.MeshBasicMaterial({ color: a.color }));
+  llum.rotation.x = Math.PI / 2;
+  llum.position.set(a.x, H - 0.08, a.z);
+  xarxa.add(llum);
+  a.mesh = m;
+  equip({ tipus: 'xarxa', titol: 'Punt d\'accés ' + a.n, codi: 'TP-Link EAP225', files: [
+    ['IP', a.ip], port(a.port, a.vlan), ['Cobreix', a.zona], ['Wifi', a.wifi],
+  ], nota: a.n === 1 || a.n === 4 ? 'Rep el corrent pel mateix cable de xarxa (PoE).' : 'Rep 10 màquines per GYMZERO-MAQ, només a 2,4 GHz. Rep el corrent pel cable (PoE).' },
+    m, 'AP ' + a.n, H + 0.35);
+  xarxa.add(m.userData.nom);
+  // Cobertura orientativa: un cercle d'11 m de radi a terra
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(11, 64),
+    new THREE.MeshBasicMaterial({ color: a.color, transparent: true, opacity: 0.13, depthWrite: false }));
+  disc.rotation.x = -Math.PI / 2;
+  disc.position.set(a.x, 0.03, a.z);
+  const vora = new THREE.Mesh(new THREE.RingGeometry(10.9, 11, 96),
+    new THREE.MeshBasicMaterial({ color: a.color, transparent: true, opacity: 0.6, depthWrite: false }));
+  vora.rotation.x = -Math.PI / 2;
+  vora.position.set(a.x, 0.035, a.z);
+  cobertura.add(disc, vora);
+}
+cobertura.visible = false;
+
+// Cables pel sostre: de l'armari a una safata a z = 13.6 i d'allà a cada equip
+const matCable = new THREE.MeshStandardMaterial({ color: COL.cable, roughness: 0.5 });
+function cable(punts) {
+  const cami = new THREE.CurvePath();
+  for (let k = 1; k < punts.length; k++) {
+    cami.add(new THREE.LineCurve3(new THREE.Vector3(...punts[k - 1]), new THREE.Vector3(...punts[k])));
+  }
+  const m = new THREE.Mesh(new THREE.TubeGeometry(cami, punts.length * 24, 0.035, 6, false), matCable);
+  xarxa.add(m);
+}
+const S = 2.45, T = 13.6;
+cable([[0.6, 1.4, 21.2], [0.6, S, 21.2], [0.6, S, T], [28, S, T]]);
+cable([[9.5, S, T], [9.5, S, 16.5]]);
+cable([[9.5, S, T], [9.5, S, 5]]);
+cable([[26, S, T], [26, S, 5]]);
+cable([[28, S, T], [28, S, 18]]);
+cable([[7.1, S, T], [7.1, S, 17.6], [7.1, 1.2, 17.6]]);
+cable([[0.9, S, 21.2], [3, S, 21.2], [3, S, 14.7], [3, 0.9, 14.7]]);
+cable([[0.9, S, 21.6], [5.2, S, 21.6], [5.2, 0.95, 21.6]]);
+
+// Wifi de les màquines: línia de punts de cada caixa al seu AP
+for (const g of maquinesG) {
+  const a = APS[g.userData.ap - 1];
+  const geo = new THREE.BufferGeometry().setFromPoints([g.userData.caixa, new THREE.Vector3(a.x, H - 0.1, a.z)]);
+  const l = new THREE.Line(geo, new THREE.LineDashedMaterial({ color: a.color, dashSize: 0.18, gapSize: 0.12 }));
+  l.computeLineDistances();
+  xarxa.add(l);
+}
+{
+  const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(11.0, 0.9, 13.3), new THREE.Vector3(APS[0].x, H - 0.1, APS[0].z)]);
+  const l = new THREE.Line(geo, new THREE.LineDashedMaterial({ color: APS[0].color, dashSize: 0.18, gapSize: 0.12 }));
+  l.computeLineDistances();
+  xarxa.add(l);
+}
+
+// --- Fitxa d'informació ---------------------------------------------------
+const info = document.getElementById('info');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function mostraInfo(d) {
+  if (!d) {
+    info.innerHTML = '<h2>Gimnàs</h2><div class="codi">34 × 22 m · 20 màquines intel·ligents</div>' +
+      '<p>Toca una màquina o un equip de xarxa per veure\'n les dades.</p>' +
+      '<p class="nota">Gimnàs fictici. La distribució és un disseny; la web, l\'API i la base de dades sí que existeixen.</p>';
+    return;
+  }
+  info.innerHTML = `<h2>${esc(d.titol)}</h2><div class="codi">${esc(d.codi)}</div>` +
+    (d.files ? `<dl>${d.files.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : '') +
+    (d.text ? `<p>${esc(d.text)}</p>` : '') +
+    (d.nota ? `<p class="nota">${esc(d.nota)}</p>` : '');
+}
+mostraInfo(null);
+
+const ray = new THREE.Raycaster();
+const punter = new THREE.Vector2();
+function tria(ev) {
+  const r = renderer.domElement.getBoundingClientRect();
+  punter.set((ev.clientX - r.left) / r.width * 2 - 1, -(ev.clientY - r.top) / r.height * 2 + 1);
+  ray.setFromCamera(punter, camera);
+  const objs = clicables.filter(o => o.parent.visible !== false);
+  const hit = ray.intersectObjects(objs, true)[0];
+  if (!hit) return null;
+  let o = hit.object;
+  while (o && !o.userData.info) o = o.parent;
+  return o;
+}
+let inici = null;
+renderer.domElement.addEventListener('pointerdown', e => { inici = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!inici || Math.hypot(e.clientX - inici[0], e.clientY - inici[1]) > 6) return;
+  const o = tria(e);
+  mostraInfo(o?.userData.info);
+  anell.visible = !!o && o.userData.info.tipus === 'maquina';
+  if (anell.visible) anell.position.set(o.position.x, 0.04, o.position.z);
+});
+renderer.domElement.addEventListener('pointermove', e => {
+  if (e.buttons) return;
+  renderer.domElement.style.cursor = tria(e) ? 'pointer' : '';
+});
+
+// --- Controls ---------------------------------------------------------------
+const nomsMaq = maquinesG.map(g => g.userData.nom);
+function commuta(id, fn, inicial) {
+  const b = document.getElementById(id);
+  const posa = v => { b.setAttribute('aria-pressed', v); fn(v); };
+  b.addEventListener('click', () => posa(b.getAttribute('aria-pressed') !== 'true'));
+  posa(inicial);
+}
+const mobil = matchMedia('(max-width: 700px)').matches;
+commuta('b-noms', v => nomsMaq.forEach(o => o.visible = v), !mobil);
+commuta('b-xarxa', v => xarxa.visible = v, true);
+commuta('b-wifi', v => cobertura.visible = v, false);
+if (mobil) document.getElementById('d-llegenda').open = false;
+
+// Vistes: posició de la càmera i punt on mira, en coordenades del plànol
+const VISTES = {
+  general: { pos: [17, 24, 42], obj: [17, 0, 11.5] },
+  planta: { pos: [17, 44, 11.6], obj: [17, 0, 11.5] },
+  forca: { pos: [18, 13, 22], obj: [18, 0, 6.5] },
+};
+const aMon = ([x, y, z]) => new THREE.Vector3(x - W / 2, y, z - D / 2);
+let anim = null;
+function vista(nom, immediata) {
+  const v = VISTES[nom];
+  const obj = aMon(v.obj);
+  const pos = aMon(v.pos).sub(obj).multiplyScalar(camera.aspect < 1 ? 1.7 : 1).add(obj);
+  if (immediata) { camera.position.copy(pos); controls.target.copy(obj); controls.update(); return; }
+  anim = { t0: performance.now(), p0: camera.position.clone(), o0: controls.target.clone(), pos, obj };
+  document.querySelectorAll('#vistes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.vista === nom));
+}
+document.querySelectorAll('#vistes button').forEach(b => b.addEventListener('click', () => vista(b.dataset.vista)));
+
+// --- Tema clar / fosc -------------------------------------------------------
+function aplicaTema() {
+  scene.background = new THREE.Color(css('--bg'));
+  temes.floor.color.set(css('--floor'));
+  temes.ground.color.set(css('--ground'));
+  temes.wall.color.set(css('--wall'));
+  anell.material.color.set(css('--accent'));
+}
+aplicaTema();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', aplicaTema);
+new MutationObserver(aplicaTema).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+// --- Mida i bucle -------------------------------------------------------------
+function mida() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h);
+  etiquetes.setSize(w, h);
+  // En pantalla ampla, el centre de la vista es desplaça a la dreta perquè la fitxa de l'esquerra no tapi el gimnàs
+  const marge = w > 700 ? 320 : 0;
+  camera.aspect = (w + marge) / h;
+  if (marge) camera.setViewOffset(w + marge, h, 0, 0, w, h); else camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+}
+mida();
+addEventListener('resize', mida);
+vista('general', true);
+
+renderer.setAnimationLoop(t => {
+  if (anim) {
+    const k = Math.min(1, (t - anim.t0) / 700), e = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+    camera.position.lerpVectors(anim.p0, anim.pos, e);
+    controls.target.lerpVectors(anim.o0, anim.obj, e);
+    if (k === 1) anim = null;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+  etiquetes.render(scene, camera);
+});
+window.__gym = { vista, mostraInfo, maquinesG, camera };
+</script>

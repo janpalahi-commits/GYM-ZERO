@@ -6,6 +6,9 @@ requereix_admin($connexio);
 
 $clients = $connexio->query("SELECT COUNT(*) FROM usuaris WHERE rol = 'client' AND actiu = 1")->fetchColumn();
 $classes = $connexio->query('SELECT COUNT(*) FROM classes WHERE inici > NOW() AND cancelada = 0')->fetchColumn();
+$entrades = $connexio->query(
+    'SELECT COUNT(DISTINCT usuari_id) FROM entrades WHERE permesa = 1 AND data_hora >= CURDATE()'
+)->fetchColumn();
 $reserves = $connexio->query(
     "SELECT COUNT(*) FROM reserves r JOIN classes c ON c.id = r.classe_id
       WHERE r.estat = 'confirmada' AND c.inici > NOW() AND c.cancelada = 0"
@@ -34,12 +37,14 @@ require __DIR__ . '/../inc/capcalera.php';
   <div class="xifra"><b><?= (int) $clients ?></b><span>clients actius</span></div>
   <div class="xifra"><b><?= (int) $classes ?></b><span>classes programades</span></div>
   <div class="xifra"><b><?= (int) $reserves ?></b><span>reserves confirmades</span></div>
+  <div class="xifra"><b><?= (int) $entrades ?></b><span>persones han entrat avui</span></div>
 </div>
 
 <p>
   <a class="btn" href="classes.php">Gestionar classes</a>
   <a class="btn btn-secundari" href="activitats.php">Gestionar activitats</a>
   <a class="btn btn-secundari" href="usuaris.php">Gestionar usuaris</a>
+  <a class="btn btn-secundari" href="entrades.php">Veure les entrades</a>
 </p>
 
 <h2>Còpies de seguretat</h2>
