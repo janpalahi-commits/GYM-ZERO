@@ -1,0 +1,17 @@
+GYM-ZERO · Fase 10 · 1RM amb la mateixa fórmula a totes les màquines (2026-10-27)
+Servidor de proves: PHP 8.3 + MariaDB 10.11
+
+actualitza_fase10.sql sobre la BD de la fase 9   coef_1rm esborrada, 20 màquines, cap dada perduda
+actualitza_fase10.sql una segona vegada           no falla
+BD nova: gymzero_bd.sql + dades_prova.sql         sense coef_1rm, s'importa bé
+afegeix_maquines.sql sobre la BD nova             no falla
+php -l a tots els fitxers de www                  sense errors
+
+Càlculs (calculs/)
+  60 kg x 8                                       76,0 kg   (60 x (1 + 8/30))
+  60 kg x 8 amb ?maquina=1 a l'adreça             76,0 kg   (ja no hi ha selector de màquina)
+  80 kg x 6                                       96,0 kg
+  100 kg x 1                                      100,0 kg
+  2,5 repeticions                                 missatge d'error
+  Marc connectat                                  press 65 kg x 9 = 84,5 kg; sentadilla 85 kg x 8 = 107,7 kg
+Portada, activitats, àrea client i entrenament    200

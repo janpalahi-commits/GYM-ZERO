@@ -19,7 +19,7 @@ Fitxers:
 | `activitats` | Tipus d'activitat: Musculació, Cross Training, etc. | Reserves |
 | `classes` | Una activitat en un dia i hora concrets, amb un nombre de places. | Reserves |
 | `reserves` | Quin usuari ha reservat a quina classe i si està confirmada o cancel·lada. | Reserves |
-| `maquines` | Les màquines intel·ligents (codi, tipus, estat) i el número de la fórmula del 1RM de cada exercici (`coef_1rm`). | Màquines |
+| `maquines` | Les màquines intel·ligents (codi, tipus, ubicació i estat). | Màquines |
 | `entrenaments` | El dia que un usuari entrena. Agrupa les sèries d'aquell dia. | Màquines i historial |
 | `series` | Una sèrie en una màquina: càrrega i número de sèrie. | Màquines i historial |
 | `repeticions` | Cada repetició que envia la màquina: velocitat, recorregut i durada. | Màquines i anàlisi |
@@ -73,13 +73,13 @@ Mentre una reserva no fa `COMMIT`, les altres de la mateixa classe s'esperen al 
 
 **Clau de cada màquina.** Cada màquina (o el simulador) s'identifica a l'API amb un token. A la base de dades només es guarda el hash, igual que les contrasenyes.
 
-**1RM diferent a cada màquina.** Amb el mateix pes i les mateixes repeticions, el pes màxim (1RM) no és igual en tots els exercicis. Per això cada màquina guarda el seu número de la fórmula (`coef_1rm`):
+**1RM amb la mateixa fórmula a totes les màquines.** El pes màxim estimat es calcula amb la fórmula d'Epley, igual per a tots els exercicis:
 
-`1RM = pes × (1 + repeticions / coef_1rm)`
+`1RM = pes × (1 + repeticions / 30)`
 
-És la fórmula d'Epley, que fa servir 30 per a tots els exercicis. Els números de cada màquina surten de les taules de Nuzzo et al. (2023, *Sports Medicine*), que recullen quantes repeticions fa la gent al 70% i al 80% del seu màxim: al press de banca en fan una mica menys (34) que a la majoria d'exercicis (35), i a la premsa de cames moltes més (48). Per al rem no hi ha dades pròpies i es fa servir el general. Si cal, el número de cada màquina es pot canviar a la base de dades.
+En realitat, amb el mateix percentatge del màxim no es fan les mateixes repeticions a tots els exercicis. Es va provar de guardar un número diferent per a cada màquina (`coef_1rm`), però els valors quedaven tan a prop que el resultat era pràcticament igual, així que es va treure (`actualitza_fase10.sql`). Queda com a limitació: el 1RM és una estimació orientativa.
 
-**Quota i entrades.** La quota és una data (`quota_fins`), no una taula de pagaments: la web només ha de saber si avui la té pagada. Les entrades es guarden també quan el torn no deixa passar, per saber qui ho ha intentat i per què. Si s'esborra un usuari, les seves entrades es queden sense usuari (`ON DELETE SET NULL`) en lloc d'esborrar-se.
+**Quota i entrades.** La quota és una data (`quota_fins`), no una taula de pagaments: la web només ha de saber fins quan la té pagada. Recepció la allarga 1 o 3 mesos. Per reservar una classe, la quota ha d'arribar fins al dia de la classe. Els comptes de client només els crea recepció (`admin/alta.php`), quan la persona s'apunta al gimnàs. Les entrades es guarden també quan el torn no deixa passar, per saber qui ho ha intentat i per què. Si s'esborra un usuari, les seves entrades es queden sense usuari (`ON DELETE SET NULL`) en lloc d'esborrar-se.
 
 **Còpies de seguretat.** No són una taula: es faran amb `mysqldump` des del servidor (ho veurem a la fase de backups).
 

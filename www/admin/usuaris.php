@@ -1,5 +1,5 @@
 <?php
-// Gestió d'usuaris: activar/desactivar comptes, canviar el rol, donar la polsera RFID i apuntar la quota
+// Gestió d'usuaris (els clients nous es donen d'alta a alta.php): activar/desactivar comptes, canviar el rol, donar la polsera RFID i apuntar la quota
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
@@ -29,14 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 avis('error', 'Aquesta polsera ja és d\'un altre usuari.');
             }
         }
-    } elseif ($accio === 'pagar_mes') {
-        // Un mes més a partir del dia que acaba la quota; si ja havia caducat, a partir d'avui
+    } elseif ($accio === 'pagar_mes' || $accio === 'pagar_3mesos') {
+        // 1 o 3 mesos més a partir del dia que acaba la quota; si ja havia caducat, a partir d'avui
+        $mesos = $accio === 'pagar_3mesos' ? 3 : 1;
         $connexio->prepare(
             "UPDATE usuaris
                 SET quota_fins = GREATEST(COALESCE(quota_fins, CURDATE() - INTERVAL 1 DAY), CURDATE() - INTERVAL 1 DAY)
-                                 + INTERVAL 1 MONTH
+                                 + INTERVAL ? MONTH
               WHERE id = ? AND rol = 'client'"
-        )->execute([$usuari_id]);
+        )->execute([$mesos, $usuari_id]);
         $st = $connexio->prepare('SELECT quota_fins FROM usuaris WHERE id = ?');
         $st->execute([$usuari_id]);
         $fins = $st->fetchColumn();
@@ -83,6 +84,7 @@ $titol = 'Usuaris';
 require __DIR__ . '/../inc/capcalera.php';
 ?>
 <p><a href="./">&larr; Tornar al panell</a></p>
+<p><a class="btn" href="alta.php">Donar d'alta un client</a></p>
 
 <div class="taula">
 <table>
@@ -117,6 +119,7 @@ require __DIR__ . '/../inc/capcalera.php';
             <input type="date" name="quota_fins" value="<?= h($us['quota_fins']) ?>" aria-label="Quota pagada fins al">
             <button class="btn-secundari" name="accio" value="canviar_quota">Desar</button>
             <button class="btn-secundari" name="accio" value="pagar_mes">+1 mes</button>
+            <button class="btn-secundari" name="accio" value="pagar_3mesos">+3 mesos</button>
           </form>
         <?php endif; ?>
       </td>
@@ -149,6 +152,6 @@ require __DIR__ . '/../inc/capcalera.php';
 </table>
 </div>
 <p class="subtil">Un compte desactivat no pot entrar. Les seves reserves no s'esborren.</p>
-<p class="subtil">Quota: quan un client paga a recepció, prem <b>+1 mes</b>. La data és l'últim dia que la té pagada; a partir de l'endemà el torn de les sales no el deixa passar (a recepció sí que hi pot entrar). Els administradors (personal) entren sempre.</p>
+<p class="subtil">Quota: quan un client paga a recepció, prem <b>+1 mes</b> o <b>+3 mesos</b>. La data és l'últim dia que la té pagada; a partir de l'endemà el torn de les sales no el deixa passar (a recepció sí que hi pot entrar). Els administradors (personal) entren sempre.</p>
 <p class="subtil">Polsera: posa el cursor al quadre i acosta la polsera al lector RFID USB de recepció, que hi escriu el codi sol (també es pot escriure a mà). Si un client la perd, posa-hi el codi de la nova i l'antiga deixa de funcionar. Deixa-ho buit per treure-la.</p>
 <?php require __DIR__ . '/../inc/peu.php'; ?>

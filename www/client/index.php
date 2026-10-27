@@ -40,7 +40,7 @@ require __DIR__ . '/../inc/capcalera.php';
 <?php if ($u['rol'] === 'admin'): ?>
   <p>Has entrat com a <b>administrador</b>. <a href="../admin/">Anar al panell d'administració</a>.</p>
 <?php elseif (!$quota['al_dia']): ?>
-  <div class="error">No tens la quota pagada. Passa per recepció per pagar-la; mentrestant el torn d'entrada a les sales no et deixarà passar.</div>
+  <div class="error">No tens la quota pagada. Passa per recepció per pagar-la; mentrestant no podràs reservar classes i el torn d'entrada a les sales no et deixarà passar.</div>
 <?php elseif ($quota['caduca_aviat']): ?>
   <p><span class="etiqueta groga">Quota</span> La teva quota caduca el <?= date('d/m/Y', strtotime($quota['quota_fins'])) ?>. Recorda pagar-la a recepció.</p>
 <?php else: ?>
@@ -75,6 +75,9 @@ require __DIR__ . '/../inc/capcalera.php';
 <h2>El meu entrenament</h2>
 <p>Les sèries que fas a les màquines intel·ligents amb la teva polsera.</p>
 <a class="btn btn-secundari" href="entrenament.php">Veure el meu entrenament</a>
+
+<h2>El meu compte</h2>
+<p><a href="contrasenya.php">Canviar la contrasenya</a></p>
 
 <h2>Avisos</h2>
 <?php if (!$avisos): ?>

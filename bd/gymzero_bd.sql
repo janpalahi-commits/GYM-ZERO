@@ -94,11 +94,7 @@ CREATE TABLE maquines (
   ubicacio    VARCHAR(60)  NULL,
   estat       ENUM('activa','manteniment','baixa') NOT NULL DEFAULT 'activa',
   token_hash  VARCHAR(255) NOT NULL,             -- clau de l'API de la màquina, guardada amb hash
-  -- Número de la fórmula del 1RM per a aquest exercici: 1RM = pes x (1 + reps / coef_1rm).
-  -- La fórmula d'Epley fa servir 30 per a tot; aquí cada màquina té el seu.
-  coef_1rm    DECIMAL(4,1) NOT NULL DEFAULT 30,
-  CONSTRAINT uq_maquines_codi UNIQUE (codi),
-  CONSTRAINT ck_maquines_coef CHECK (coef_1rm > 0)
+  CONSTRAINT uq_maquines_codi UNIQUE (codi)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
