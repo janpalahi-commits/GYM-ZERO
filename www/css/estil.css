@@ -1,0 +1,435 @@
+/* GYM ZERO · estils de tota la web (portada, classes, àrea del client i administració)
+   Fons blanc, verd de pista i vermell de senyal. Lletres: Saira Condensed per als títols,
+   Source Sans 3 per al text i IBM Plex Mono per a les xifres. Les fonts són a /fonts:
+   així la web no demana res a Google quan algú la visita. */
+
+@font-face { font-family: "Saira Condensed"; font-weight: 700; font-display: swap; src: url(../fonts/saira-condensed-700.woff2) format("woff2"); }
+@font-face { font-family: "Saira Condensed"; font-weight: 800; font-display: swap; src: url(../fonts/saira-condensed-800.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-weight: 200 900; font-display: swap; src: url(../fonts/source-sans-3.woff2) format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-display: swap; src: url(../fonts/plex-mono-500.woff2) format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 600; font-display: swap; src: url(../fonts/plex-mono-600.woff2) format("woff2"); }
+
+:root {
+  --fons: #ffffff;
+  --tinta: #101312;
+  --mut: #5f6763;
+  --linia: #dde2de;
+  --gris: #f0f3f1;
+  --pista: #0f5a45;
+  --vermell: #e23d2c;
+  --cel: #9cd0ec;
+  --sorra: #f2c14e;
+  --lila: #b9a7f0;
+  --forca: #3b6fd8;
+  --cames: #e8913a;
+  --cardio: #3f9e6a;
+  --titol: "Saira Condensed", "Arial Narrow", sans-serif;
+  --text: "Source Sans 3", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fons);
+  color: var(--tinta);
+  font: 400 17px/1.5 var(--text);
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+img { display: block; max-width: 100%; height: auto; }
+
+.wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ---------- Capçalera ---------- */
+.capcalera .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+  padding-block: 16px;
+  border-bottom: 3px solid var(--tinta);
+}
+
+.logo {
+  font: 800 30px/1 var(--titol);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.logo em { font-style: normal; color: var(--vermell); }
+
+.capcalera nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 18px;
+  font: 700 17px/1 var(--titol);
+  text-transform: uppercase;
+}
+
+.capcalera nav a { text-decoration: none; padding-block: 6px; }
+.capcalera nav a[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--vermell); }
+.capcalera nav .qui { color: var(--mut); text-transform: none; font: 600 15px/1 var(--text); }
+.capcalera nav .entrar { background: var(--tinta); color: var(--fons); padding: 7px 14px; border-radius: 99px; }
+
+/* ---------- Peu ---------- */
+.peu .wrap {
+  margin-top: 48px;
+  padding-block: 22px 40px;
+  border-top: 3px solid var(--tinta);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--mut);
+}
+
+/* ---------- Pàgines interiors ---------- */
+.pagina { padding-top: 32px; }
+
+/* El contingut va alineat amb el logo però no s'estira més de 960 px */
+.card { max-width: 960px; overflow-x: auto; }
+
+h1 {
+  margin: 0 0 20px;
+  font: 800 clamp(40px, 7vw, 64px)/.9 var(--titol);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+h2 {
+  margin: 36px 0 8px;
+  font: 800 30px/1 var(--titol);
+  text-transform: uppercase;
+}
+
+h3 {
+  margin: 24px 0 4px;
+  font: 700 22px/1.1 var(--titol);
+  text-transform: uppercase;
+}
+
+p { line-height: 1.55; }
+
+.subtil { color: var(--mut); font-size: 15px; }
+
+/* Avisos */
+.ok, .error {
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.ok { background: #e3f1ea; color: var(--pista); border-left: 5px solid var(--pista); }
+.error { background: #fdecea; color: #b3261e; border-left: 5px solid var(--vermell); }
+
+/* Formularis */
+label {
+  display: block;
+  margin-top: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mut);
+}
+
+input, select, textarea {
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  font: 600 17px/1.2 var(--text);
+  color: var(--tinta);
+  background: #fff;
+  border: 2px solid var(--linia);
+  border-radius: 8px;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--tinta); outline: none; }
+
+textarea { min-height: 70px; resize: vertical; }
+
+.fila-camps { display: flex; flex-wrap: wrap; gap: 0 14px; }
+.fila-camps > div { flex: 1 1 160px; }
+
+/* Botons */
+button, .btn {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 11px 20px;
+  border: 2px solid var(--vermell);
+  border-radius: 99px;
+  background: var(--vermell);
+  color: #fff;
+  font: 700 18px/1 var(--titol);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover { filter: brightness(.92); }
+
+button:disabled {
+  background: var(--gris);
+  border-color: var(--gris);
+  color: var(--mut);
+  cursor: not-allowed;
+  filter: none;
+}
+
+.btn-secundari { background: #fff; color: var(--tinta); border-color: var(--tinta); }
+.btn-cancel { background: #fff; color: #b3261e; border-color: var(--vermell); }
+
+/* Taules */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--linia);
+}
+
+th {
+  font: 700 15px/1.1 var(--titol);
+  text-transform: uppercase;
+  color: var(--mut);
+  border-bottom: 2px solid var(--tinta);
+}
+
+td form { margin: 0; }
+td button { margin-top: 0; padding: 7px 14px; font-size: 16px; }
+
+td .accions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.taula { overflow-x: auto; }
+
+.places-0 { color: #b3261e; font-weight: 700; }
+
+/* Etiquetes d'estat */
+.etiqueta {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--gris);
+  color: var(--mut);
+}
+
+.etiqueta.verda { background: #e3f1ea; color: var(--pista); }
+.etiqueta.vermella { background: #fdecea; color: #b3261e; }
+.etiqueta.groga { background: #fbefcf; color: #7a5600; }
+
+/* Xifres del panell (clients, classes...) */
+.xifres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 0;
+  margin: 8px 0 4px;
+}
+
+.xifra {
+  flex: 1 1 150px;
+  padding: 4px 18px;
+  border-left: 3px solid var(--tinta);
+}
+
+.xifra b {
+  display: block;
+  font: 800 44px/1 var(--titol);
+  font-variant-numeric: tabular-nums;
+}
+
+.xifra span { color: var(--mut); font-size: 15px; }
+
+/* Resultat dels càlculs */
+.resultat {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--gris);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.resultat b { color: var(--vermell); font-size: 20px; }
+
+/* Gràfic de "El meu entrenament" */
+.grafic { width: 100%; height: auto; background: var(--gris); border-radius: 12px; }
+.grafic polyline { fill: none; stroke: var(--pista); stroke-width: 3; }
+.grafic circle { fill: var(--pista); }
+.grafic text { font: 500 13px var(--mono); fill: var(--mut); text-anchor: middle; }
+.grafic text.valor { fill: var(--tinta); font-weight: 600; }
+
+/* Polsera i quota a la llista d'usuaris */
+form.polsera, form.quota { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+form.quota { margin-top: 6px; }
+form.polsera input { width: 9.5em; margin-top: 0; padding: 6px 8px; font: 500 14px var(--mono); }
+form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px; }
+
+/* ================= Portada ================= */
+.portada section .wrap { padding-block: 40px; }
+
+.hero .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.hero h1 { font-size: clamp(54px, 8.5vw, 104px); line-height: .86; margin: 0; }
+.hero h1 em { font-style: normal; color: var(--pista); }
+.hero h1 + p { margin: 16px 0 22px; font-size: 19px; color: var(--mut); max-width: 28ch; }
+.hero .btn { font-size: 20px; padding: 14px 22px; margin-top: 0; }
+
+.llegenda { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 24px; font-size: 14px; }
+.llegenda span { display: inline-flex; align-items: center; gap: 6px; }
+.llegenda i { width: 14px; height: 14px; border-radius: 3px; background: var(--c); }
+
+/* Tauler de la setmana: una columna per dia i una fila per hora */
+.desplaca { overflow-x: auto; }
+
+.tauler {
+  display: grid;
+  grid-template-columns: 46px repeat(var(--dies), minmax(86px, 1fr));
+  grid-template-rows: 30px;
+  grid-auto-rows: minmax(64px, auto);
+  gap: 4px;
+  min-width: 580px;
+}
+
+.tauler .dh {
+  font: 700 15px/30px var(--titol);
+  text-transform: uppercase;
+  text-align: center;
+  background: var(--tinta);
+  color: var(--fons);
+  border-radius: 4px;
+}
+
+.tauler .dh small { font: 500 12px var(--mono); opacity: .7; }
+.tauler .cap { grid-row: 1; min-height: 0; }
+.tauler .hh { font: 500 12px/1 var(--mono); color: var(--mut); padding-top: 6px; }
+.tauler .cel { display: grid; gap: 4px; background: var(--gris); border-radius: 4px; }
+
+.tauler a {
+  display: grid;
+  align-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 4px;
+  background: var(--c);
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.tauler a.fosc { color: #fff; }
+.tauler a:hover { outline: 3px solid var(--tinta); outline-offset: -3px; }
+.tauler a b { font: 700 15px/1.05 var(--titol); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Com a molt 8 punts per fila, repartits en files iguals */
+.pl { display: grid; grid-template-columns: repeat(var(--n, 8), 6px); gap: 2px; }
+.pl i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pl i.o { background: transparent; box-shadow: inset 0 0 0 1px currentColor; opacity: .7; }
+.complet, .lliures { font: 700 12px/1 var(--titol); text-transform: uppercase; }
+
+.nota { font-size: 13px; color: var(--mut); margin-top: 8px; }
+
+/* El gimnàs: maqueta i zones */
+.sala .wrap { display: grid; gap: 16px; padding-top: 8px; }
+.sala h2 { margin: 0; font-size: 44px; line-height: .95; }
+.titol-sala { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 6px 24px; }
+.mides { font: 500 14px/1.6 var(--mono); color: var(--mut); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.mides b { color: var(--tinta); font-weight: 600; }
+
+.plano { position: relative; border: 3px solid var(--tinta); border-radius: 12px; overflow: hidden; background: var(--gris); }
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 99px;
+  background: var(--tinta);
+  color: #fff;
+  font: 700 15px/1 var(--titol);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pin i { width: 14px; height: 14px; border-radius: 50%; background: var(--c); }
+
+.zones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.zones > div { border-top: 6px solid var(--c); background: var(--gris); border-radius: 0 0 8px 8px; padding: 12px 14px; min-width: 0; }
+.zones p { margin: 8px 0 0; font-size: 14px; line-height: 1.45; color: var(--mut); }
+.zc { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px; }
+.zc b { font: 800 22px/1.05 var(--titol); text-transform: uppercase; }
+.zc span { font: 500 13px/1 var(--mono); color: var(--mut); }
+
+.nota-pols { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--mut); }
+.ico-pols { flex: none; width: 30px; height: 16px; border: 3px solid var(--tinta); border-radius: 9px; position: relative; }
+.ico-pols::after { content: ""; position: absolute; left: 7px; top: 1px; width: 10px; height: 8px; border-radius: 2px; background: var(--forca); }
+
+/* Horari d'obertura */
+.obert .wrap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.obert .wrap > div { padding: 6px 20px; border-left: 3px solid var(--tinta); }
+.obert b { display: block; font: 800 46px/1 var(--titol); font-variant-numeric: tabular-nums; }
+.obert span { font: 700 16px/1 var(--titol); text-transform: uppercase; color: var(--mut); }
+.obert .tancat b { color: var(--linia); }
+
+.portada .peu .wrap { margin-top: 0; }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .zones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pin { font-size: 12px; padding: 4px 8px 4px 4px; }
+  .pin i { width: 10px; height: 10px; }
+}
+
+@media (max-width: 600px) {
+  .amaga-mobil { display: none; }
+  .pagina { padding-top: 20px; }
+  th, td { padding: 8px 4px; font-size: 15px; }
+  td button { padding: 6px 10px; font-size: 14px; }
+  .grafic text { font-size: 22px; }
+  .zones { grid-template-columns: minmax(0, 1fr); }
+  .obert .wrap { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .obert b { font-size: 38px; }
+  .pin { display: none; }
+}
+
+/* Avís a dalt de la portada (per exemple, després de sortir) */
+.avisos { padding-top: 16px; }
+
+/* Classe on s'arriba des del tauler de la portada */
+tr:target td { background: #fbefcf; }
+
+/* Activitats: una fitxa per activitat, amb el color de l'horari */
+.fitxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.fitxes article { border-top: 6px solid var(--c); background: var(--gris); border-radius: 0 0 8px 8px; padding: 14px 16px; }
+.fitxes h2 { margin: 0; font-size: 26px; }
+.fitxes p { margin: 8px 0 0; font-size: 16px; }
+.properes { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.properes a { display: inline-block; padding: 5px 10px; border-radius: 99px; background: #fff; text-decoration: none; font-size: 14px; color: var(--mut); }
+.properes a b { font: 600 13px var(--mono); color: var(--tinta); margin-right: 4px; }
+.properes a:hover { box-shadow: inset 0 0 0 2px var(--tinta); }
+
+/* Classes agrupades per dia */
+tr.dia th { padding: 26px 0 6px; border-bottom: none; font: 800 26px/1 var(--titol); color: var(--tinta); }
+table tr.dia:first-child th { padding-top: 6px; }
+td.hora { font: 600 15px var(--mono); }
+.punt { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border-radius: 3px; background: var(--c); vertical-align: -1px; }

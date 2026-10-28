@@ -2,7 +2,7 @@ B=${B:-http://127.0.0.1:8088}
 J1=$(mktemp); J2=$(mktemp)
 csrf(){ curl -s -b $1 -c $1 "$B$2" | grep -o 'name="csrf" value="[a-f0-9]*"' | head -1 | sed 's/.*value="//;s/"//'; }
 avis(){ curl -s -b $1 -c $1 "$B$2" | grep -o '<div class="\(ok\|error\)">[^<]*' | sed 's/<div class="//;s/">/: /'; }
-echo "1. Anònim a /reserves/:"; curl -s $B/reserves/ | grep -c "<tr>" | sed 's/^/   files taula: /'; curl -s $B/reserves/ | grep -c 'name="accio"' | sed 's/^/   botons: /'
+echo "1. Anònim a /reserves/:"; curl -s $B/reserves/ | grep -c '<tr id="c' | sed 's/^/   files taula: /'; curl -s $B/reserves/ | grep -c 'name="accio"' | sed 's/^/   botons: /'
 echo "2. Anònim a /client/:"; curl -s -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" $B/client/
 JA=$(mktemp); T=$(csrf $JA /compte/login.php); curl -s -b $JA -c $JA -o /dev/null -d "csrf=$T&email=admin@gymzero.cat&password=Admin1234" $B/compte/login.php
 alta(){ T=$(csrf $JA /admin/alta.php); curl -s -b $JA -c $JA -d "csrf=$T&$1" $B/admin/alta.php | grep -o 'class="error">[^<]*' | sed 's/^/   /'; avis $JA /admin/usuaris.php | sed 's/^/   /'; }

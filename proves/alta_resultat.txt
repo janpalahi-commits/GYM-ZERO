@@ -1,16 +1,16 @@
-Proves de l'alta de clients a recepció, de la quota d'1 o 3 mesos i del canvi de contrasenya (Fase 10, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl, després de reserves.sh.
+Proves de l'alta de clients a recepció, de la quota d'1 o 3 mesos i del canvi de contrasenya (Fase 11, web amb el disseny nou, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova. Després de reserves.sh.
 
 1. Capçalera per a anònims (enllaços):
-   href="compte/login.php"
+   href="../compte/login.php"
 2. Login, text de sota el formulari:
    No tens compte? Te'l fem a recepció quan t'apuntes al gimnàs.
 3. Un client (Marc) obre /admin/alta.php:
-   login: 302 -> http://127.0.0.1:8091/client/
+   login: 302 -> http://127.0.0.1:8092/client/
    403
 4. Un client envia el formulari d'alta:
    403
 5. Admin entra:
-   login: 302 -> http://127.0.0.1:8091/admin/
+   login: 302 -> http://127.0.0.1:8092/admin/
 6. Alta de l'Anna amb polsera i 1 mes pagat:
    ok: Compte de Anna Puig creat. Ja pot entrar a la web amb el seu correu.
 7. Alta del Biel sense polsera i sense pagar:
@@ -34,16 +34,16 @@ Proves de l'alta de clients a recepció, de la quota d'1 o 3 mesos i del canvi d
 | Eva  | eva@prova.cat  | client | NULL         | 2027-01-26 |
 +------+----------------+--------+--------------+------------+
 11. L'Anna entra i veu la quota:
-   login: 302 -> http://127.0.0.1:8091/client/
+   login: 302 -> http://127.0.0.1:8092/client/
    Pagada fins al 26/11/2026
 12. L'Anna canvia la contrasenya amb l'actual malament:
    class="error">La contrasenya actual no és correcta.
 13. L'Anna canvia la contrasenya bé:
-   302 -> http://127.0.0.1:8091/client/
+   302 -> http://127.0.0.1:8092/client/
    ok: Contrasenya canviada.
 14. Login amb l'antiga i amb la nova:
    login: 200 -> 
-   login: 302 -> http://127.0.0.1:8091/client/
+   login: 302 -> http://127.0.0.1:8092/client/
 15. Recepció cobra 3 mesos al Biel (no tenia quota):
    ok: Quota pagada fins al 26/01/2027.
 16. Recepció cobra 3 mesos més a l'Eva (ja en tenia 3):

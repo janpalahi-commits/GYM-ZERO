@@ -7,7 +7,7 @@ entra(){ T=$(csrf $1 /compte/login.php); curl -s -b $1 -c $1 -o /dev/null -w "  
 alta(){ T=$(csrf $JA /admin/alta.php); curl -s -b $JA -c $JA -d "csrf=$T&$1" $B/admin/alta.php | grep -o 'class="error">[^<]*' | sed 's/^/   /'; avis $JA /admin/usuaris.php | sed 's/^/   /'; }
 bd(){ mariadb -t gymzero_db -e "SELECT nom, email, rol, targeta_rfid, quota_fins FROM usuaris WHERE email LIKE '%@prova.cat' ORDER BY id"; }
 
-echo "1. Capçalera per a anònims (enllaços):"; curl -s $B/ | grep -o 'href="[^"]*compte/[^"]*"' | sed 's/^/   /'
+echo "1. Capçalera per a anònims (enllaços):"; curl -s $B/activitats/ | grep -o 'href="[^"]*compte/[^"]*"' | sed 's/^/   /'
 echo "2. Login, text de sota el formulari:"; curl -s $B/compte/login.php | grep -o 'No tens compte?[^<]*' | sed 's/^/   /'
 echo "3. Un client (Marc) obre /admin/alta.php:"; entra $JC marc@example.com Client1234; curl -s -b $JC -o /dev/null -w "   %{http_code}\n" $B/admin/alta.php
 echo "4. Un client envia el formulari d'alta:"; T=$(csrf $JC /client/); curl -s -b $JC -o /dev/null -w "   %{http_code}\n" -d "csrf=$T&nom=A&cognoms=B&email=a@prova.cat&password=provaprova" $B/admin/alta.php

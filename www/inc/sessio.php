@@ -39,8 +39,7 @@ function requereix_admin(PDO $bd)
     $st->execute([usuari_actual()['id']]);
     $fila = $st->fetch();
     if (!$fila || $fila['rol'] !== 'admin' || !$fila['actiu']) {
-        http_response_code(403);
-        die('No tens permís per entrar a aquesta pàgina.');
+        pagina_error(403, 'No tens permís per entrar a aquesta pàgina.');
     }
 }
 
@@ -62,8 +61,7 @@ function camp_csrf()
 function comprova_csrf()
 {
     if (!hash_equals(token_csrf(), $_POST['csrf'] ?? '')) {
-        http_response_code(400);
-        die('El formulari ha caducat. Torna enrere i recarrega la pàgina.');
+        pagina_error(400, 'El formulari ha caducat. Torna enrere i recarrega la pàgina.');
     }
 }
 
@@ -80,4 +78,31 @@ function mostra_avis()
         unset($_SESSION['avis']);
         echo '<div class="' . ($a['tipus'] === 'ok' ? 'ok' : 'error') . '">' . h($a['text']) . '</div>';
     }
+}
+
+// Pàgina d'error amb el disseny de la web, en lloc d'una línia de text sola.
+// Es fa servir abans d'haver escrit res a la pàgina.
+function pagina_error($codi, $text)
+{
+    http_response_code($codi);
+    $titol = [400 => 'Formulari caducat', 403 => 'Sense permís', 404 => 'No l\'hem trobat'][$codi] ?? 'Hi ha hagut un error';
+    // La portada és a l'arrel; la resta de pàgines són dins d'una carpeta
+    $arrel = dirname($_SERVER['SCRIPT_FILENAME']) === dirname(__DIR__) ? '' : '../';
+    require __DIR__ . '/capcalera.php';
+    echo '<p>' . h($text) . '</p>';
+    echo '<a class="btn" href="' . ($arrel ?: './') . '">Tornar a l\'inici</a>';
+    require __DIR__ . '/peu.php';
+    exit;
+}
+
+// Color de cada activitat (el mateix a la portada, a Activitats i a Classes).
+// Va per l'id, així no cal guardar-lo a la base de dades.
+// El segon valor diu si el text ha de ser blanc perquè el fons és fosc.
+function color_activitat($id)
+{
+    $colors = [
+        ['var(--vermell)', true], ['var(--pista)', true], ['var(--sorra)', false], ['var(--cel)', false],
+        ['var(--lila)', false], ['var(--forca)', true], ['var(--cames)', false], ['var(--cardio)', true],
+    ];
+    return $colors[($id - 1) % count($colors)];
 }

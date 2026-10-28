@@ -12,7 +12,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP VIEW  IF EXISTS v_resum_series;
-DROP TABLE IF EXISTS entrades, torns, notificacions, repeticions, series, entrenaments,
+DROP TABLE IF EXISTS recuperacions, entrades, torns, notificacions, repeticions, series, entrenaments,
                      maquines, reserves, classes, activitats, usuaris;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -188,6 +188,22 @@ CREATE TABLE entrades (
   CONSTRAINT fk_entrades_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE SET NULL,
   INDEX ix_entrades_data (data_hora)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- RECUPERACIONS: enllaços per posar una contrasenya nova ("Has oblidat la contrasenya?")
+-- Només es guarda el hash de l'enllaç; l'enllaç sencer només és al correu de l'usuari
+-- ---------------------------------------------------------------------
+CREATE TABLE recuperacions (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  usuari_id   INT UNSIGNED NOT NULL,
+  token_hash  CHAR(64)     NOT NULL,             -- SHA-256 del codi de l'enllaç
+  creada      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  caduca      DATETIME     NOT NULL,             -- l'enllaç serveix 1 hora
+  usada       TINYINT(1)   NOT NULL DEFAULT 0,   -- cada enllaç només es pot fer servir una vegada
+  CONSTRAINT uq_recuperacions_token UNIQUE (token_hash),
+  CONSTRAINT fk_recuperacions_usuari FOREIGN KEY (usuari_id)
+    REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

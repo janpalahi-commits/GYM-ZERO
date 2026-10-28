@@ -3,8 +3,10 @@
 Estat: **dissenyada i provada en local** (MariaDB 10.11). Encara no està a Dinahosting.
 
 Fitxers:
-- `gymzero_bd.sql`: crea les 11 taules i la vista.
+- `gymzero_bd.sql`: crea les 12 taules i la vista.
 - `actualitza_fase9.sql`: afegeix la quota i les taules del torn a una base de dades que ja existeix, sense esborrar res.
+- `actualitza_fase10.sql`: treu la columna `coef_1rm` (el 1RM es calcula igual a totes les màquines).
+- `actualitza_fase11.sql`: afegeix la taula `recuperacions`.
 - `dades_prova.sql`: usuaris, classes, reserves i entrenaments d'exemple.
 - `diagrama-bd.png` / `diagrama-bd.svg`: diagrama entitat-relació.
 - `proves/prova_concurrencia.php` i `proves/resultat_prova.txt`: prova del límit de places.
@@ -26,6 +28,7 @@ Fitxers:
 | `notificacions` | Avisos per a l'usuari (reserva confirmada, classe cancel·lada...). | Notificacions |
 | `torns` | Els torns d'accés amb lector de polsera (codi, estat i clau de l'API). | Control d'accés |
 | `entrades` | Cada vegada que algú acosta la polsera al torn: qui, quan, si ha passat i per què. | Control d'accés |
+| `recuperacions` | Enllaços per posar una contrasenya nova quan l'usuari l'ha oblidada. Només se'n guarda el hash, caduquen en 1 hora i només serveixen una vegada. | Usuaris i login |
 
 A més, la vista `v_resum_series` calcula el resum de cada sèrie: repeticions, velocitat mitjana, velocitat màxima i **pèrdua de velocitat** (de la repetició més ràpida a l'última). És el que farà servir l'historial del client.
 

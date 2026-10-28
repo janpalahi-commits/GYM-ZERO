@@ -1,22 +1,22 @@
-Proves de la Fase 3 i de la quota a les reserves (Fase 10, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova. Els comptes nous els crea l'admin a /admin/alta.php.
+Proves de la Fase 3 i de la quota a les reserves (Fase 11, web amb el disseny nou, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova.
 
 1. Anònim a /reserves/:
-   files taula: 6
+   files taula: 5
    botons: 0
 2. Anònim a /client/:
-   302 -> http://127.0.0.1:8091/compte/login.php
+   302 -> http://127.0.0.1:8092/compte/login.php
 3. Recepció dona d'alta el Jan i cobra el primer mes:
    ok: Compte de Jan Prova creat. Ja pot entrar a la web amb el seu correu.
-   login del Jan: 302 -> http://127.0.0.1:8091/client/
+   login del Jan: 302 -> http://127.0.0.1:8092/client/
 4. Alta amb email repetit:
    class="error">Ja hi ha un compte amb aquest correu.
 5. Anònim a l'antic /compte/registre.php:
-   302 -> http://127.0.0.1:8091/compte/login.php
+   302 -> http://127.0.0.1:8092/compte/login.php
    error: El compte te&#039;l fem a recepció quan t&#039;apuntes al gimnàs.
 6. Login contrasenya incorrecta:
    class="error">Correu o contrasenya incorrectes.
 7. Login correcte (Marc):
-   302 -> http://127.0.0.1:8091/client/
+   302 -> http://127.0.0.1:8092/client/
 8. Marc reserva Cross Training (classe 2):
    ok: Reserva confirmada: Cross Training, 28/10/2026 19:00.
 9. Marc la torna a reservar:
@@ -34,9 +34,9 @@ Proves de la Fase 3 i de la quota a les reserves (Fase 10, 2026-10-27, PHP 8.3.6
 15. POST sense token CSRF:
    400
 16. Àrea de Marc:
-   Musculació|28/10/2026 18:00|Cross Training|28/10/2026 19:00|Powerlifting|29/10/2026 18:00|Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:07|Reserva confirmada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:07|Reserva confirmada: Cross Training, 28/10/2026 19:00.|27/10/2026 11:07|Reserva confirmada: Musculació, demà a les 18:00.|27/10/2026 11:07
+   Musculació|28/10/2026 18:00|Cross Training|28/10/2026 19:00|Powerlifting|29/10/2026 18:00|Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:49|Reserva confirmada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:49|Reserva confirmada: Cross Training, 28/10/2026 19:00.|27/10/2026 11:49|Reserva confirmada: Musculació, demà a les 18:00.|27/10/2026 11:49
 17. Logout i tornar a /client/:
-   302 -> http://127.0.0.1:8091/compte/login.php
+   302 -> http://127.0.0.1:8092/compte/login.php
 18. Client donat d'alta sense pagar (Nil) reserva Hipertrofia (classe 4):
    error: Per reservar has de tenir la quota pagada. Passa per recepció.
    error: Per reservar has de tenir la quota pagada. Passa per recepció.

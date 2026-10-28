@@ -1,11 +1,11 @@
-B=http://127.0.0.1:8089
+B=${B:-http://127.0.0.1:8089}
 JA=$(mktemp); JC=$(mktemp); JL=$(mktemp)
 csrf(){ curl -s -b $1 -c $1 "$B$2" | grep -o 'name="csrf" value="[a-f0-9]*"' | head -1 | sed 's/.*value="//;s/"//'; }
 avis(){ curl -s -b $1 -c $1 "$B$2" | grep -o '<div class="\(ok\|error\)">[^<]*' | sed 's/<div class="//;s/">/: /;s/^/   /'; }
 login(){ T=$(csrf $1 /compte/login.php); curl -s -b $1 -c $1 -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" -d "csrf=$T&email=$2&password=$3" $B/compte/login.php; }
 post(){ J=$1; P=$2; shift 2; T=$(csrf $J $P); curl -s -b $J -c $J -o /dev/null -d "csrf=$T&$*" $B$P; avis $J $P; }
 echo "1. Anònim a /admin/:"; curl -s -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" $B/admin/
-echo "2. Client (Marc) entra i prova /admin/:"; login $JC marc@example.com Client1234; curl -s -b $JC -w "   %{http_code} " $B/admin/classes.php; echo
+echo "2. Client (Marc) entra i prova /admin/:"; login $JC marc@example.com Client1234; R=$(curl -s -b $JC -w '\n%{http_code}' $B/admin/classes.php); echo "   $(echo "$R" | grep -o '<p>No tens permís[^<]*') $(echo "$R" | tail -1)"
 echo "   Client no veu l'enllaç Administració: $(curl -s -b $JC $B/client/ | grep -c 'Administració') coincidències"
 echo "3. Admin entra (ha d'anar a /admin/):"; login $JA admin@gymzero.cat Admin1234
 echo "   Xifres: $(curl -s -b $JA $B/admin/ | grep -o '<b>[0-9]*</b><span>[^<]*' | sed 's/<[^>]*>/ /g' | tr -s ' ' | paste -sd',')"

@@ -7,7 +7,7 @@ require_once __DIR__ . '/../inc/bd.php';
 $u = usuari_actual();
 
 $st = $connexio->prepare(
-    "SELECT c.id, a.nom, a.durada_min, c.inici, c.places,
+    "SELECT c.id, c.activitat_id, a.nom, a.durada_min, c.inici, c.places,
             (SELECT COUNT(*) FROM reserves r
               WHERE r.classe_id = c.id AND r.estat = 'confirmada') AS ocupades,
             (SELECT COUNT(*) FROM reserves r
@@ -37,6 +37,21 @@ function quota_cobreix($inici)
     return $personal || ($quota_fins !== null && $quota_fins >= date('Y-m-d', strtotime($inici)));
 }
 
+// Nom del dia per agrupar les classes: "Avui", "Demà" o "Dijous 29/10"
+function nom_dia($data)
+{
+    $dies = ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'];
+    $dia = date('Y-m-d', strtotime($data));
+    $nom = $dies[date('w', strtotime($data))] . ' ' . date('d/m', strtotime($data));
+    if ($dia === date('Y-m-d')) {
+        return 'Avui · ' . $nom;
+    }
+    if ($dia === date('Y-m-d', strtotime('tomorrow'))) {
+        return 'Demà · ' . $nom;
+    }
+    return $nom;
+}
+
 $titol = 'Properes classes';
 require __DIR__ . '/../inc/capcalera.php';
 ?>
@@ -52,12 +67,18 @@ require __DIR__ . '/../inc/capcalera.php';
   <p>Ara mateix no hi ha classes programades.</p>
 <?php else: ?>
   <table>
-    <tr><th>Activitat</th><th>Dia i hora</th><th class="amaga-mobil">Durada</th><th>Places lliures</th><th></th></tr>
-    <?php foreach ($classes as $c):
-        $lliures = $c['places'] - $c['ocupades']; ?>
-      <tr>
-        <td><?= h($c['nom']) ?></td>
-        <td><?= date('d/m/Y H:i', strtotime($c['inici'])) ?></td>
+    <?php $dia_anterior = '';
+    foreach ($classes as $c):
+        $lliures = $c['places'] - $c['ocupades'];
+        [$color] = color_activitat($c['activitat_id']);
+        if (date('Y-m-d', strtotime($c['inici'])) !== $dia_anterior):
+            $dia_anterior = date('Y-m-d', strtotime($c['inici'])); ?>
+      <tr class="dia"><th colspan="5"><?= nom_dia($c['inici']) ?></th></tr>
+      <tr class="noms-columnes"><th>Hora</th><th>Activitat</th><th class="amaga-mobil">Durada</th><th>Places lliures</th><th></th></tr>
+    <?php endif; ?>
+      <tr id="c<?= (int) $c['id'] ?>">
+        <td class="hora"><?= date('H:i', strtotime($c['inici'])) ?></td>
+        <td><span class="punt" style="--c: <?= $color ?>"></span><?= h($c['nom']) ?></td>
         <td class="amaga-mobil"><?= (int) $c['durada_min'] ?> min</td>
         <td class="<?= $lliures <= 0 ? 'places-0' : '' ?>"><?= max(0, $lliures) ?> de <?= (int) $c['places'] ?></td>
         <td>

@@ -1,0 +1,10 @@
+Fonts de la web de GYM ZERO (només el subconjunt llatí, en format woff2)
+
+- Saira Condensed: Copyright 2016 The Saira Project Authors (Omnibus-Type)
+- Source Sans 3: Copyright 2010-2020 Adobe
+- IBM Plex Mono: Copyright 2017 IBM Corp.
+
+Totes tres tenen la llicència SIL Open Font License 1.1, que permet fer-les servir
+i distribuir-les amb la web: https://openfontlicense.org
+Es guarden aquí en lloc de carregar-les de Google Fonts perquè el navegador de qui visita
+la web no enviï cap dada a un altre servidor.

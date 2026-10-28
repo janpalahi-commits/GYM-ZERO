@@ -53,5 +53,6 @@ require __DIR__ . '/../inc/capcalera.php';
 
   <button type="submit">Entrar</button>
 </form>
+<p class="subtil">Has oblidat la contrasenya? Demana-la a recepció o <a href="oblit.php">sol·licita'n una de nova aquí</a>.</p>
 <p class="subtil">No tens compte? Te'l fem a recepció quan t'apuntes al gimnàs.</p>
 <?php require __DIR__ . '/../inc/peu.php'; ?>
