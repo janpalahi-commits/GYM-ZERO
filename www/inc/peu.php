@@ -1,5 +1,7 @@
+<?php if (!($portada ?? false)): ?>
     </div>
-    <p class="footer">GYM ZERO · Projecte Intermodular SMX · INS Palamós</p>
   </main>
+<?php endif; ?>
+  <footer class="peu"><div class="wrap"><span>Gym Zero · <a href="<?= $arrel ?>legal/">Avís legal i privacitat</a></span><span>Projecte Intermodular SMX · INS Palamós</span></div></footer>
 </body>
 </html>

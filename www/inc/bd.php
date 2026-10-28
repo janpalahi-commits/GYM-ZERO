@@ -17,6 +17,11 @@ try {
 } catch (PDOException $e) {
     // L'error real només va al log del servidor; a l'usuari no se li ensenya
     error_log('GYM-ZERO BD: ' . $e->getMessage());
+    $text = 'Ara mateix no es pot connectar amb la base de dades. Torna-ho a provar més tard.';
+    // L'API de les màquines i del torn no carrega sessio.php i ha de rebre text, no una pàgina
+    if (function_exists('pagina_error')) {
+        pagina_error(500, $text);
+    }
     http_response_code(500);
-    die('Ara mateix no es pot connectar amb la base de dades. Torna-ho a provar més tard.');
+    die($text);
 }

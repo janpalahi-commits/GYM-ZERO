@@ -10,7 +10,7 @@ $activitats = $connexio->query(
 
 // Classes dels propers 14 dies, agrupades per activitat
 $st = $connexio->query(
-    "SELECT c.activitat_id, c.inici, c.places,
+    "SELECT c.id, c.activitat_id, c.inici, c.places,
             (SELECT COUNT(*) FROM reserves r WHERE r.classe_id = c.id AND r.estat = 'confirmada') AS ocupades
        FROM classes c
       WHERE c.inici > NOW() AND c.inici < NOW() + INTERVAL 14 DAY AND c.cancelada = 0
@@ -30,21 +30,25 @@ require __DIR__ . '/../inc/capcalera.php';
   <p>Encara no hi ha activitats.</p>
 <?php endif; ?>
 
-<?php foreach ($activitats as $a): ?>
-  <h2><?= h($a['nom']) ?></h2>
-  <p><?= h($a['descripcio']) ?> <span class="subtil">(<?= (int) $a['durada_min'] ?> min)</span></p>
-  <?php if (empty($classes[$a['id']])): ?>
-    <p class="subtil">No hi ha classes programades els propers 14 dies.</p>
-  <?php else: ?>
-    <p class="subtil">Properes classes:
-      <?php foreach (array_slice($classes[$a['id']], 0, 4) as $i => $c):
-          $lliures = max(0, $c['places'] - $c['ocupades']); ?>
-        <?= $i > 0 ? ' · ' : '' ?><?= date('d/m H:i', strtotime($c['inici'])) ?>
-        (<?= $lliures === 0 ? '<span class="places-0">complet</span>' : $lliures . ($lliures === 1 ? ' lliure' : ' lliures') ?>)
-      <?php endforeach; ?>
-    </p>
-  <?php endif; ?>
-<?php endforeach; ?>
+<div class="fitxes">
+  <?php foreach ($activitats as $a): [$color] = color_activitat($a['id']); ?>
+    <article style="--c: <?= $color ?>">
+      <div class="zc"><h2><?= h($a['nom']) ?></h2><span><?= (int) $a['durada_min'] ?> min</span></div>
+      <p><?= h($a['descripcio']) ?></p>
+      <?php if (empty($classes[$a['id']])): ?>
+        <p class="subtil">No hi ha classes programades els propers 14 dies.</p>
+      <?php else: ?>
+        <ul class="properes">
+          <?php foreach (array_slice($classes[$a['id']], 0, 4) as $c):
+              $lliures = max(0, $c['places'] - $c['ocupades']); ?>
+            <li><a href="../reserves/#c<?= (int) $c['id'] ?>"><b><?= date('d/m H:i', strtotime($c['inici'])) ?></b>
+              <?= $lliures === 0 ? '<span class="places-0">complet</span>' : $lliures . ($lliures === 1 ? ' lliure' : ' lliures') ?></a></li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
+    </article>
+  <?php endforeach; ?>
+</div>
 
 <a class="btn" href="../reserves/">Reservar una classe</a>
 <?php require __DIR__ . '/../inc/peu.php'; ?>

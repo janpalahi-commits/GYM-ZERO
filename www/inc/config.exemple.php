@@ -12,8 +12,15 @@ const BD_NOM  = 'gymzero_db';
 const BD_USER = 'root';
 const BD_PASS = '';
 
+// Correus (recuperar la contrasenya). A XAMPP es desen a /tmp/gymzero-correus.txt.
+const CORREU_MODE = 'fitxer';
+const WEB_URL     = 'http://localhost/gymzero';
+
 // Dinahosting (exemple: canvia-ho a la còpia del servidor)
 // const BD_HOST = 'localhost';
 // const BD_NOM  = 'nom_de_la_bd';
 // const BD_USER = 'usuari_de_la_bd';
 // const BD_PASS = 'contrasenya';
+// const CORREU_MODE = 'mail';
+// const CORREU_DE   = 'no-respondre@gymzero.cat';
+// const WEB_URL     = 'https://gymzero.cat';

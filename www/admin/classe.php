@@ -14,8 +14,7 @@ $st->execute([$id]);
 $classe = $st->fetch();
 
 if (!$classe) {
-    http_response_code(404);
-    die('Aquesta classe no existeix.');
+    pagina_error(404, 'Aquesta classe no existeix.');
 }
 
 $st = $connexio->prepare(

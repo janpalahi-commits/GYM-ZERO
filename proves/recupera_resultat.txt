@@ -1,0 +1,39 @@
+Proves de recuperar la contrasenya per correu i de les pàgines d'error (Fase 11, web amb el disseny nou, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova.
+
+1. Enllaç al login:
+   Has oblidat la contrasenya? Demana-la a recepció o <a href="oblit.php">sol·licita'n una de nova aquí
+2. Demana una contrasenya nova per a marc@example.com:
+   class="ok">Si hi ha un compte amb aquest correu, t'hem enviat un enllaç per posar una contrasenya nova. Mira també la carpeta de correu brossa.
+   Correus desats: 1
+   Per a: marc@example.com
+   Assumpte: Contrasenya nova de Gym Zero
+3. Demana-la per a un correu que no existeix (mateix missatge, cap correu):
+   class="ok">Si hi ha un compte amb aquest correu, t'hem enviat un enllaç per posar una contrasenya nova. Mira també la carpeta de correu brossa.
+   Correus desats: 1
+4. A la BD només hi ha el hash del codi:
+   codi del correu: 59aba65999e7... (64 caràcters)
+   hash guardat:   569a257818cd... coincideix amb SHA-256 del codi: 1
+5. Codi inventat:
+   class="error">Aquest enllaç no és vàlid: ja s'ha fet servir o ha caducat.
+   200 -> 
+6. Codi bo però contrasenyes diferents:
+   class="error">Les dues contrasenyes no coincideixen.
+   200 -> 
+7. Codi bo:
+   302 -> http://127.0.0.1:8092/compte/login.php
+8. El mateix enllaç una altra vegada:
+   class="error">Aquest enllaç no és vàlid: ja s'ha fet servir o ha caducat.
+   200 -> 
+9. Login amb l'antiga i amb la nova:
+   login amb Client1234: 200 -> 
+   login amb novanova1: 302 -> http://127.0.0.1:8092/client/
+10. Enllaç caducat (fa més d'1 hora):
+   class="error">Aquest enllaç no és vàlid: ja s'ha fet servir o ha caducat.
+   200 -> 
+11. Límit de 3 correus per hora (en porta 2; en demana 3 més):
+   Correus a marc@example.com: 3
+12. Pàgines d'error amb el disseny:
+   client a /admin/: 403 <h1>Sense permís</h1> botó: Tornar a l'inici
+   POST sense CSRF: 400 <h1>Formulari caducat</h1> botó: Tornar a l'inici
+   classe que no existeix: 404 <h1>No l&#039;hem trobat</h1> botó: Tornar a l'inici
+13. Pàgina d'avís legal: 200, enllaç al peu: 1
