@@ -24,7 +24,7 @@ function enllac($href, $text, $carpeta)
   <title><?= $portada ? 'Gym Zero' : h($titol) . ' · Gym Zero' ?></title>
   <link rel="icon" href="<?= $arrel ?>img/icona.svg" type="image/svg+xml">
   <link rel="preload" href="<?= $arrel ?>fonts/saira-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="<?= $arrel ?>css/estil.css">
+  <link rel="stylesheet" href="<?= $arrel ?>css/estil.css?v=<?= filemtime(__DIR__ . '/../css/estil.css') ?>">
 </head>
 <body<?= $portada ? ' class="portada"' : '' ?>>
   <header class="capcalera">

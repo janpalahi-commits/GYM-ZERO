@@ -1,0 +1,3413 @@
+{
+ "version": "v6-2026-10",
+ "langs": [
+  "es",
+  "ca",
+  "en",
+  "fr"
+ ],
+ "names": {
+  "es": "Castellano",
+  "ca": "Català",
+  "en": "English",
+  "fr": "Français"
+ },
+ "form": {
+  "titulo": {
+   "es": "Cuestionario inicial – Rutina y alimentación",
+   "ca": "Qüestionari inicial – Rutina i alimentació",
+   "en": "Starting questionnaire – Training and nutrition",
+   "fr": "Questionnaire initial – Entraînement et alimentation"
+  },
+  "desc": {
+   "es": "¡Hola! Para prepararte una rutina y una alimentación adaptadas a ti necesito conocerte bien. Son unos 10-15 minutos y solo verás las preguntas que te afectan. Contesta con sinceridad: aquí no hay respuestas malas.\n\nLas preguntas con * son obligatorias. Tus datos solo se usan para preparar tu plan y no se comparten con nadie.",
+   "ca": "Hola! Per preparar-te una rutina i una alimentació adaptades a tu necessito conèixer-te bé. Són uns 10-15 minuts i només veuràs les preguntes que t'afecten. Respon amb sinceritat: aquí no hi ha respostes dolentes.\n\nLes preguntes amb * són obligatòries. Les teves dades només s'utilitzen per preparar el teu pla i no es comparteixen amb ningú.",
+   "en": "Hi! To prepare a training plan and nutrition that fit you, I need to get to know you. It takes about 10-15 minutes and you will only see the questions that apply to you. Answer honestly: there are no wrong answers.\n\nQuestions marked with * are required. Your data is only used to prepare your plan and is never shared.",
+   "fr": "Bonjour ! Pour te préparer un programme d'entraînement et une alimentation adaptés, j'ai besoin de bien te connaître. Cela prend 10 à 15 minutes et tu ne verras que les questions qui te concernent. Réponds sincèrement : il n'y a pas de mauvaise réponse.\n\nLes questions avec * sont obligatoires. Tes données servent uniquement à préparer ton programme et ne sont partagées avec personne."
+  },
+  "gracias": {
+   "es": "¡Gracias! Ya tengo todo lo que necesito. Me pongo con tu plan y te escribo pronto.",
+   "ca": "Gràcies! Ja tinc tot el que necessito. Em poso amb el teu pla i t'escric aviat.",
+   "en": "Thank you! I have everything I need. I'll start on your plan and message you soon.",
+   "fr": "Merci ! J'ai tout ce qu'il me faut. Je prépare ton programme et je t'écris bientôt."
+  },
+  "hoja": {
+   "es": "Respuestas – Cuestionario inicial",
+   "ca": "",
+   "en": "",
+   "fr": ""
+  }
+ },
+ "q": [
+  {
+   "type": "header",
+   "title": {
+    "es": "Datos básicos",
+    "ca": "Dades bàsiques",
+    "en": "Basic details",
+    "fr": "Informations de base"
+   }
+  },
+  {
+   "k": "idioma_pla",
+   "type": "mc",
+   "title": {
+    "es": "¿En qué idioma quieres tu plan?",
+    "ca": "En quin idioma vols el teu pla?",
+    "en": "Which language do you want your plan in?",
+    "fr": "Dans quelle langue veux-tu ton programme ?"
+   },
+   "choices": [
+    {
+     "es": "Castellano",
+     "ca": "Castellano",
+     "en": "Castellano",
+     "fr": "Castellano"
+    },
+    {
+     "es": "Català",
+     "ca": "Català",
+     "en": "Català",
+     "fr": "Català"
+    },
+    {
+     "es": "English",
+     "ca": "English",
+     "en": "English",
+     "fr": "English"
+    },
+    {
+     "es": "Français",
+     "ca": "Français",
+     "en": "Français",
+     "fr": "Français"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "naixement",
+   "type": "date",
+   "title": {
+    "es": "Fecha de nacimiento",
+    "ca": "Data de naixement",
+    "en": "Date of birth",
+    "fr": "Date de naissance"
+   },
+   "req": true
+  },
+  {
+   "k": "alcada",
+   "type": "text",
+   "title": {
+    "es": "Altura (cm)",
+    "ca": "Alçada (cm)",
+    "en": "Height (cm)",
+    "fr": "Taille (cm)"
+   },
+   "num": [
+    120,
+    230,
+    {
+     "es": "Escribe tu altura en centímetros, por ejemplo 175",
+     "ca": "Escriu la teva alçada en centímetres, per exemple 175",
+     "en": "Write your height in centimetres, for example 175",
+     "fr": "Écris ta taille en centimètres, par exemple 175"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "pes",
+   "type": "text",
+   "title": {
+    "es": "Peso actual (kg)",
+    "ca": "Pes actual (kg)",
+    "en": "Current weight (kg)",
+    "fr": "Poids actuel (kg)"
+   },
+   "num": [
+    30,
+    250,
+    {
+     "es": "Escribe tu peso en kilos, por ejemplo 70",
+     "ca": "Escriu el teu pes en quilos, per exemple 70",
+     "en": "Write your weight in kilos, for example 70",
+     "fr": "Écris ton poids en kilos, par exemple 70"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "canvi_pes",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo ha cambiado tu peso en los últimos 6 meses?",
+    "ca": "Com ha canviat el teu pes els últims 6 mesos?",
+    "en": "How has your weight changed in the last 6 months?",
+    "fr": "Comment ton poids a-t-il évolué ces 6 derniers mois ?"
+   },
+   "choices": [
+    {
+     "es": "Estable",
+     "ca": "Estable",
+     "en": "Stable",
+     "fr": "Stable"
+    },
+    {
+     "es": "Ha subido",
+     "ca": "Ha pujat",
+     "en": "It went up",
+     "fr": "Il a augmenté"
+    },
+    {
+     "es": "Ha bajado",
+     "ca": "Ha baixat",
+     "en": "It went down",
+     "fr": "Il a baissé"
+    },
+    {
+     "es": "No lo sé",
+     "ca": "No ho sé",
+     "en": "I don't know",
+     "fr": "Je ne sais pas"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "bascula",
+   "type": "mc",
+   "title": {
+    "es": "¿Tienes báscula para pesarte en casa?",
+    "ca": "Tens bàscula per pesar-te a casa?",
+    "en": "Do you have bathroom scales at home?",
+    "fr": "As-tu une balance pour te peser à la maison ?"
+   },
+   "help": {
+    "es": "Para ver tu progreso te pesarás 3-4 mañanas por semana",
+    "ca": "Per veure el teu progrés et pesaràs 3-4 matins per setmana",
+    "en": "To track your progress you will weigh yourself 3-4 mornings a week",
+    "fr": "Pour suivre tes progrès tu te pèseras 3-4 matins par semaine"
+   },
+   "choices": [
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "No, pero puedo comprar una",
+     "ca": "No, però en puc comprar una",
+     "en": "No, but I can buy one",
+     "fr": "Non, mais je peux en acheter une"
+    },
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "com_et_veus",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo te ves ahora mismo?",
+    "ca": "Com et veus ara mateix?",
+    "en": "How do you see yourself right now?",
+    "fr": "Comment te vois-tu en ce moment ?"
+   },
+   "help": {
+    "es": "Me ayuda a saber si te conviene más ganar, perder o recomponer",
+    "ca": "M'ajuda a saber si et convé més guanyar, perdre o recompondre",
+    "en": "It helps me know whether you should gain, lose or recompose",
+    "fr": "Cela m'aide à savoir s'il vaut mieux prendre, perdre ou recomposer"
+   },
+   "choices": [
+    {
+     "es": "Muy delgado, se me marcan las costillas",
+     "ca": "Molt prim, se'm marquen les costelles",
+     "en": "Very thin, my ribs show",
+     "fr": "Très mince, mes côtes se voient"
+    },
+    {
+     "es": "Delgado",
+     "ca": "Prim",
+     "en": "Thin",
+     "fr": "Mince"
+    },
+    {
+     "es": "Normal, con algo de grasa en la tripa",
+     "ca": "Normal, amb una mica de greix a la panxa",
+     "en": "Normal, with a bit of belly fat",
+     "fr": "Normal, avec un peu de ventre"
+    },
+    {
+     "es": "Con bastante grasa",
+     "ca": "Amb bastant greix",
+     "en": "Quite a lot of fat",
+     "fr": "Avec pas mal de graisse"
+    },
+    {
+     "es": "Musculado con poca grasa",
+     "ca": "Musculat amb poc greix",
+     "en": "Muscular and lean",
+     "fr": "Musclé et sec"
+    },
+    {
+     "es": "Musculado pero con grasa",
+     "ca": "Musculat però amb greix",
+     "en": "Muscular but with some fat",
+     "fr": "Musclé mais avec de la graisse"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "sexe",
+   "type": "mc",
+   "id": "qSexo",
+   "title": {
+    "es": "Sexo",
+    "ca": "Sexe",
+    "en": "Sex",
+    "fr": "Sexe"
+   },
+   "choices": [
+    {
+     "es": "Hombre",
+     "ca": "Home",
+     "en": "Male",
+     "fr": "Homme"
+    },
+    {
+     "es": "Mujer",
+     "ca": "Dona",
+     "en": "Female",
+     "fr": "Femme"
+    }
+   ],
+   "nav": {
+    "0": "pSalud",
+    "1": "pMujer"
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pMujer",
+   "title": {
+    "es": "Preguntas para mujeres",
+    "ca": "Preguntes per a dones",
+    "en": "Questions for women",
+    "fr": "Questions pour les femmes"
+   }
+  },
+  {
+   "k": "embaras",
+   "type": "mc",
+   "title": {
+    "es": "¿Estás embarazada, has dado a luz en el último año o das el pecho?",
+    "ca": "Estàs embarassada, has donat a llum l'últim any o dones el pit?",
+    "en": "Are you pregnant, have you given birth in the last year or are you breastfeeding?",
+    "fr": "Es-tu enceinte, as-tu accouché cette dernière année ou allaites-tu ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Embarazada",
+     "ca": "Embarassada",
+     "en": "Pregnant",
+     "fr": "Enceinte"
+    },
+    {
+     "es": "He dado a luz en el último año",
+     "ca": "He donat a llum l'últim any",
+     "en": "I gave birth in the last year",
+     "fr": "J'ai accouché cette dernière année"
+    },
+    {
+     "es": "Doy el pecho",
+     "ca": "Dono el pit",
+     "en": "Breastfeeding",
+     "fr": "J'allaite"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "cicle",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo es tu ciclo menstrual?",
+    "ca": "Com és el teu cicle menstrual?",
+    "en": "What is your menstrual cycle like?",
+    "fr": "Comment est ton cycle menstruel ?"
+   },
+   "choices": [
+    {
+     "es": "Regular",
+     "ca": "Regular",
+     "en": "Regular",
+     "fr": "Régulier"
+    },
+    {
+     "es": "Irregular",
+     "ca": "Irregular",
+     "en": "Irregular",
+     "fr": "Irrégulier"
+    },
+    {
+     "es": "Uso anticonceptivos hormonales",
+     "ca": "Faig servir anticonceptius hormonals",
+     "en": "I use hormonal contraception",
+     "fr": "J'utilise une contraception hormonale"
+    },
+    {
+     "es": "Menopausia o premenopausia",
+     "ca": "Menopausa o premenopausa",
+     "en": "Menopause or perimenopause",
+     "fr": "Ménopause ou préménopause"
+    },
+    {
+     "es": "Prefiero no decirlo",
+     "ca": "Prefereixo no dir-ho",
+     "en": "I'd rather not say",
+     "fr": "Je préfère ne pas le dire"
+    }
+   ],
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pSalud",
+   "title": {
+    "es": "Salud y seguridad",
+    "ca": "Salut i seguretat",
+    "en": "Health and safety",
+    "fr": "Santé et sécurité"
+   },
+   "help": {
+    "es": "Estas preguntas son para que el plan sea seguro para ti.",
+    "ca": "Aquestes preguntes són perquè el pla sigui segur per a tu.",
+    "en": "These questions make sure your plan is safe for you.",
+    "fr": "Ces questions servent à ce que ton programme soit sûr pour toi."
+   }
+  },
+  {
+   "k": "cor",
+   "type": "mc",
+   "title": {
+    "es": "¿Algún médico te ha dicho que tienes un problema de corazón o tensión alta?",
+    "ca": "Algun metge t'ha dit que tens un problema de cor o pressió alta?",
+    "en": "Has a doctor ever told you that you have a heart problem or high blood pressure?",
+    "fr": "Un médecin t'a-t-il déjà dit que tu as un problème cardiaque ou de l'hypertension ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "dolor_pit",
+   "type": "mc",
+   "title": {
+    "es": "¿Sientes dolor en el pecho, mareos o pierdes el conocimiento al hacer esfuerzo?",
+    "ca": "Sents dolor al pit, marejos o perds el coneixement quan fas esforç?",
+    "en": "Do you get chest pain, dizziness or fainting when you exert yourself?",
+    "fr": "As-tu des douleurs à la poitrine, des vertiges ou des pertes de connaissance à l'effort ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "malalties",
+   "type": "cb",
+   "title": {
+    "es": "¿Tienes alguna enfermedad diagnosticada?",
+    "ca": "Tens alguna malaltia diagnosticada?",
+    "en": "Do you have any diagnosed illness?",
+    "fr": "As-tu une maladie diagnostiquée ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguna",
+     "ca": "Cap",
+     "en": "None",
+     "fr": "Aucune"
+    },
+    {
+     "es": "Diabetes",
+     "ca": "Diabetis",
+     "en": "Diabetes",
+     "fr": "Diabète"
+    },
+    {
+     "es": "Colesterol alto",
+     "ca": "Colesterol alt",
+     "en": "High cholesterol",
+     "fr": "Cholestérol élevé"
+    },
+    {
+     "es": "Tiroides",
+     "ca": "Tiroide",
+     "en": "Thyroid",
+     "fr": "Thyroïde"
+    },
+    {
+     "es": "Asma",
+     "ca": "Asma",
+     "en": "Asthma",
+     "fr": "Asthme"
+    },
+    {
+     "es": "Problemas digestivos",
+     "ca": "Problemes digestius",
+     "en": "Digestive problems",
+     "fr": "Problèmes digestifs"
+    },
+    {
+     "es": "Problemas de riñón",
+     "ca": "Problemes de ronyó",
+     "en": "Kidney problems",
+     "fr": "Problèmes rénaux"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "medicacio",
+   "type": "text",
+   "title": {
+    "es": "¿Tomas alguna medicación de forma habitual? ¿Cuál?",
+    "ca": "Prens alguna medicació habitualment? Quina?",
+    "en": "Do you take any regular medication? Which?",
+    "fr": "Prends-tu un médicament régulièrement ? Lequel ?"
+   },
+   "help": {
+    "es": "Si no tomas ninguna, escribe \"Ninguna\"",
+    "ca": "Si no en prens cap, escriu \"Cap\"",
+    "en": "If none, write \"None\"",
+    "fr": "Si aucun, écris \"Aucun\""
+   },
+   "req": true
+  },
+  {
+   "k": "al_lergies",
+   "type": "cb",
+   "title": {
+    "es": "¿Tienes alguna alergia o intolerancia alimentaria?",
+    "ca": "Tens alguna al·lèrgia o intolerància alimentària?",
+    "en": "Do you have any food allergy or intolerance?",
+    "fr": "As-tu une allergie ou intolérance alimentaire ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguna",
+     "ca": "Cap",
+     "en": "None",
+     "fr": "Aucune"
+    },
+    {
+     "es": "Lactosa",
+     "ca": "Lactosa",
+     "en": "Lactose",
+     "fr": "Lactose"
+    },
+    {
+     "es": "Gluten",
+     "ca": "Gluten",
+     "en": "Gluten",
+     "fr": "Gluten"
+    },
+    {
+     "es": "Frutos secos",
+     "ca": "Fruits secs",
+     "en": "Nuts",
+     "fr": "Fruits à coque"
+    },
+    {
+     "es": "Marisco",
+     "ca": "Marisc",
+     "en": "Shellfish",
+     "fr": "Fruits de mer"
+    },
+    {
+     "es": "Huevo",
+     "ca": "Ou",
+     "en": "Egg",
+     "fr": "Œuf"
+    },
+    {
+     "es": "Pescado",
+     "ca": "Peix",
+     "en": "Fish",
+     "fr": "Poisson"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "lesions_passades",
+   "type": "para",
+   "title": {
+    "es": "¿Te has lesionado u operado alguna vez, aunque ya estés recuperado? ¿Qué te pasó?",
+    "ca": "T'has lesionat o operat alguna vegada, encara que ja estiguis recuperat? Què et va passar?",
+    "en": "Have you ever been injured or had surgery, even if you have recovered? What happened?",
+    "fr": "As-tu déjà été blessé ou opéré, même si tu es rétabli ? Que s'est-il passé ?"
+   },
+   "help": {
+    "es": "Por ejemplo: \"me hice daño en el hombro haciendo press banca hace 1 año\". Si nunca, déjalo en blanco.",
+    "ca": "Per exemple: \"em vaig fer mal a l'espatlla fent press banca fa 1 any\". Si mai, deixa-ho en blanc.",
+    "en": "For example: \"I hurt my shoulder bench pressing a year ago\". If never, leave it blank.",
+    "fr": "Par exemple : \"je me suis fait mal à l'épaule au développé couché il y a 1 an\". Sinon, laisse vide."
+   }
+  },
+  {
+   "k": "dolor_ara",
+   "type": "mc",
+   "id": "qDolor",
+   "title": {
+    "es": "¿Tienes ahora mismo alguna lesión, dolor o molestia?",
+    "ca": "Tens ara mateix alguna lesió, dolor o molèstia?",
+    "en": "Do you have any injury, pain or discomfort right now?",
+    "fr": "As-tu actuellement une blessure, une douleur ou une gêne ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    }
+   ],
+   "nav": {
+    "0": "pObjetivo",
+    "1": "pLesion"
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pLesion",
+   "title": {
+    "es": "Tu lesión o molestia actual",
+    "ca": "La teva lesió o molèstia actual",
+    "en": "Your current injury or discomfort",
+    "fr": "Ta blessure ou gêne actuelle"
+   }
+  },
+  {
+   "k": "lesio_on",
+   "type": "cb",
+   "title": {
+    "es": "¿Dónde?",
+    "ca": "On?",
+    "en": "Where?",
+    "fr": "Où ?"
+   },
+   "choices": [
+    {
+     "es": "Hombro",
+     "ca": "Espatlla",
+     "en": "Shoulder",
+     "fr": "Épaule"
+    },
+    {
+     "es": "Codo",
+     "ca": "Colze",
+     "en": "Elbow",
+     "fr": "Coude"
+    },
+    {
+     "es": "Muñeca",
+     "ca": "Canell",
+     "en": "Wrist",
+     "fr": "Poignet"
+    },
+    {
+     "es": "Cuello",
+     "ca": "Coll",
+     "en": "Neck",
+     "fr": "Cou"
+    },
+    {
+     "es": "Espalda alta",
+     "ca": "Esquena alta",
+     "en": "Upper back",
+     "fr": "Haut du dos"
+    },
+    {
+     "es": "Espalda baja (lumbar)",
+     "ca": "Esquena baixa (lumbar)",
+     "en": "Lower back",
+     "fr": "Bas du dos (lombaires)"
+    },
+    {
+     "es": "Cadera",
+     "ca": "Maluc",
+     "en": "Hip",
+     "fr": "Hanche"
+    },
+    {
+     "es": "Rodilla",
+     "ca": "Genoll",
+     "en": "Knee",
+     "fr": "Genou"
+    },
+    {
+     "es": "Tobillo",
+     "ca": "Turmell",
+     "en": "Ankle",
+     "fr": "Cheville"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "lesio_explica",
+   "type": "para",
+   "title": {
+    "es": "Cuéntame qué te pasa y desde cuándo",
+    "ca": "Explica'm què et passa i des de quan",
+    "en": "Tell me what happens and since when",
+    "fr": "Raconte-moi ce qui se passe et depuis quand"
+   },
+   "req": true
+  },
+  {
+   "k": "lesio_moviments",
+   "type": "para",
+   "title": {
+    "es": "¿Qué ejercicios o movimientos te duelen?",
+    "ca": "Quins exercicis o moviments et fan mal?",
+    "en": "Which exercises or movements hurt?",
+    "fr": "Quels exercices ou mouvements te font mal ?"
+   }
+  },
+  {
+   "k": "lesio_tractament",
+   "type": "mc",
+   "title": {
+    "es": "¿Te está tratando un médico o fisioterapeuta?",
+    "ca": "T'està tractant un metge o fisioterapeuta?",
+    "en": "Is a doctor or physiotherapist treating you?",
+    "fr": "Es-tu suivi par un médecin ou un kiné ?"
+   },
+   "choices": [
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    }
+   ],
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pObjetivo",
+   "title": {
+    "es": "Tu objetivo",
+    "ca": "El teu objectiu",
+    "en": "Your goal",
+    "fr": "Ton objectif"
+   }
+  },
+  {
+   "k": "objectiu",
+   "type": "mc",
+   "id": "qObj",
+   "title": {
+    "es": "¿Cuál es tu objetivo principal?",
+    "ca": "Quin és el teu objectiu principal?",
+    "en": "What is your main goal?",
+    "fr": "Quel est ton objectif principal ?"
+   },
+   "choices": [
+    {
+     "es": "Perder grasa",
+     "ca": "Perdre greix",
+     "en": "Lose fat",
+     "fr": "Perdre de la graisse"
+    },
+    {
+     "es": "Ganar músculo",
+     "ca": "Guanyar múscul",
+     "en": "Build muscle",
+     "fr": "Prendre du muscle"
+    },
+    {
+     "es": "Perder grasa y ganar músculo a la vez",
+     "ca": "Perdre greix i guanyar múscul alhora",
+     "en": "Lose fat and build muscle at the same time",
+     "fr": "Perdre de la graisse et prendre du muscle en même temps"
+    },
+    {
+     "es": "Ganar fuerza",
+     "ca": "Guanyar força",
+     "en": "Get stronger",
+     "fr": "Gagner en force"
+    },
+    {
+     "es": "Salud y mantenerme en forma",
+     "ca": "Salut i mantenir-me en forma",
+     "en": "Health and staying fit",
+     "fr": "Santé et rester en forme"
+    }
+   ],
+   "nav": {
+    "0": "pRitmo",
+    "1": "pRitmo",
+    "2": "pExp",
+    "3": "pExp",
+    "4": "pExp"
+   },
+   "req": true
+  },
+  {
+   "k": "zones",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué zonas quieres mejorar más?",
+    "ca": "Quines zones vols millorar més?",
+    "en": "Which areas do you most want to improve?",
+    "fr": "Quelles zones veux-tu le plus améliorer ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguna en especial",
+     "ca": "Cap en especial",
+     "en": "None in particular",
+     "fr": "Aucune en particulier"
+    },
+    {
+     "es": "Glúteo",
+     "ca": "Glutis",
+     "en": "Glutes",
+     "fr": "Fessiers"
+    },
+    {
+     "es": "Piernas",
+     "ca": "Cames",
+     "en": "Legs",
+     "fr": "Jambes"
+    },
+    {
+     "es": "Pecho",
+     "ca": "Pit",
+     "en": "Chest",
+     "fr": "Pectoraux"
+    },
+    {
+     "es": "Espalda",
+     "ca": "Esquena",
+     "en": "Back",
+     "fr": "Dos"
+    },
+    {
+     "es": "Hombros",
+     "ca": "Espatlles",
+     "en": "Shoulders",
+     "fr": "Épaules"
+    },
+    {
+     "es": "Brazos",
+     "ca": "Braços",
+     "en": "Arms",
+     "fr": "Bras"
+    },
+    {
+     "es": "Abdomen",
+     "ca": "Abdomen",
+     "en": "Abs",
+     "fr": "Abdominaux"
+    }
+   ]
+  },
+  {
+   "k": "data_objectiu",
+   "type": "text",
+   "title": {
+    "es": "¿Tienes una fecha o evento en mente? ¿Cuál y cuándo?",
+    "ca": "Tens una data o un esdeveniment en ment? Quin i quan?",
+    "en": "Do you have a date or event in mind? What and when?",
+    "fr": "As-tu une date ou un événement en tête ? Lequel et quand ?"
+   },
+   "help": {
+    "es": "Por ejemplo: \"boda en junio\". Si no, déjalo en blanco.",
+    "ca": "Per exemple: \"casament al juny\". Si no, deixa-ho en blanc.",
+    "en": "For example: \"wedding in June\". If not, leave it blank.",
+    "fr": "Par exemple : \"mariage en juin\". Sinon, laisse vide."
+   }
+  },
+  {
+   "k": "que_ha_fallat",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué te ha hecho dejarlo o no avanzar otras veces?",
+    "ca": "Què t'ha fet deixar-ho o no avançar altres vegades?",
+    "en": "What made you stop or not progress in the past?",
+    "fr": "Qu'est-ce qui t'a fait arrêter ou ne pas progresser avant ?"
+   },
+   "choices": [
+    {
+     "es": "Es mi primera vez",
+     "ca": "És la meva primera vegada",
+     "en": "It's my first time",
+     "fr": "C'est ma première fois"
+    },
+    {
+     "es": "No ser constante",
+     "ca": "No ser constant",
+     "en": "Not being consistent",
+     "fr": "Manque de régularité"
+    },
+    {
+     "es": "Falta de tiempo",
+     "ca": "Falta de temps",
+     "en": "Lack of time",
+     "fr": "Manque de temps"
+    },
+    {
+     "es": "La comida",
+     "ca": "El menjar",
+     "en": "Food",
+     "fr": "L'alimentation"
+    },
+    {
+     "es": "No saber qué hacer",
+     "ca": "No saber què fer",
+     "en": "Not knowing what to do",
+     "fr": "Ne pas savoir quoi faire"
+    },
+    {
+     "es": "Lesiones",
+     "ca": "Lesions",
+     "en": "Injuries",
+     "fr": "Blessures"
+    },
+    {
+     "es": "Aburrimiento",
+     "ca": "Avorriment",
+     "en": "Boredom",
+     "fr": "Ennui"
+    },
+    {
+     "es": "No veía resultados",
+     "ca": "No veia resultats",
+     "en": "I didn't see results",
+     "fr": "Je ne voyais pas de résultats"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "compromis",
+   "type": "scale",
+   "title": {
+    "es": "¿Cuánto compromiso puedes poner ahora mismo?",
+    "ca": "Quant compromís pots posar-hi ara mateix?",
+    "en": "How much commitment can you give right now?",
+    "fr": "Quel niveau d'engagement peux-tu mettre maintenant ?"
+   },
+   "lo": {
+    "es": "Poco",
+    "ca": "Poc",
+    "en": "Little",
+    "fr": "Peu"
+   },
+   "hi": {
+    "es": "Todo",
+    "ca": "Tot",
+    "en": "All in",
+    "fr": "À fond"
+   },
+   "req": true
+  },
+  {
+   "k": "per_que_ara",
+   "type": "text",
+   "title": {
+    "es": "¿Por qué quieres empezar ahora?",
+    "ca": "Per què vols començar ara?",
+    "en": "Why do you want to start now?",
+    "fr": "Pourquoi veux-tu commencer maintenant ?"
+   },
+   "help": {
+    "es": "Por ejemplo: \"quiero verme mejor en verano\", \"me lo ha pedido el médico\"",
+    "ca": "Per exemple: \"vull veure'm millor a l'estiu\", \"m'ho ha demanat el metge\"",
+    "en": "For example: \"I want to look better in summer\", \"my doctor asked me to\"",
+    "fr": "Par exemple : \"je veux être mieux cet été\", \"mon médecin me l'a demandé\""
+   }
+  },
+  {
+   "type": "page",
+   "id": "pRitmo",
+   "title": {
+    "es": "Tu ritmo",
+    "ca": "El teu ritme",
+    "en": "Your pace",
+    "fr": "Ton rythme"
+   }
+  },
+  {
+   "k": "ritme",
+   "type": "mc",
+   "title": {
+    "es": "¿A qué ritmo quieres avanzar?",
+    "ca": "A quin ritme vols avançar?",
+    "en": "At what pace do you want to progress?",
+    "fr": "À quel rythme veux-tu avancer ?"
+   },
+   "choices": [
+    {
+     "es": "Tranquilo: más fácil de mantener, resultados más lentos",
+     "ca": "Tranquil: més fàcil de mantenir, resultats més lents",
+     "en": "Relaxed: easier to keep up, slower results",
+     "fr": "Tranquille : plus facile à tenir, résultats plus lents"
+    },
+    {
+     "es": "Normal: el equilibrio (recomendado)",
+     "ca": "Normal: l'equilibri (recomanat)",
+     "en": "Normal: the balance (recommended)",
+     "fr": "Normal : l'équilibre (recommandé)"
+    },
+    {
+     "es": "Rápido: más exigente con la comida",
+     "ca": "Ràpid: més exigent amb el menjar",
+     "en": "Fast: stricter with food",
+     "fr": "Rapide : plus exigeant avec l'alimentation"
+    }
+   ],
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pExp",
+   "title": {
+    "es": "Tu experiencia",
+    "ca": "La teva experiència",
+    "en": "Your experience",
+    "fr": "Ton expérience"
+   }
+  },
+  {
+   "k": "experiencia",
+   "type": "mc",
+   "id": "qExp",
+   "title": {
+    "es": "¿Cuánto tiempo llevas entrenando con pesas de forma constante?",
+    "ca": "Quant de temps fa que entrenes amb peses de manera constant?",
+    "en": "How long have you been lifting weights consistently?",
+    "fr": "Depuis combien de temps fais-tu de la musculation régulièrement ?"
+   },
+   "choices": [
+    {
+     "es": "Nunca he entrenado",
+     "ca": "No he entrenat mai",
+     "en": "I have never trained",
+     "fr": "Je ne me suis jamais entraîné"
+    },
+    {
+     "es": "Menos de 6 meses",
+     "ca": "Menys de 6 mesos",
+     "en": "Less than 6 months",
+     "fr": "Moins de 6 mois"
+    },
+    {
+     "es": "Entre 6 meses y 2 años",
+     "ca": "Entre 6 mesos i 2 anys",
+     "en": "Between 6 months and 2 years",
+     "fr": "Entre 6 mois et 2 ans"
+    },
+    {
+     "es": "Más de 2 años",
+     "ca": "Més de 2 anys",
+     "en": "More than 2 years",
+     "fr": "Plus de 2 ans"
+    }
+   ],
+   "nav": {
+    "0": "pDisp",
+    "1": "pExpDet",
+    "2": "pExpDet",
+    "3": "pExpDet"
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pExpDet",
+   "title": {
+    "es": "Lo que has entrenado hasta ahora",
+    "ca": "El que has entrenat fins ara",
+    "en": "Your training so far",
+    "fr": "Ton entraînement jusqu'ici"
+   }
+  },
+  {
+   "k": "entrena_ara",
+   "type": "mc",
+   "title": {
+    "es": "¿Estás entrenando ahora?",
+    "ca": "Estàs entrenant ara?",
+    "en": "Are you training now?",
+    "fr": "T'entraînes-tu en ce moment ?"
+   },
+   "choices": [
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "Lo dejé hace menos de 3 meses",
+     "ca": "Ho vaig deixar fa menys de 3 mesos",
+     "en": "I stopped less than 3 months ago",
+     "fr": "J'ai arrêté il y a moins de 3 mois"
+    },
+    {
+     "es": "Lo dejé hace más de 3 meses",
+     "ca": "Ho vaig deixar fa més de 3 mesos",
+     "en": "I stopped more than 3 months ago",
+     "fr": "J'ai arrêté il y a plus de 3 mois"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "rutina_anterior",
+   "type": "para",
+   "title": {
+    "es": "¿Qué rutina hacías? (días por semana y cómo la repartías)",
+    "ca": "Quina rutina feies? (dies per setmana i com la repartíes)",
+    "en": "What routine did you do? (days per week and how you split it)",
+    "fr": "Quel programme faisais-tu ? (jours par semaine et répartition)"
+   },
+   "help": {
+    "es": "Por ejemplo: \"5 días, empuje-tirón-pierna-torso-pierna\"",
+    "ca": "Per exemple: \"5 dies, empenta-tirada-cama-tors-cama\"",
+    "en": "For example: \"5 days, push-pull-legs-upper-lower\"",
+    "fr": "Par exemple : \"5 jours, poussée-tirage-jambes-haut-bas\""
+   }
+  },
+  {
+   "k": "tecnica",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué ejercicios sabes hacer con buena técnica?",
+    "ca": "Quins exercicis saps fer amb bona tècnica?",
+    "en": "Which exercises can you do with good technique?",
+    "fr": "Quels exercices sais-tu faire avec une bonne technique ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguno todavía",
+     "ca": "Cap encara",
+     "en": "None yet",
+     "fr": "Aucun pour l'instant"
+    },
+    {
+     "es": "Sentadilla",
+     "ca": "Esquat",
+     "en": "Squat",
+     "fr": "Squat"
+    },
+    {
+     "es": "Peso muerto",
+     "ca": "Pes mort",
+     "en": "Deadlift",
+     "fr": "Soulevé de terre"
+    },
+    {
+     "es": "Press banca",
+     "ca": "Press banca",
+     "en": "Bench press",
+     "fr": "Développé couché"
+    },
+    {
+     "es": "Press militar",
+     "ca": "Press militar",
+     "en": "Overhead press",
+     "fr": "Développé militaire"
+    },
+    {
+     "es": "Dominadas",
+     "ca": "Dominades",
+     "en": "Pull-ups",
+     "fr": "Tractions"
+    },
+    {
+     "es": "Hip thrust",
+     "ca": "Hip thrust",
+     "en": "Hip thrust",
+     "fr": "Hip thrust"
+    },
+    {
+     "es": "Remo con barra",
+     "ca": "Rem amb barra",
+     "en": "Barbell row",
+     "fr": "Rowing barre"
+    }
+   ]
+  },
+  {
+   "k": "pesos",
+   "type": "para",
+   "title": {
+    "es": "Si los haces: ¿cuánto peso mueves y a cuántas repeticiones?",
+    "ca": "Si els fas: quant de pes mous i a quantes repeticions?",
+    "en": "If you do them: how much weight and for how many reps?",
+    "fr": "Si tu les fais : quelle charge et combien de répétitions ?"
+   },
+   "help": {
+    "es": "Por ejemplo: \"sentadilla 80 kg x 8, press banca 60 kg x 10\".",
+    "ca": "Per exemple: \"esquat 80 kg x 8, press banca 60 kg x 10\".",
+    "en": "For example: \"squat 80 kg x 8, bench press 60 kg x 10\".",
+    "fr": "Par exemple : \"squat 80 kg x 8, développé couché 60 kg x 10\"."
+   }
+  },
+  {
+   "k": "rir",
+   "type": "mc",
+   "title": {
+    "es": "¿Sabes lo que es el RIR (repeticiones en recámara)?",
+    "ca": "Saps què és el RIR (repeticions en reserva)?",
+    "en": "Do you know what RIR (reps in reserve) is?",
+    "fr": "Sais-tu ce qu'est le RIR (répétitions en réserve) ?"
+   },
+   "choices": [
+    {
+     "es": "Sí, y lo uso",
+     "ca": "Sí, i el faig servir",
+     "en": "Yes, and I use it",
+     "fr": "Oui, et je l'utilise"
+    },
+    {
+     "es": "Me suena",
+     "ca": "Em sona",
+     "en": "Sounds familiar",
+     "fr": "Ça me dit quelque chose"
+    },
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    }
+   ]
+  },
+  {
+   "type": "page",
+   "id": "pDisp",
+   "title": {
+    "es": "Disponibilidad",
+    "ca": "Disponibilitat",
+    "en": "Availability",
+    "fr": "Disponibilité"
+   }
+  },
+  {
+   "k": "dies",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuántos días a la semana puedes entrenar de verdad?",
+    "ca": "Quants dies a la setmana pots entrenar de debò?",
+    "en": "How many days a week can you really train?",
+    "fr": "Combien de jours par semaine peux-tu vraiment t'entraîner ?"
+   },
+   "help": {
+    "es": "Sé realista: es mejor 3 días que cumples que 5 que no.",
+    "ca": "Sigues realista: és millor 3 dies que compleixes que 5 que no.",
+    "en": "Be realistic: 3 days you stick to beat 5 you don't.",
+    "fr": "Sois réaliste : mieux vaut 3 jours tenus que 5 non tenus."
+   },
+   "choices": [
+    {
+     "es": "2",
+     "ca": "2",
+     "en": "2",
+     "fr": "2"
+    },
+    {
+     "es": "3",
+     "ca": "3",
+     "en": "3",
+     "fr": "3"
+    },
+    {
+     "es": "4",
+     "ca": "4",
+     "en": "4",
+     "fr": "4"
+    },
+    {
+     "es": "5",
+     "ca": "5",
+     "en": "5",
+     "fr": "5"
+    },
+    {
+     "es": "6",
+     "ca": "6",
+     "en": "6",
+     "fr": "6"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "quins_dies",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué días podrías ir? (marca todos los posibles)",
+    "ca": "Quins dies podries anar-hi? (marca'ls tots)",
+    "en": "Which days could you go? (tick all possible)",
+    "fr": "Quels jours pourrais-tu y aller ? (coche tous les possibles)"
+   },
+   "choices": [
+    {
+     "es": "Lunes",
+     "ca": "Dilluns",
+     "en": "Monday",
+     "fr": "Lundi"
+    },
+    {
+     "es": "Martes",
+     "ca": "Dimarts",
+     "en": "Tuesday",
+     "fr": "Mardi"
+    },
+    {
+     "es": "Miércoles",
+     "ca": "Dimecres",
+     "en": "Wednesday",
+     "fr": "Mercredi"
+    },
+    {
+     "es": "Jueves",
+     "ca": "Dijous",
+     "en": "Thursday",
+     "fr": "Jeudi"
+    },
+    {
+     "es": "Viernes",
+     "ca": "Divendres",
+     "en": "Friday",
+     "fr": "Vendredi"
+    },
+    {
+     "es": "Sábado",
+     "ca": "Dissabte",
+     "en": "Saturday",
+     "fr": "Samedi"
+    },
+    {
+     "es": "Domingo",
+     "ca": "Diumenge",
+     "en": "Sunday",
+     "fr": "Dimanche"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "temps_sessio",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuánto tiempo tienes por sesión?",
+    "ca": "Quant de temps tens per sessió?",
+    "en": "How much time do you have per session?",
+    "fr": "Combien de temps as-tu par séance ?"
+   },
+   "choices": [
+    {
+     "es": "30-45 min",
+     "ca": "30-45 min",
+     "en": "30-45 min",
+     "fr": "30-45 min"
+    },
+    {
+     "es": "45-60 min",
+     "ca": "45-60 min",
+     "en": "45-60 min",
+     "fr": "45-60 min"
+    },
+    {
+     "es": "60-90 min",
+     "ca": "60-90 min",
+     "en": "60-90 min",
+     "fr": "60-90 min"
+    },
+    {
+     "es": "Más de 90 min",
+     "ca": "Més de 90 min",
+     "en": "More than 90 min",
+     "fr": "Plus de 90 min"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "hora_entreno",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora sueles empezar a entrenar?",
+    "ca": "A quina hora acostumes a començar a entrenar?",
+    "en": "What time do you usually start training?",
+    "fr": "À quelle heure commences-tu d'habitude à t'entraîner ?"
+   },
+   "help": {
+    "es": "Fíjate en si es de mañana o de tarde. Si cambia según el día, elige la más habitual y explícalo en la siguiente pregunta.",
+    "ca": "Fixa't si és de matí o de tarda. Si canvia segons el dia, tria la més habitual i explica-ho a la pregunta següent.",
+    "en": "Check whether it is morning or afternoon. If it changes by day, pick the usual one and explain in the next question.",
+    "fr": "Vérifie si c'est le matin ou l'après-midi. Si ça change selon le jour, choisis la plus habituelle et explique-le ensuite."
+   },
+   "hours": [
+    5,
+    23,
+    null,
+    null
+   ],
+   "req": true
+  },
+  {
+   "k": "hores_diferents",
+   "type": "text",
+   "title": {
+    "es": "Si entrenas a horas distintas según el día, explícalo",
+    "ca": "Si entrenes a hores diferents segons el dia, explica-ho",
+    "en": "If you train at different times on different days, explain",
+    "fr": "Si tu t'entraînes à des heures différentes selon le jour, explique"
+   },
+   "help": {
+    "es": "Por ejemplo: \"martes y jueves a las 07:00, viernes a las 18:00\". Si siempre es igual, déjalo en blanco.",
+    "ca": "Per exemple: \"dimarts i dijous a les 07:00, divendres a les 18:00\". Si sempre és igual, deixa-ho en blanc.",
+    "en": "For example: \"Tuesday and Thursday at 07:00, Friday at 18:00\". If always the same, leave it blank.",
+    "fr": "Par exemple : \"mardi et jeudi à 07:00, vendredi à 18:00\". Si c'est toujours pareil, laisse vide."
+   }
+  },
+  {
+   "type": "page",
+   "id": "pPref",
+   "title": {
+    "es": "Tus preferencias",
+    "ca": "Les teves preferències",
+    "en": "Your preferences",
+    "fr": "Tes préférences"
+   },
+   "help": {
+    "es": "Una rutina que te gusta se cumple. Una perfecta que odias, no.",
+    "ca": "Una rutina que t'agrada es compleix. Una de perfecta que odies, no.",
+    "en": "A routine you enjoy gets done. A perfect one you hate doesn't.",
+    "fr": "Un programme qui te plaît est suivi. Un programme parfait que tu détestes, non."
+   }
+  },
+  {
+   "k": "agraden",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué ejercicios te gustan mucho?",
+    "ca": "Quins exercicis t'agraden molt?",
+    "en": "Which exercises do you really enjoy?",
+    "fr": "Quels exercices aimes-tu beaucoup ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguno en especial",
+     "ca": "Cap en especial",
+     "en": "None in particular",
+     "fr": "Aucun en particulier"
+    },
+    {
+     "es": "Sentadilla",
+     "ca": "Esquat",
+     "en": "Squat",
+     "fr": "Squat"
+    },
+    {
+     "es": "Peso muerto",
+     "ca": "Pes mort",
+     "en": "Deadlift",
+     "fr": "Soulevé de terre"
+    },
+    {
+     "es": "Press banca",
+     "ca": "Press banca",
+     "en": "Bench press",
+     "fr": "Développé couché"
+    },
+    {
+     "es": "Dominadas",
+     "ca": "Dominades",
+     "en": "Pull-ups",
+     "fr": "Tractions"
+    },
+    {
+     "es": "Remo",
+     "ca": "Rem",
+     "en": "Rows",
+     "fr": "Rowing"
+    },
+    {
+     "es": "Press militar",
+     "ca": "Press militar",
+     "en": "Overhead press",
+     "fr": "Développé militaire"
+    },
+    {
+     "es": "Zancadas o búlgaras",
+     "ca": "Gambades o búlgares",
+     "en": "Lunges or split squats",
+     "fr": "Fentes ou squats bulgares"
+    },
+    {
+     "es": "Hip thrust",
+     "ca": "Hip thrust",
+     "en": "Hip thrust",
+     "fr": "Hip thrust"
+    },
+    {
+     "es": "Prensa",
+     "ca": "Premsa",
+     "en": "Leg press",
+     "fr": "Presse à cuisses"
+    },
+    {
+     "es": "Ejercicios de brazos",
+     "ca": "Exercicis de braços",
+     "en": "Arm exercises",
+     "fr": "Exercices de bras"
+    },
+    {
+     "es": "Abdominales",
+     "ca": "Abdominals",
+     "en": "Abs",
+     "fr": "Abdominaux"
+    }
+   ],
+   "other": true
+  },
+  {
+   "k": "odies",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué ejercicios odias o no quieres hacer?",
+    "ca": "Quins exercicis odies o no vols fer?",
+    "en": "Which exercises do you hate or not want to do?",
+    "fr": "Quels exercices détestes-tu ou ne veux-tu pas faire ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguno",
+     "ca": "Cap",
+     "en": "None",
+     "fr": "Aucun"
+    },
+    {
+     "es": "Sentadilla",
+     "ca": "Esquat",
+     "en": "Squat",
+     "fr": "Squat"
+    },
+    {
+     "es": "Peso muerto",
+     "ca": "Pes mort",
+     "en": "Deadlift",
+     "fr": "Soulevé de terre"
+    },
+    {
+     "es": "Press banca",
+     "ca": "Press banca",
+     "en": "Bench press",
+     "fr": "Développé couché"
+    },
+    {
+     "es": "Dominadas",
+     "ca": "Dominades",
+     "en": "Pull-ups",
+     "fr": "Tractions"
+    },
+    {
+     "es": "Remo",
+     "ca": "Rem",
+     "en": "Rows",
+     "fr": "Rowing"
+    },
+    {
+     "es": "Press militar",
+     "ca": "Press militar",
+     "en": "Overhead press",
+     "fr": "Développé militaire"
+    },
+    {
+     "es": "Zancadas o búlgaras",
+     "ca": "Gambades o búlgares",
+     "en": "Lunges or split squats",
+     "fr": "Fentes ou squats bulgares"
+    },
+    {
+     "es": "Hip thrust",
+     "ca": "Hip thrust",
+     "en": "Hip thrust",
+     "fr": "Hip thrust"
+    },
+    {
+     "es": "Prensa",
+     "ca": "Premsa",
+     "en": "Leg press",
+     "fr": "Presse à cuisses"
+    },
+    {
+     "es": "Ejercicios de brazos",
+     "ca": "Exercicis de braços",
+     "en": "Arm exercises",
+     "fr": "Exercices de bras"
+    },
+    {
+     "es": "Abdominales",
+     "ca": "Abdominals",
+     "en": "Abs",
+     "fr": "Abdominaux"
+    }
+   ],
+   "other": true
+  },
+  {
+   "k": "cardio",
+   "type": "mc",
+   "title": {
+    "es": "¿Quieres incluir cardio?",
+    "ca": "Vols incloure cardio?",
+    "en": "Do you want to include cardio?",
+    "fr": "Veux-tu inclure du cardio ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí, poco (1-2 días)",
+     "ca": "Sí, poc (1-2 dies)",
+     "en": "Yes, a little (1-2 days)",
+     "fr": "Oui, un peu (1-2 jours)"
+    },
+    {
+     "es": "Sí, bastante (3 días o más)",
+     "ca": "Sí, bastant (3 dies o més)",
+     "en": "Yes, quite a lot (3+ days)",
+     "fr": "Oui, pas mal (3 jours ou plus)"
+    },
+    {
+     "es": "Lo que tú veas",
+     "ca": "El que tu vegis",
+     "en": "Whatever you think",
+     "fr": "Comme tu veux"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "tipus_cardio",
+   "type": "cb",
+   "title": {
+    "es": "Si haces cardio, ¿cuál prefieres?",
+    "ca": "Si fas cardio, quin prefereixes?",
+    "en": "If you do cardio, which do you prefer?",
+    "fr": "Si tu fais du cardio, lequel préfères-tu ?"
+   },
+   "choices": [
+    {
+     "es": "Caminar",
+     "ca": "Caminar",
+     "en": "Walking",
+     "fr": "Marche"
+    },
+    {
+     "es": "Cinta inclinada",
+     "ca": "Cinta inclinada",
+     "en": "Incline treadmill",
+     "fr": "Tapis incliné"
+    },
+    {
+     "es": "Bici",
+     "ca": "Bici",
+     "en": "Bike",
+     "fr": "Vélo"
+    },
+    {
+     "es": "Elíptica",
+     "ca": "El·líptica",
+     "en": "Elliptical",
+     "fr": "Elliptique"
+    },
+    {
+     "es": "Correr",
+     "ca": "Córrer",
+     "en": "Running",
+     "fr": "Course"
+    },
+    {
+     "es": "Escaladora",
+     "ca": "Escaladora",
+     "en": "Stair climber",
+     "fr": "Stepper"
+    },
+    {
+     "es": "Clases",
+     "ca": "Classes",
+     "en": "Classes",
+     "fr": "Cours collectifs"
+    }
+   ]
+  },
+  {
+   "k": "esport",
+   "type": "mc",
+   "id": "qDeporte",
+   "title": {
+    "es": "Aparte del gimnasio, ¿practicas algún deporte o actividad física?",
+    "ca": "A part del gimnàs, practiques algun esport o activitat física?",
+    "en": "Apart from the gym, do you play any sport or physical activity?",
+    "fr": "En dehors de la salle, pratiques-tu un sport ou une activité physique ?"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    }
+   ],
+   "nav": {
+    "0": "pVida",
+    "1": "pDeporte"
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pDeporte",
+   "title": {
+    "es": "Tu deporte",
+    "ca": "El teu esport",
+    "en": "Your sport",
+    "fr": "Ton sport"
+   },
+   "help": {
+    "es": "Lo necesito para que el gimnasio y el deporte no se pisen y para ajustar lo que comes esos días.",
+    "ca": "Ho necessito perquè el gimnàs i l'esport no es trepitgin i per ajustar el que menges aquells dies.",
+    "en": "I need this so gym and sport don't clash and to adjust what you eat on those days.",
+    "fr": "J'en ai besoin pour que la salle et le sport ne se chevauchent pas et pour ajuster ton alimentation ces jours-là."
+   }
+  },
+  {
+   "k": "esport_quin",
+   "type": "text",
+   "title": {
+    "es": "¿Qué deporte o actividad?",
+    "ca": "Quin esport o activitat?",
+    "en": "Which sport or activity?",
+    "fr": "Quel sport ou activité ?"
+   },
+   "help": {
+    "es": "Si haces más de uno, ponlos todos: \"fútbol y pádel\"",
+    "ca": "Si en fas més d'un, posa'ls tots: \"futbol i pàdel\"",
+    "en": "If more than one, list them all: \"football and padel\"",
+    "fr": "S'il y en a plusieurs, mets-les tous : \"foot et padel\""
+   },
+   "req": true
+  },
+  {
+   "k": "esport_dies",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué días lo practicas?",
+    "ca": "Quins dies el practiques?",
+    "en": "Which days do you do it?",
+    "fr": "Quels jours le pratiques-tu ?"
+   },
+   "choices": [
+    {
+     "es": "Lunes",
+     "ca": "Dilluns",
+     "en": "Monday",
+     "fr": "Lundi"
+    },
+    {
+     "es": "Martes",
+     "ca": "Dimarts",
+     "en": "Tuesday",
+     "fr": "Mardi"
+    },
+    {
+     "es": "Miércoles",
+     "ca": "Dimecres",
+     "en": "Wednesday",
+     "fr": "Mercredi"
+    },
+    {
+     "es": "Jueves",
+     "ca": "Dijous",
+     "en": "Thursday",
+     "fr": "Jeudi"
+    },
+    {
+     "es": "Viernes",
+     "ca": "Divendres",
+     "en": "Friday",
+     "fr": "Vendredi"
+    },
+    {
+     "es": "Sábado",
+     "ca": "Dissabte",
+     "en": "Saturday",
+     "fr": "Samedi"
+    },
+    {
+     "es": "Domingo",
+     "ca": "Diumenge",
+     "en": "Sunday",
+     "fr": "Dimanche"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "esport_hora",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora empiezas normalmente?",
+    "ca": "A quina hora comences normalment?",
+    "en": "What time do you usually start?",
+    "fr": "À quelle heure commences-tu d'habitude ?"
+   },
+   "hours": [
+    6,
+    23,
+    null,
+    null
+   ],
+   "req": true
+  },
+  {
+   "k": "esport_durada",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuánto dura cada sesión o partido?",
+    "ca": "Quant dura cada sessió o partit?",
+    "en": "How long is each session or match?",
+    "fr": "Combien dure chaque séance ou match ?"
+   },
+   "choices": [
+    {
+     "es": "Menos de 1 hora",
+     "ca": "Menys d'1 hora",
+     "en": "Less than 1 hour",
+     "fr": "Moins d'1 heure"
+    },
+    {
+     "es": "1 hora",
+     "ca": "1 hora",
+     "en": "1 hour",
+     "fr": "1 heure"
+    },
+    {
+     "es": "1 hora y media",
+     "ca": "1 hora i mitja",
+     "en": "1.5 hours",
+     "fr": "1 heure et demie"
+    },
+    {
+     "es": "2 horas o más",
+     "ca": "2 hores o més",
+     "en": "2 hours or more",
+     "fr": "2 heures ou plus"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "esport_intensitat",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo de intenso es?",
+    "ca": "Com d'intens és?",
+    "en": "How intense is it?",
+    "fr": "Quelle est son intensité ?"
+   },
+   "choices": [
+    {
+     "es": "Suave (paseo, bici tranquila…)",
+     "ca": "Suau (passeig, bici tranquil·la…)",
+     "en": "Light (walk, easy bike ride…)",
+     "fr": "Légère (balade, vélo tranquille…)"
+    },
+    {
+     "es": "Medio (entrenamientos, pachanga)",
+     "ca": "Mitjà (entrenaments, partidet)",
+     "en": "Moderate (training, casual games)",
+     "fr": "Moyenne (entraînements, match entre amis)"
+    },
+    {
+     "es": "Muy intenso (partidos, competición)",
+     "ca": "Molt intens (partits, competició)",
+     "en": "Very intense (matches, competition)",
+     "fr": "Très intense (matchs, compétition)"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "esport_detalls",
+   "type": "text",
+   "title": {
+    "es": "Si tienes más de un deporte o cambian los días u horas, explícalo",
+    "ca": "Si tens més d'un esport o canvien els dies o les hores, explica-ho",
+    "en": "If you have more than one sport or the days/times change, explain",
+    "fr": "Si tu as plusieurs sports ou si les jours/heures changent, explique"
+   },
+   "help": {
+    "es": "Por ejemplo: \"fútbol martes y jueves a las 19:00, partido el sábado a las 10:00\"",
+    "ca": "Per exemple: \"futbol dimarts i dijous a les 19:00, partit dissabte a les 10:00\"",
+    "en": "For example: \"football Tuesday and Thursday at 19:00, match on Saturday at 10:00\"",
+    "fr": "Par exemple : \"foot mardi et jeudi à 19:00, match le samedi à 10:00\""
+   }
+  },
+  {
+   "type": "page",
+   "id": "pVida",
+   "title": {
+    "es": "Tu día a día",
+    "ca": "El teu dia a dia",
+    "en": "Your daily life",
+    "fr": "Ton quotidien"
+   }
+  },
+  {
+   "k": "feina",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo es tu trabajo o estudio?",
+    "ca": "Com és la teva feina o estudi?",
+    "en": "What is your work or study like?",
+    "fr": "Comment est ton travail ou tes études ?"
+   },
+   "choices": [
+    {
+     "es": "Sentado casi todo el día",
+     "ca": "Assegut gairebé tot el dia",
+     "en": "Sitting most of the day",
+     "fr": "Assis presque toute la journée"
+    },
+    {
+     "es": "De pie o caminando",
+     "ca": "Dret o caminant",
+     "en": "Standing or walking",
+     "fr": "Debout ou en marchant"
+    },
+    {
+     "es": "Físico (cargo peso, obra, almacén…)",
+     "ca": "Físic (carrego pes, obra, magatzem…)",
+     "en": "Physical (lifting, building site, warehouse…)",
+     "fr": "Physique (je porte des charges, chantier, entrepôt…)"
+    },
+    {
+     "es": "No trabajo ni estudio",
+     "ca": "No treballo ni estudio",
+     "en": "I don't work or study",
+     "fr": "Je ne travaille pas et je n'étudie pas"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "dies_feina",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué días trabajas o estudias?",
+    "ca": "Quins dies treballes o estudies?",
+    "en": "Which days do you work or study?",
+    "fr": "Quels jours travailles-tu ou étudies-tu ?"
+   },
+   "choices": [
+    {
+     "es": "Lunes",
+     "ca": "Dilluns",
+     "en": "Monday",
+     "fr": "Lundi"
+    },
+    {
+     "es": "Martes",
+     "ca": "Dimarts",
+     "en": "Tuesday",
+     "fr": "Mardi"
+    },
+    {
+     "es": "Miércoles",
+     "ca": "Dimecres",
+     "en": "Wednesday",
+     "fr": "Mercredi"
+    },
+    {
+     "es": "Jueves",
+     "ca": "Dijous",
+     "en": "Thursday",
+     "fr": "Jeudi"
+    },
+    {
+     "es": "Viernes",
+     "ca": "Divendres",
+     "en": "Friday",
+     "fr": "Vendredi"
+    },
+    {
+     "es": "Sábado",
+     "ca": "Dissabte",
+     "en": "Saturday",
+     "fr": "Samedi"
+    },
+    {
+     "es": "Domingo",
+     "ca": "Diumenge",
+     "en": "Sunday",
+     "fr": "Dimanche"
+    },
+    {
+     "es": "No trabajo ni estudio",
+     "ca": "No treballo ni estudio",
+     "en": "I don't work or study",
+     "fr": "Je ne travaille pas et je n'étudie pas"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "hora_feina_inici",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora empiezas a trabajar o estudiar?",
+    "ca": "A quina hora comences a treballar o estudiar?",
+    "en": "What time do you start work or study?",
+    "fr": "À quelle heure commences-tu le travail ou les cours ?"
+   },
+   "hours": [
+    5,
+    23,
+    {
+     "es": "No trabajo ni estudio",
+     "ca": "No treballo ni estudio",
+     "en": "I don't work or study",
+     "fr": "Je ne travaille pas et je n'étudie pas"
+    },
+    null
+   ],
+   "req": true
+  },
+  {
+   "k": "hora_feina_fi",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora terminas?",
+    "ca": "A quina hora acabes?",
+    "en": "What time do you finish?",
+    "fr": "À quelle heure termines-tu ?"
+   },
+   "hours": [
+    6,
+    23,
+    {
+     "es": "No trabajo ni estudio",
+     "ca": "No treballo ni estudio",
+     "en": "I don't work or study",
+     "fr": "Je ne travaille pas et je n'étudie pas"
+    },
+    {
+     "es": "Más tarde de las 23:00",
+     "ca": "Més tard de les 23:00",
+     "en": "Later than 23:00",
+     "fr": "Après 23:00"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "jornada_partida",
+   "type": "text",
+   "title": {
+    "es": "Si tienes jornada partida o tu horario cambia según el día, explícalo",
+    "ca": "Si tens jornada partida o el teu horari canvia segons el dia, explica-ho",
+    "en": "If you have a split shift or your schedule changes by day, explain",
+    "fr": "Si tu as une journée coupée ou si tes horaires changent selon le jour, explique"
+   },
+   "help": {
+    "es": "Por ejemplo: \"de 9:00 a 14:00 y de 16:00 a 19:00\"",
+    "ca": "Per exemple: \"de 9:00 a 14:00 i de 16:00 a 19:00\"",
+    "en": "For example: \"9:00 to 14:00 and 16:00 to 19:00\"",
+    "fr": "Par exemple : \"de 9:00 à 14:00 et de 16:00 à 19:00\""
+   }
+  },
+  {
+   "k": "passos",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuántos pasos haces al día más o menos?",
+    "ca": "Quants passos fas al dia més o menys?",
+    "en": "Roughly how many steps do you do a day?",
+    "fr": "Combien de pas fais-tu par jour environ ?"
+   },
+   "help": {
+    "es": "Lo puedes mirar en la app de salud del móvil",
+    "ca": "Ho pots mirar a l'app de salut del mòbil",
+    "en": "You can check it in your phone's health app",
+    "fr": "Tu peux le voir dans l'app santé de ton téléphone"
+   },
+   "choices": [
+    {
+     "es": "Menos de 5.000",
+     "ca": "Menys de 5.000",
+     "en": "Fewer than 5,000",
+     "fr": "Moins de 5 000"
+    },
+    {
+     "es": "5.000-8.000",
+     "ca": "5.000-8.000",
+     "en": "5,000-8,000",
+     "fr": "5 000-8 000"
+    },
+    {
+     "es": "8.000-12.000",
+     "ca": "8.000-12.000",
+     "en": "8,000-12,000",
+     "fr": "8 000-12 000"
+    },
+    {
+     "es": "Más de 12.000",
+     "ca": "Més de 12.000",
+     "en": "More than 12,000",
+     "fr": "Plus de 12 000"
+    },
+    {
+     "es": "No lo sé",
+     "ca": "No ho sé",
+     "en": "I don't know",
+     "fr": "Je ne sais pas"
+    }
+   ]
+  },
+  {
+   "k": "torns",
+   "type": "mc",
+   "id": "qTurnos",
+   "title": {
+    "es": "¿Tienes turnos rotativos? (por ejemplo, una semana de mañanas y otra de tardes)",
+    "ca": "Tens torns rotatius? (per exemple, una setmana de matins i una altra de tardes)",
+    "en": "Do you work rotating shifts? (for example, one week mornings and the next afternoons)",
+    "fr": "As-tu des horaires tournants ? (par exemple, une semaine le matin et l'autre l'après-midi)"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    }
+   ],
+   "nav": {
+    "0": "pSueno",
+    "1": "pTurnos"
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pTurnos",
+   "title": {
+    "es": "Tus turnos",
+    "ca": "Els teus torns",
+    "en": "Your shifts",
+    "fr": "Tes horaires"
+   }
+  },
+  {
+   "k": "torns_detall",
+   "type": "para",
+   "title": {
+    "es": "¿Cómo son tus turnos y a qué hora entrenarías en cada uno?",
+    "ca": "Com són els teus torns i a quina hora entrenaries en cadascun?",
+    "en": "What are your shifts and when would you train on each?",
+    "fr": "Comment sont tes horaires et à quelle heure t'entraînerais-tu pour chacun ?"
+   },
+   "help": {
+    "es": "Por ejemplo: \"una semana de mañanas (6-14) y otra de tardes (14-22). Entrenaría a las 17:00 o a las 10:00\"",
+    "ca": "Per exemple: \"una setmana de matins (6-14) i una de tardes (14-22). Entrenaria a les 17:00 o a les 10:00\"",
+    "en": "For example: \"one week mornings (6-14), the next afternoons (14-22). I would train at 17:00 or 10:00\"",
+    "fr": "Par exemple : \"une semaine le matin (6-14) et l'autre l'après-midi (14-22). Je m'entraînerais à 17:00 ou à 10:00\""
+   },
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pSueno",
+   "title": {
+    "es": "Descanso",
+    "ca": "Descans",
+    "en": "Rest",
+    "fr": "Repos"
+   }
+  },
+  {
+   "k": "hora_llevar",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora te levantas normalmente entre semana?",
+    "ca": "A quina hora et lleves normalment entre setmana?",
+    "en": "What time do you usually get up on weekdays?",
+    "fr": "À quelle heure te lèves-tu en semaine ?"
+   },
+   "hours": [
+    4,
+    14,
+    null,
+    null
+   ],
+   "req": true
+  },
+  {
+   "k": "hora_dormir",
+   "type": "list",
+   "title": {
+    "es": "¿A qué hora te acuestas normalmente entre semana?",
+    "ca": "A quina hora te'n vas a dormir normalment entre setmana?",
+    "en": "What time do you usually go to bed on weekdays?",
+    "fr": "À quelle heure te couches-tu en semaine ?"
+   },
+   "help": {
+    "es": "Si te acuestas después de medianoche, elige la opción correspondiente al final de la lista.",
+    "ca": "Si te'n vas a dormir després de mitjanit, tria l'opció corresponent al final de la llista.",
+    "en": "If you go to bed after midnight, pick the option at the end of the list.",
+    "fr": "Si tu te couches après minuit, choisis l'option correspondante en fin de liste."
+   },
+   "hours": [
+    19,
+    23,
+    null,
+    "MIDNIGHT"
+   ],
+   "req": true
+  },
+  {
+   "k": "son",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo duermes?",
+    "ca": "Com dorms?",
+    "en": "How do you sleep?",
+    "fr": "Comment dors-tu ?"
+   },
+   "choices": [
+    {
+     "es": "Bien, me levanto descansado",
+     "ca": "Bé, em llevo descansat",
+     "en": "Well, I wake up rested",
+     "fr": "Bien, je me réveille reposé"
+    },
+    {
+     "es": "Regular",
+     "ca": "Regular",
+     "en": "So-so",
+     "fr": "Moyen"
+    },
+    {
+     "es": "Mal, me despierto cansado",
+     "ca": "Malament, em desperto cansat",
+     "en": "Badly, I wake up tired",
+     "fr": "Mal, je me réveille fatigué"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "estres",
+   "type": "scale",
+   "title": {
+    "es": "¿Cuánto estrés tienes últimamente?",
+    "ca": "Quant d'estrès tens últimament?",
+    "en": "How much stress have you had lately?",
+    "fr": "Quel est ton niveau de stress ces derniers temps ?"
+   },
+   "lo": {
+    "es": "Nada",
+    "ca": "Gens",
+    "en": "None",
+    "fr": "Aucun"
+   },
+   "hi": {
+    "es": "Muchísimo",
+    "ca": "Moltíssim",
+    "en": "A lot",
+    "fr": "Énorme"
+   },
+   "req": true
+  },
+  {
+   "k": "fumes_alcohol",
+   "type": "cb",
+   "title": {
+    "es": "¿Fumas o bebes alcohol?",
+    "ca": "Fumes o beus alcohol?",
+    "en": "Do you smoke or drink alcohol?",
+    "fr": "Fumes-tu ou bois-tu de l'alcool ?"
+   },
+   "choices": [
+    {
+     "es": "Nada de eso",
+     "ca": "Res d'això",
+     "en": "Neither",
+     "fr": "Ni l'un ni l'autre"
+    },
+    {
+     "es": "Fumo",
+     "ca": "Fumo",
+     "en": "I smoke",
+     "fr": "Je fume"
+    },
+    {
+     "es": "Alcohol los fines de semana",
+     "ca": "Alcohol els caps de setmana",
+     "en": "Alcohol at weekends",
+     "fr": "Alcool le week-end"
+    },
+    {
+     "es": "Alcohol entre semana",
+     "ca": "Alcohol entre setmana",
+     "en": "Alcohol on weekdays",
+     "fr": "Alcool en semaine"
+    }
+   ],
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pComida",
+   "title": {
+    "es": "Alimentación",
+    "ca": "Alimentació",
+    "en": "Food",
+    "fr": "Alimentation"
+   }
+  },
+  {
+   "k": "gana",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo es tu apetito?",
+    "ca": "Com és la teva gana?",
+    "en": "What is your appetite like?",
+    "fr": "Comment est ton appétit ?"
+   },
+   "choices": [
+    {
+     "es": "Me cuesta comer, me lleno enseguida",
+     "ca": "Em costa menjar, m'omplo de seguida",
+     "en": "I struggle to eat, I get full quickly",
+     "fr": "J'ai du mal à manger, je suis vite rassasié"
+    },
+    {
+     "es": "Normal",
+     "ca": "Normal",
+     "en": "Normal",
+     "fr": "Normal"
+    },
+    {
+     "es": "Siempre tengo hambre",
+     "ca": "Sempre tinc gana",
+     "en": "I'm always hungry",
+     "fr": "J'ai toujours faim"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "ahir",
+   "type": "para",
+   "title": {
+    "es": "Cuéntame todo lo que comiste y bebiste AYER, con la hora y la cantidad aproximada",
+    "ca": "Explica'm tot el que vas menjar i beure AHIR, amb l'hora i la quantitat aproximada",
+    "en": "Tell me everything you ate and drank YESTERDAY, with the time and rough amount",
+    "fr": "Raconte-moi tout ce que tu as mangé et bu HIER, avec l'heure et la quantité approximative"
+   },
+   "help": {
+    "es": "Opcional: si no te acuerdas, déjalo en blanco. Si ayer fue un día raro, cuéntame un día normal. Ejemplo: \"7:00 café con leche y 2 galletas. 14:00 macarrones con tomate y un filete de pollo. 21:30 tortilla de 2 huevos con pan\".",
+    "ca": "Opcional: si no te'n recordes, deixa-ho en blanc. Si ahir va ser un dia estrany, explica'm un dia normal. Exemple: \"7:00 cafè amb llet i 2 galetes. 14:00 macarrons amb tomàquet i un filet de pollastre. 21:30 truita de 2 ous amb pa\".",
+    "en": "Optional: if you can't remember, leave it blank. If yesterday was unusual, describe a normal day. Example: \"7:00 coffee with milk and 2 biscuits. 14:00 pasta with tomato and a chicken breast. 21:30 2-egg omelette with bread\".",
+    "fr": "Facultatif : si tu ne t'en souviens pas, laisse vide. Si hier était inhabituel, décris une journée normale. Exemple : \"7:00 café au lait et 2 biscuits. 14:00 pâtes à la tomate et un blanc de poulet. 21:30 omelette de 2 œufs avec du pain\"."
+   },
+   "req": false
+  },
+  {
+   "k": "hores_apats",
+   "type": "grid",
+   "title": {
+    "es": "¿A qué hora haces cada comida en un día normal entre semana?",
+    "ca": "A quina hora fas cada àpat un dia normal entre setmana?",
+    "en": "When do you have each meal on a normal weekday?",
+    "fr": "À quelle heure prends-tu chaque repas un jour de semaine normal ?"
+   },
+   "help": {
+    "es": "Marca una franja por fila. Si no haces esa comida, marca \"No la hago\".",
+    "ca": "Marca una franja per fila. Si no fas aquest àpat, marca \"No la faig\".",
+    "en": "Pick one time slot per row. If you skip that meal, pick \"I skip it\".",
+    "fr": "Coche un créneau par ligne. Si tu ne prends pas ce repas, coche \"Je ne le fais pas\"."
+   },
+   "rows": [
+    {
+     "es": "Desayuno",
+     "ca": "Esmorzar",
+     "en": "Breakfast",
+     "fr": "Petit-déjeuner"
+    },
+    {
+     "es": "Media mañana",
+     "ca": "Mig matí",
+     "en": "Mid-morning",
+     "fr": "Milieu de matinée"
+    },
+    {
+     "es": "Comida",
+     "ca": "Dinar",
+     "en": "Lunch",
+     "fr": "Déjeuner"
+    },
+    {
+     "es": "Merienda",
+     "ca": "Berenar",
+     "en": "Afternoon snack",
+     "fr": "Goûter"
+    },
+    {
+     "es": "Cena",
+     "ca": "Sopar",
+     "en": "Dinner",
+     "fr": "Dîner"
+    },
+    {
+     "es": "Algo antes de dormir",
+     "ca": "Alguna cosa abans de dormir",
+     "en": "Something before bed",
+     "fr": "Quelque chose avant de dormir"
+    }
+   ],
+   "cols": [
+    {
+     "es": "No la hago",
+     "ca": "No la faig",
+     "en": "I skip it",
+     "fr": "Je ne le fais pas"
+    },
+    {
+     "es": "5-7 h",
+     "ca": "5-7 h",
+     "en": "5-7 h",
+     "fr": "5-7 h"
+    },
+    {
+     "es": "7-9 h",
+     "ca": "7-9 h",
+     "en": "7-9 h",
+     "fr": "7-9 h"
+    },
+    {
+     "es": "9-11 h",
+     "ca": "9-11 h",
+     "en": "9-11 h",
+     "fr": "9-11 h"
+    },
+    {
+     "es": "11-13 h",
+     "ca": "11-13 h",
+     "en": "11-13 h",
+     "fr": "11-13 h"
+    },
+    {
+     "es": "13-15 h",
+     "ca": "13-15 h",
+     "en": "13-15 h",
+     "fr": "13-15 h"
+    },
+    {
+     "es": "15-17 h",
+     "ca": "15-17 h",
+     "en": "15-17 h",
+     "fr": "15-17 h"
+    },
+    {
+     "es": "17-19 h",
+     "ca": "17-19 h",
+     "en": "17-19 h",
+     "fr": "17-19 h"
+    },
+    {
+     "es": "19-21 h",
+     "ca": "19-21 h",
+     "en": "19-21 h",
+     "fr": "19-21 h"
+    },
+    {
+     "es": "21-23 h",
+     "ca": "21-23 h",
+     "en": "21-23 h",
+     "fr": "21-23 h"
+    },
+    {
+     "es": "Después de 23 h",
+     "ca": "Després de les 23 h",
+     "en": "After 23:00",
+     "fr": "Après 23 h"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "apats",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuántas comidas al día te verías capaz de hacer?",
+    "ca": "Quants àpats al dia et veuries capaç de fer?",
+    "en": "How many meals a day could you manage?",
+    "fr": "Combien de repas par jour te sentirais-tu capable de faire ?"
+   },
+   "choices": [
+    {
+     "es": "2",
+     "ca": "2",
+     "en": "2",
+     "fr": "2"
+    },
+    {
+     "es": "3",
+     "ca": "3",
+     "en": "3",
+     "fr": "3"
+    },
+    {
+     "es": "4",
+     "ca": "4",
+     "en": "4",
+     "fr": "4"
+    },
+    {
+     "es": "5 o más",
+     "ca": "5 o més",
+     "en": "5 or more",
+     "fr": "5 ou plus"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "on_menges",
+   "type": "cb",
+   "title": {
+    "es": "¿Dónde sueles comer entre semana?",
+    "ca": "On sols menjar entre setmana?",
+    "en": "Where do you usually eat on weekdays?",
+    "fr": "Où manges-tu d'habitude en semaine ?"
+   },
+   "choices": [
+    {
+     "es": "En casa",
+     "ca": "A casa",
+     "en": "At home",
+     "fr": "À la maison"
+    },
+    {
+     "es": "De tupper en el trabajo o estudio",
+     "ca": "De carmanyola a la feina o a classe",
+     "en": "Packed lunch at work or school",
+     "fr": "Gamelle au travail ou en cours"
+    },
+    {
+     "es": "Menú o restaurante",
+     "ca": "Menú o restaurant",
+     "en": "Set menu or restaurant",
+     "fr": "Menu ou restaurant"
+    },
+    {
+     "es": "Bocadillo o algo rápido",
+     "ca": "Entrepà o alguna cosa ràpida",
+     "en": "Sandwich or something quick",
+     "fr": "Sandwich ou quelque chose de rapide"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "qui_cuina",
+   "type": "mc",
+   "title": {
+    "es": "¿Quién cocina normalmente en casa?",
+    "ca": "Qui cuina normalment a casa?",
+    "en": "Who usually cooks at home?",
+    "fr": "Qui cuisine d'habitude à la maison ?"
+   },
+   "choices": [
+    {
+     "es": "Yo",
+     "ca": "Jo",
+     "en": "Me",
+     "fr": "Moi"
+    },
+    {
+     "es": "Mi familia o pareja",
+     "ca": "La meva família o parella",
+     "en": "My family or partner",
+     "fr": "Ma famille ou mon/ma partenaire"
+    },
+    {
+     "es": "Un poco de todo",
+     "ca": "Una mica de tot",
+     "en": "A bit of both",
+     "fr": "Un peu des deux"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "temps_cuinar",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuánto tiempo puedes dedicar a cocinar?",
+    "ca": "Quant de temps pots dedicar a cuinar?",
+    "en": "How much time can you spend cooking?",
+    "fr": "Combien de temps peux-tu consacrer à cuisiner ?"
+   },
+   "choices": [
+    {
+     "es": "Casi nada",
+     "ca": "Gairebé gens",
+     "en": "Hardly any",
+     "fr": "Presque pas"
+    },
+    {
+     "es": "Algo",
+     "ca": "Una mica",
+     "en": "Some",
+     "fr": "Un peu"
+    },
+    {
+     "es": "Me gusta cocinar",
+     "ca": "M'agrada cuinar",
+     "en": "I like cooking",
+     "fr": "J'aime cuisiner"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "bascula_cuina",
+   "type": "mc",
+   "title": {
+    "es": "¿Tienes báscula de cocina?",
+    "ca": "Tens bàscula de cuina?",
+    "en": "Do you have kitchen scales?",
+    "fr": "As-tu une balance de cuisine ?"
+   },
+   "help": {
+    "es": "La dieta va en gramos. Solo hace falta la primera semana para aprender las cantidades.",
+    "ca": "La dieta va en grams. Només cal la primera setmana per aprendre les quantitats.",
+    "en": "The plan uses grams. You only need it the first week to learn the amounts.",
+    "fr": "Le programme est en grammes. Il suffit la première semaine pour apprendre les quantités."
+   },
+   "choices": [
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "No, pero puedo comprar una",
+     "ca": "No, però en puc comprar una",
+     "en": "No, but I can buy one",
+     "fr": "Non, mais je peux en acheter une"
+    },
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "dieta",
+   "type": "mc",
+   "title": {
+    "es": "¿Sigues alguna dieta especial?",
+    "ca": "Segueixes alguna dieta especial?",
+    "en": "Do you follow a special diet?",
+    "fr": "Suis-tu un régime particulier ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguna",
+     "ca": "Cap",
+     "en": "None",
+     "fr": "Aucun"
+    },
+    {
+     "es": "Vegetariana",
+     "ca": "Vegetariana",
+     "en": "Vegetarian",
+     "fr": "Végétarien"
+    },
+    {
+     "es": "Vegana",
+     "ca": "Vegana",
+     "en": "Vegan",
+     "fr": "Végan"
+    },
+    {
+     "es": "Sin cerdo",
+     "ca": "Sense porc",
+     "en": "No pork",
+     "fr": "Sans porc"
+    },
+    {
+     "es": "Halal",
+     "ca": "Halal",
+     "en": "Halal",
+     "fr": "Halal"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "no_menges",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué alimentos NO comes o no te gustan nada?",
+    "ca": "Quins aliments NO menges o no t'agraden gens?",
+    "en": "Which foods do you NOT eat or really dislike?",
+    "fr": "Quels aliments ne manges-tu PAS ou n'aimes-tu pas du tout ?"
+   },
+   "choices": [
+    {
+     "es": "Como de todo",
+     "ca": "Menjo de tot",
+     "en": "I eat everything",
+     "fr": "Je mange de tout"
+    },
+    {
+     "es": "Pescado",
+     "ca": "Peix",
+     "en": "Fish",
+     "fr": "Poisson"
+    },
+    {
+     "es": "Marisco",
+     "ca": "Marisc",
+     "en": "Shellfish",
+     "fr": "Fruits de mer"
+    },
+    {
+     "es": "Huevos",
+     "ca": "Ous",
+     "en": "Eggs",
+     "fr": "Œufs"
+    },
+    {
+     "es": "Legumbres",
+     "ca": "Llegums",
+     "en": "Pulses",
+     "fr": "Légumineuses"
+    },
+    {
+     "es": "Leche o yogur",
+     "ca": "Llet o iogurt",
+     "en": "Milk or yoghurt",
+     "fr": "Lait ou yaourt"
+    },
+    {
+     "es": "Cerdo",
+     "ca": "Porc",
+     "en": "Pork",
+     "fr": "Porc"
+    },
+    {
+     "es": "Ternera",
+     "ca": "Vedella",
+     "en": "Beef",
+     "fr": "Bœuf"
+    },
+    {
+     "es": "Verdura",
+     "ca": "Verdura",
+     "en": "Vegetables",
+     "fr": "Légumes"
+    },
+    {
+     "es": "Fruta",
+     "ca": "Fruita",
+     "en": "Fruit",
+     "fr": "Fruits"
+    },
+    {
+     "es": "Frutos secos",
+     "ca": "Fruits secs",
+     "en": "Nuts",
+     "fr": "Fruits à coque"
+    },
+    {
+     "es": "Avena",
+     "ca": "Civada",
+     "en": "Oats",
+     "fr": "Flocons d'avoine"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "encanten",
+   "type": "cb",
+   "title": {
+    "es": "¿Qué alimentos te encantan?",
+    "ca": "Quins aliments t'encanten?",
+    "en": "Which foods do you love?",
+    "fr": "Quels aliments adores-tu ?"
+   },
+   "choices": [
+    {
+     "es": "Pollo",
+     "ca": "Pollastre",
+     "en": "Chicken",
+     "fr": "Poulet"
+    },
+    {
+     "es": "Ternera",
+     "ca": "Vedella",
+     "en": "Beef",
+     "fr": "Bœuf"
+    },
+    {
+     "es": "Cerdo",
+     "ca": "Porc",
+     "en": "Pork",
+     "fr": "Porc"
+    },
+    {
+     "es": "Pescado",
+     "ca": "Peix",
+     "en": "Fish",
+     "fr": "Poisson"
+    },
+    {
+     "es": "Huevos",
+     "ca": "Ous",
+     "en": "Eggs",
+     "fr": "Œufs"
+    },
+    {
+     "es": "Arroz",
+     "ca": "Arròs",
+     "en": "Rice",
+     "fr": "Riz"
+    },
+    {
+     "es": "Pasta",
+     "ca": "Pasta",
+     "en": "Pasta",
+     "fr": "Pâtes"
+    },
+    {
+     "es": "Patata",
+     "ca": "Patata",
+     "en": "Potatoes",
+     "fr": "Pommes de terre"
+    },
+    {
+     "es": "Pan",
+     "ca": "Pa",
+     "en": "Bread",
+     "fr": "Pain"
+    },
+    {
+     "es": "Legumbres",
+     "ca": "Llegums",
+     "en": "Pulses",
+     "fr": "Légumineuses"
+    },
+    {
+     "es": "Yogur o lácteos",
+     "ca": "Iogurt o làctics",
+     "en": "Yoghurt or dairy",
+     "fr": "Yaourt ou produits laitiers"
+    },
+    {
+     "es": "Fruta",
+     "ca": "Fruita",
+     "en": "Fruit",
+     "fr": "Fruits"
+    },
+    {
+     "es": "Frutos secos",
+     "ca": "Fruits secs",
+     "en": "Nuts",
+     "fr": "Fruits à coque"
+    },
+    {
+     "es": "Algo dulce",
+     "ca": "Alguna cosa dolça",
+     "en": "Something sweet",
+     "fr": "Quelque chose de sucré"
+    }
+   ],
+   "other": true
+  },
+  {
+   "k": "caps_setmana",
+   "type": "mc",
+   "title": {
+    "es": "¿Cómo son tus fines de semana con la comida?",
+    "ca": "Com són els teus caps de setmana amb el menjar?",
+    "en": "What are your weekends like with food?",
+    "fr": "Comment sont tes week-ends côté alimentation ?"
+   },
+   "choices": [
+    {
+     "es": "Como igual que entre semana",
+     "ca": "Menjo igual que entre setmana",
+     "en": "I eat the same as on weekdays",
+     "fr": "Je mange comme en semaine"
+    },
+    {
+     "es": "Como fuera alguna vez",
+     "ca": "Menjo fora alguna vegada",
+     "en": "I sometimes eat out",
+     "fr": "Je mange parfois dehors"
+    },
+    {
+     "es": "Me descontrolo bastante",
+     "ca": "Em descontrolo bastant",
+     "en": "I lose control quite a bit",
+     "fr": "Je me lâche pas mal"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "suplements",
+   "type": "cb",
+   "title": {
+    "es": "¿Tomas algún suplemento?",
+    "ca": "Prens algun suplement?",
+    "en": "Do you take any supplements?",
+    "fr": "Prends-tu des compléments ?"
+   },
+   "choices": [
+    {
+     "es": "Ninguno",
+     "ca": "Cap",
+     "en": "None",
+     "fr": "Aucun"
+    },
+    {
+     "es": "Proteína en polvo",
+     "ca": "Proteïna en pols",
+     "en": "Protein powder",
+     "fr": "Protéine en poudre"
+    },
+    {
+     "es": "Creatina",
+     "ca": "Creatina",
+     "en": "Creatine",
+     "fr": "Créatine"
+    },
+    {
+     "es": "Magnesio",
+     "ca": "Magnesi",
+     "en": "Magnesium",
+     "fr": "Magnésium"
+    },
+    {
+     "es": "Zinc",
+     "ca": "Zinc",
+     "en": "Zinc",
+     "fr": "Zinc"
+    },
+    {
+     "es": "Omega 3",
+     "ca": "Omega 3",
+     "en": "Omega 3",
+     "fr": "Oméga 3"
+    },
+    {
+     "es": "Multivitamínico",
+     "ca": "Multivitamínic",
+     "en": "Multivitamin",
+     "fr": "Multivitamines"
+    },
+    {
+     "es": "Cafeína o pre-entreno",
+     "ca": "Cafeïna o pre-entrenament",
+     "en": "Caffeine or pre-workout",
+     "fr": "Caféine ou pré-entraînement"
+    }
+   ],
+   "other": true,
+   "req": true
+  },
+  {
+   "k": "aigua",
+   "type": "mc",
+   "title": {
+    "es": "¿Cuánta agua bebes al día?",
+    "ca": "Quanta aigua beus al dia?",
+    "en": "How much water do you drink a day?",
+    "fr": "Combien d'eau bois-tu par jour ?"
+   },
+   "choices": [
+    {
+     "es": "Menos de 1 litro",
+     "ca": "Menys d'1 litre",
+     "en": "Less than 1 litre",
+     "fr": "Moins d'1 litre"
+    },
+    {
+     "es": "1-2 litros",
+     "ca": "1-2 litres",
+     "en": "1-2 litres",
+     "fr": "1-2 litres"
+    },
+    {
+     "es": "Más de 2 litros",
+     "ca": "Més de 2 litres",
+     "en": "More than 2 litres",
+     "fr": "Plus de 2 litres"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "pressupost",
+   "type": "mc",
+   "title": {
+    "es": "¿Qué presupuesto tienes para la compra?",
+    "ca": "Quin pressupost tens per a la compra?",
+    "en": "What is your food budget like?",
+    "fr": "Quel est ton budget courses ?"
+   },
+   "choices": [
+    {
+     "es": "Ajustado",
+     "ca": "Ajustat",
+     "en": "Tight",
+     "fr": "Serré"
+    },
+    {
+     "es": "Normal",
+     "ca": "Normal",
+     "en": "Normal",
+     "fr": "Normal"
+    },
+    {
+     "es": "Sin problema",
+     "ca": "Sense problema",
+     "en": "No problem",
+     "fr": "Pas de problème"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "relacio_menjar",
+   "type": "mc",
+   "title": {
+    "es": "¿Tienes o has tenido una relación difícil con la comida? (atracones, comer muy poco a propósito, compensar con ejercicio)",
+    "ca": "Tens o has tingut una relació difícil amb el menjar? (afartaments, menjar molt poc a propòsit, compensar amb exercici)",
+    "en": "Do you have or have you had a difficult relationship with food? (binge eating, eating very little on purpose, compensating with exercise)",
+    "fr": "As-tu ou as-tu eu une relation difficile avec la nourriture ? (crises de boulimie, manger très peu exprès, compenser par le sport)"
+   },
+   "choices": [
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    },
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "Prefiero no decirlo",
+     "ca": "Prefereixo no dir-ho",
+     "en": "I'd rather not say",
+     "fr": "Je préfère ne pas le dire"
+    }
+   ],
+   "req": true
+  },
+  {
+   "type": "page",
+   "id": "pFinal",
+   "title": {
+    "es": "Seguimiento",
+    "ca": "Seguiment",
+    "en": "Follow-up",
+    "fr": "Suivi"
+   },
+   "help": {
+    "es": "La medida de cintura la tomaremos en la primera revisión.",
+    "ca": "La mesura de cintura la prendrem a la primera revisió.",
+    "en": "We will measure your waist at the first check-in.",
+    "fr": "Nous mesurerons ton tour de taille au premier bilan."
+   }
+  },
+  {
+   "k": "altres",
+   "type": "para",
+   "title": {
+    "es": "¿Algo más que deba saber?",
+    "ca": "Alguna cosa més que hagi de saber?",
+    "en": "Anything else I should know?",
+    "fr": "Autre chose que je devrais savoir ?"
+   }
+  },
+  {
+   "type": "page",
+   "title": {
+    "es": "Último paso",
+    "ca": "Últim pas",
+    "en": "Last step",
+    "fr": "Dernière étape"
+   }
+  },
+  {
+   "k": "confirmo",
+   "type": "cb",
+   "title": {
+    "es": "Confirmo que:",
+    "ca": "Confirmo que:",
+    "en": "I confirm that:",
+    "fr": "Je confirme que :"
+   },
+   "choices": [
+    {
+     "es": "La información que he dado es verdadera y avisaré si mi salud cambia.",
+     "ca": "La informació que he donat és veritable i avisaré si la meva salut canvia.",
+     "en": "The information I have given is true and I will let you know if my health changes.",
+     "fr": "Les informations données sont vraies et je préviendrai si ma santé change."
+    },
+    {
+     "es": "Entiendo que es un plan de entrenamiento y orientación nutricional general, no un tratamiento médico.",
+     "ca": "Entenc que és un pla d'entrenament i orientació nutricional general, no un tractament mèdic.",
+     "en": "I understand this is a training plan and general nutrition guidance, not medical treatment.",
+     "fr": "Je comprends qu'il s'agit d'un programme d'entraînement et de conseils nutritionnels généraux, pas d'un traitement médical."
+    },
+    {
+     "es": "Si tengo alguna enfermedad o tomo medicación, consultaré el plan con mi médico antes de empezar.",
+     "ca": "Si tinc alguna malaltia o prenc medicació, consultaré el pla amb el meu metge abans de començar.",
+     "en": "If I have an illness or take medication, I will check the plan with my doctor before starting.",
+     "fr": "Si j'ai une maladie ou prends un traitement, je consulterai mon médecin avant de commencer."
+    },
+    {
+     "es": "Doy permiso para que mis datos se usen solo para preparar y revisar mi plan.",
+     "ca": "Dono permís perquè les meves dades s'utilitzin només per preparar i revisar el meu pla.",
+     "en": "I allow my data to be used only to prepare and review my plan.",
+     "fr": "J'autorise l'utilisation de mes données uniquement pour préparer et suivre mon programme."
+    }
+   ],
+   "check4": true,
+   "req": true
+  },
+  {
+   "k": "permis_anonim",
+   "type": "mc",
+   "title": {
+    "es": "¿Me dejas usar tus resultados de forma anónima como ejemplo?",
+    "ca": "Em deixes fer servir els teus resultats de manera anònima com a exemple?",
+    "en": "May I use your results anonymously as an example?",
+    "fr": "Puis-je utiliser tes résultats de façon anonyme comme exemple ?"
+   },
+   "choices": [
+    {
+     "es": "Sí",
+     "ca": "Sí",
+     "en": "Yes",
+     "fr": "Oui"
+    },
+    {
+     "es": "No",
+     "ca": "No",
+     "en": "No",
+     "fr": "Non"
+    }
+   ],
+   "req": true
+  },
+  {
+   "k": "menor",
+   "type": "mc",
+   "title": {
+    "es": "Si eres menor de 18 años: ¿tu padre, madre o tutor está de acuerdo?",
+    "ca": "Si ets menor de 18 anys: el teu pare, mare o tutor hi està d'acord?",
+    "en": "If you are under 18: does your parent or guardian agree?",
+    "fr": "Si tu as moins de 18 ans : ton parent ou tuteur est-il d'accord ?"
+   },
+   "choices": [
+    {
+     "es": "Soy mayor de edad",
+     "ca": "Sóc major d'edat",
+     "en": "I am 18 or over",
+     "fr": "Je suis majeur"
+    },
+    {
+     "es": "Sí, está de acuerdo",
+     "ca": "Sí, hi està d'acord",
+     "en": "Yes, they agree",
+     "fr": "Oui, il/elle est d'accord"
+    }
+   ],
+   "req": true
+  }
+ ],
+ "franjas": {
+  "m": {
+   "es": "mañana",
+   "ca": "matí",
+   "en": "morning",
+   "fr": "matin"
+  },
+  "md": {
+   "es": "mediodía",
+   "ca": "migdia",
+   "en": "midday",
+   "fr": "midi"
+  },
+  "t": {
+   "es": "tarde",
+   "ca": "tarda",
+   "en": "afternoon",
+   "fr": "après-midi"
+  },
+  "n": {
+   "es": "noche",
+   "ca": "nit",
+   "en": "night",
+   "fr": "soir"
+  }
+ },
+ "v_check": {
+  "es": "Marca las 4 casillas para enviar",
+  "ca": "Marca les 4 caselles per enviar",
+  "en": "Tick the 4 boxes to submit",
+  "fr": "Coche les 4 cases pour envoyer"
+ },
+ "ui": {
+  "next": {
+   "es": "Siguiente",
+   "ca": "Següent",
+   "en": "Next",
+   "fr": "Suivant"
+  },
+  "back": {
+   "es": "Atrás",
+   "ca": "Enrere",
+   "en": "Back",
+   "fr": "Retour"
+  },
+  "send": {
+   "es": "Enviar",
+   "ca": "Enviar",
+   "en": "Send",
+   "fr": "Envoyer"
+  },
+  "start": {
+   "es": "Empezar",
+   "ca": "Començar",
+   "en": "Start",
+   "fr": "Commencer"
+  },
+  "sending": {
+   "es": "Enviando…",
+   "ca": "Enviant…",
+   "en": "Sending…",
+   "fr": "Envoi…"
+  },
+  "required": {
+   "es": "Esta pregunta es obligatoria",
+   "ca": "Aquesta pregunta és obligatòria",
+   "en": "This question is required",
+   "fr": "Cette question est obligatoire"
+  },
+  "rows": {
+   "es": "Responde todas las filas",
+   "ca": "Respon totes les files",
+   "en": "Answer every row",
+   "fr": "Réponds à chaque ligne"
+  },
+  "other": {
+   "es": "Otro",
+   "ca": "Altres",
+   "en": "Other",
+   "fr": "Autre"
+  },
+  "other_ph": {
+   "es": "Escribe aquí",
+   "ca": "Escriu aquí",
+   "en": "Type here",
+   "fr": "Écris ici"
+  },
+  "type_ph": {
+   "es": "Tu respuesta",
+   "ca": "La teva resposta",
+   "en": "Your answer",
+   "fr": "Ta réponse"
+  },
+  "choose": {
+   "es": "Elige una opción",
+   "ca": "Tria una opció",
+   "en": "Choose an option",
+   "fr": "Choisis une option"
+  },
+  "fix": {
+   "es": "Revisa las preguntas marcadas en rojo",
+   "ca": "Revisa les preguntes marcades en vermell",
+   "en": "Please check the questions marked in red",
+   "fr": "Vérifie les questions marquées en rouge"
+  },
+  "error_send": {
+   "es": "No se ha podido enviar. Revisa tu conexión y vuelve a pulsar «Enviar».",
+   "ca": "No s'ha pogut enviar. Revisa la connexió i torna a prémer «Enviar».",
+   "en": "It couldn't be sent. Check your connection and press “Send” again.",
+   "fr": "L'envoi a échoué. Vérifie ta connexion et appuie à nouveau sur « Envoyer »."
+  },
+  "saved_note": {
+   "es": "Tus respuestas se guardan en este dispositivo mientras rellenas: si cierras, podrás seguir después.",
+   "ca": "Les teves respostes es guarden en aquest dispositiu mentre omples: si tanques, podràs continuar després.",
+   "en": "Your answers are kept on this device while you fill in the form: if you close it, you can carry on later.",
+   "fr": "Tes réponses sont gardées sur cet appareil pendant que tu remplis : si tu fermes, tu pourras continuer plus tard."
+  },
+  "lang_hint": {
+   "es": "Puedes cambiar el idioma cuando quieras",
+   "ca": "Pots canviar l'idioma quan vulguis",
+   "en": "You can change the language at any time",
+   "fr": "Tu peux changer de langue à tout moment"
+  },
+  "sent": {
+   "es": "¡Enviado!",
+   "ca": "Enviat!",
+   "en": "Sent!",
+   "fr": "Envoyé !"
+  },
+  "step": {
+   "es": "Paso",
+   "ca": "Pas",
+   "en": "Step",
+   "fr": "Étape"
+  },
+  "anterior": {
+   "es": "Ya lo enviaste el {data}. Si algo ha cambiado, corrígelo y vuelve a enviarlo.",
+   "ca": "Ja el vas enviar el {data}. Si alguna cosa ha canviat, corregeix-la i torna'l a enviar.",
+   "en": "You already sent it on {data}. If anything has changed, correct it and send it again.",
+   "fr": "Tu l'as déjà envoyé le {data}. Si quelque chose a changé, corrige-le et renvoie-le."
+  },
+  "legal": {
+   "es": "Cómo tratamos tus datos",
+   "ca": "Com tractem les teves dades",
+   "en": "How we handle your data",
+   "fr": "Comment nous traitons tes données"
+  },
+  "area": {
+   "es": "Mi área",
+   "ca": "La meva àrea",
+   "en": "My area",
+   "fr": "Mon espace"
+  },
+  "idioma": {
+   "es": "Idioma",
+   "ca": "Idioma",
+   "en": "Language",
+   "fr": "Langue"
+  }
+ },
+ "nota": "Preguntes del formulari v6 d'APP GYM (formulario_web_Codigo.gs). A la web de Gym Zero no hi ha: nom (ja el tenim), si el gimnàs és ple, on entrenaràs i el material (és Gym Zero), cada quant vols revisions (cada 2 setmanes) ni com vols que et contactem (missatges de la web). 'k' és la clau curta de cada pregunta; les respostes es desen amb el títol en castellà, com les columnes de la fulla de Google.",
+ "fixos": {
+  "Nombre y apellido": null,
+  "¿Dónde vas a entrenar?": "Gimnasio completo"
+ }
+}

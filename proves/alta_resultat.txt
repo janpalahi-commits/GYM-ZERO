@@ -1,60 +1,73 @@
-Proves de l'alta de clients a recepció, de la quota d'1 o 3 mesos i del canvi de contrasenya (Fase 11, web amb el disseny nou, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova. Després de reserves.sh.
+Proves de l'alta i del cobrament per tarifes (Fase 12, 2026-10-28, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova.
 
 1. Capçalera per a anònims (enllaços):
    href="../compte/login.php"
 2. Login, text de sota el formulari:
    No tens compte? Te'l fem a recepció quan t'apuntes al gimnàs.
 3. Un client (Marc) obre /admin/alta.php:
-   login: 302 -> http://127.0.0.1:8092/client/
+   login: 302 -> http://127.0.0.1:8095/client/
    403
 4. Un client envia el formulari d'alta:
    403
 5. Admin entra:
-   login: 302 -> http://127.0.0.1:8092/admin/
+   login: 302 -> http://127.0.0.1:8095/admin/
 6. Alta de l'Anna amb polsera i 1 mes pagat:
-   ok: Compte de Anna Puig creat. Ja pot entrar a la web amb el seu correu.
+   ok: Compte de Anna Puig creat. Ja pot entrar a la web amb el seu correu. Cobrat: 55,00 €, quota fins al 27/11/2026.
 7. Alta del Biel sense polsera i sense pagar:
    ok: Compte de Biel Roig creat. Ja pot entrar a la web amb el seu correu.
-7b. Alta de l'Eva amb 3 mesos pagats:
-   ok: Compte de Eva Font creat. Ja pot entrar a la web amb el seu correu.
+7b. Alta de l'Eva amb la tarifa Gimnàs + pla i 3 mesos pagats:
+   ok: Compte de Eva Font creat. Ja pot entrar a la web amb el seu correu. Cobrat: 210,00 €, quota fins al 27/01/2027.
 7c. Alta amb una quota de 5 mesos (no existeix):
    class="error">La quota ha de ser d&#039;1 o 3 mesos.
 8. Alta amb la polsera de l'Anna:
    class="error">Aquesta polsera ja és d&#039;un altre usuari.
-9. Alta amb errors (correu dolent, polsera curta, contrasenya curta):
+9. Alta amb errors (correu dolent, polsera curta, contrasenya curta, tarifa que no existeix):
    class="error">El correu electrònic no és vàlid.
    class="error">El codi de la polsera ha de tenir 8, 14 o 20 xifres hexadecimals.
    class="error">La contrasenya ha de tenir com a mínim 8 caràcters.
+   class="error">Tria una tarifa.
 10. Estat a la BD:
-+------+----------------+--------+--------------+------------+
-| nom  | email          | rol    | targeta_rfid | quota_fins |
-+------+----------------+--------+--------------+------------+
-| Anna | anna@prova.cat | client | 0A1B2C3D     | 2026-11-26 |
-| Biel | biel@prova.cat | client | NULL         | NULL       |
-| Eva  | eva@prova.cat  | client | NULL         | 2027-01-26 |
-+------+----------------+--------+--------------+------------+
++------+----------------+--------+--------------+-----------+------------+
+| nom  | email          | rol    | targeta_rfid | tarifa_id | quota_fins |
++------+----------------+--------+--------------+-----------+------------+
+| Anna | anna@prova.cat | client | 0A1B2C3D     |         1 | 2026-11-27 |
+| Biel | biel@prova.cat | client | NULL         |         1 | NULL       |
+| Eva  | eva@prova.cat  | client | NULL         |         2 | 2027-01-27 |
++------+----------------+--------+--------------+-----------+------------+
 11. L'Anna entra i veu la quota:
-   login: 302 -> http://127.0.0.1:8092/client/
-   Pagada fins al 26/11/2026
+   login: 302 -> http://127.0.0.1:8095/client/
+   Pagada fins al 27/11/2026
 12. L'Anna canvia la contrasenya amb l'actual malament:
    class="error">La contrasenya actual no és correcta.
 13. L'Anna canvia la contrasenya bé:
-   302 -> http://127.0.0.1:8092/client/
+   302 -> http://127.0.0.1:8095/client/
    ok: Contrasenya canviada.
 14. Login amb l'antiga i amb la nova:
    login: 200 -> 
-   login: 302 -> http://127.0.0.1:8092/client/
-15. Recepció cobra 3 mesos al Biel (no tenia quota):
-   ok: Quota pagada fins al 26/01/2027.
-16. Recepció cobra 3 mesos més a l'Eva (ja en tenia 3):
-   ok: Quota pagada fins al 26/04/2027.
-17. Recepció cobra 1 mes a l'Anna:
-   ok: Quota pagada fins al 26/12/2026.
+   login: 302 -> http://127.0.0.1:8095/client/
+15. Recepció cobra 3 mesos de Gimnàs al Biel (no tenia quota):
+   ok: Cobrat: 142,00 € (Gimnàs, 3 mesos). Quota pagada fins al 27/01/2027.
+16. Recepció cobra 3 mesos més a l'Eva amb la mateixa tarifa (s'afegeixen al final):
+   ok: Cobrat: 210,00 € (Gimnàs + pla, 3 mesos). Quota pagada fins al 27/04/2027.
+17. L'Anna passa a la tarifa amb seguiment: 1 mes, compta des d'avui:
+   ok: Cobrat: 110,00 € (Gimnàs + pla + seguiment, 1 mes). Quota pagada fins al 27/11/2026.
+17b. Cobrar 2 mesos (no es pot):
+   error: No s&#039;ha pogut cobrar: revisa la tarifa i els mesos.
+17c. Pagaments apuntats:
++------+-----------+-------+--------+------------+
+| nom  | tarifa_id | mesos | import | fins       |
++------+-----------+-------+--------+------------+
+| Anna |         1 |     1 |  55.00 | 2026-11-27 |
+| Eva  |         2 |     3 | 210.00 | 2027-01-27 |
+| Biel |         1 |     3 | 142.00 | 2027-01-27 |
+| Eva  |         2 |     3 | 210.00 | 2027-04-27 |
+| Anna |         3 |     1 | 110.00 | 2026-11-27 |
++------+-----------+-------+--------+------------+
 18. Estat final a la BD:
-+------+----------------+--------+--------------+------------+
-| nom  | email          | rol    | targeta_rfid | quota_fins |
-+------+----------------+--------+--------------+------------+
-| Anna | anna@prova.cat | client | 0A1B2C3D     | 2026-12-26 |
-| Biel | biel@prova.cat | client | NULL         | 2027-01-26 |
-| Eva  | eva@prova.cat  | client | NULL         | 2027-04-26 |
-+------+----------------+--------+--------------+------------+
++------+----------------+--------+--------------+-----------+------------+
+| nom  | email          | rol    | targeta_rfid | tarifa_id | quota_fins |
++------+----------------+--------+--------------+-----------+------------+
+| Anna | anna@prova.cat | client | 0A1B2C3D     |         3 | 2026-11-27 |
+| Biel | biel@prova.cat | client | NULL         |         1 | 2027-01-27 |
+| Eva  | eva@prova.cat  | client | NULL         |         2 | 2027-04-27 |
++------+----------------+--------+--------------+-----------+------------+

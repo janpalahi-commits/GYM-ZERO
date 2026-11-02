@@ -30,6 +30,18 @@ $st = $connexio->prepare(
 $st->execute([usuari_actual()['id']]);
 $copia = $st->fetch();
 
+// Clients del pla amb feina pendent (els mateixos que surten marcats a plans.php)
+$pendent_plans = $connexio->query(
+    "SELECT COUNT(*) FROM usuaris u JOIN tarifes t ON t.id = u.tarifa_id
+      WHERE u.rol = 'client' AND u.actiu = 1 AND t.nivell >= 2
+        AND (EXISTS (SELECT 1 FROM revisions v WHERE v.usuari_id = u.id AND v.resposta IS NULL)
+          OR EXISTS (SELECT 1 FROM missatges m WHERE m.usuari_id = u.id AND m.autor_id = u.id AND m.llegit = 0)
+          OR (SELECT MAX(enviat) FROM questionaris q WHERE q.usuari_id = u.id)
+               > COALESCE((SELECT MAX(pujat) FROM plans p WHERE p.usuari_id = u.id), '2000-01-01')
+          OR (EXISTS (SELECT 1 FROM questionaris q WHERE q.usuari_id = u.id)
+              AND NOT EXISTS (SELECT 1 FROM rutina r WHERE r.usuari_id = u.id)))"
+)->fetchColumn();
+
 $titol = 'Administració';
 require __DIR__ . '/../inc/capcalera.php';
 ?>
@@ -44,6 +56,7 @@ require __DIR__ . '/../inc/capcalera.php';
   <a class="btn" href="classes.php">Gestionar classes</a>
   <a class="btn btn-secundari" href="activitats.php">Gestionar activitats</a>
   <a class="btn btn-secundari" href="usuaris.php">Gestionar usuaris</a>
+  <a class="btn btn-secundari" href="plans.php">Plans i seguiment<?= $pendent_plans ? ' (' . (int) $pendent_plans . ')' : '' ?></a>
   <a class="btn btn-secundari" href="entrades.php">Veure les entrades</a>
 </p>
 

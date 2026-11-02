@@ -6,9 +6,9 @@ echo "1. Anònim a /reserves/:"; curl -s $B/reserves/ | grep -c '<tr id="c' | se
 echo "2. Anònim a /client/:"; curl -s -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" $B/client/
 JA=$(mktemp); T=$(csrf $JA /compte/login.php); curl -s -b $JA -c $JA -o /dev/null -d "csrf=$T&email=admin@gymzero.cat&password=Admin1234" $B/compte/login.php
 alta(){ T=$(csrf $JA /admin/alta.php); curl -s -b $JA -c $JA -d "csrf=$T&$1" $B/admin/alta.php | grep -o 'class="error">[^<]*' | sed 's/^/   /'; avis $JA /admin/usuaris.php | sed 's/^/   /'; }
-echo "3. Recepció dona d'alta el Jan i cobra el primer mes:"; alta "nom=Jan&cognoms=Prova&email=jan@example.com&password=provaprova&mesos=1"
+echo "3. Recepció dona d'alta el Jan i cobra el primer mes:"; alta "nom=Jan&cognoms=Prova&email=jan@example.com&password=provaprova&tarifa_id=1&mesos=1"
 T=$(csrf $J1 /compte/login.php); curl -s -b $J1 -c $J1 -o /dev/null -w "   login del Jan: %{http_code} -> %{redirect_url}\n" -d "csrf=$T&email=jan@example.com&password=provaprova" $B/compte/login.php
-echo "4. Alta amb email repetit:"; alta "nom=X&cognoms=Y&email=marc@example.com&password=provaprova&mesos=1"
+echo "4. Alta amb email repetit:"; alta "nom=X&cognoms=Y&email=marc@example.com&password=provaprova&tarifa_id=1&mesos=1"
 echo "5. Anònim a l'antic /compte/registre.php:"; J3=$(mktemp); curl -s -b $J3 -c $J3 -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" $B/compte/registre.php; avis $J3 /compte/login.php | sed 's/^/   /'
 echo "6. Login contrasenya incorrecta:"; T=$(csrf $J2 /compte/login.php); curl -s -b $J2 -c $J2 -d "csrf=$T&email=marc@example.com&password=dolenta" $B/compte/login.php | grep -o 'class="error">[^<]*' | sed 's/^/   /'
 echo "7. Login correcte (Marc):"; T=$(csrf $J2 /compte/login.php); curl -s -b $J2 -c $J2 -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" -d "csrf=$T&email=marc@example.com&password=Client1234" $B/compte/login.php
@@ -24,7 +24,7 @@ echo "15. POST sense token CSRF:"; curl -s -b $J2 -o /dev/null -w "   %{http_cod
 echo "16. Àrea de Marc:"; curl -s -b $J2 $B/client/ | grep -o '<td>[^<]*</td>' | sed 's/<\/*td>//g' | paste -sd'|' | sed 's/^/   /'
 echo "17. Logout i tornar a /client/:"; curl -s -b $J2 -c $J2 -o /dev/null $B/compte/logout.php; curl -s -b $J2 -o /dev/null -w "   %{http_code} -> %{redirect_url}\n" $B/client/
 entra(){ T=$(csrf $1 /compte/login.php); curl -s -b $1 -c $1 -o /dev/null -d "csrf=$T&email=$2&password=Client1234" $B/compte/login.php; }
-echo "18. Client donat d'alta sense pagar (Nil) reserva Hipertrofia (classe 4):"; alta "nom=Nil&cognoms=Prova&email=nil@example.com&password=provaprova&mesos=0" >/dev/null; J4=$(mktemp); T=$(csrf $J4 /compte/login.php); curl -s -b $J4 -c $J4 -o /dev/null -d "csrf=$T&email=nil@example.com&password=provaprova" $B/compte/login.php; acc $J4 reservar 4
+echo "18. Client donat d'alta sense pagar (Nil) reserva Hipertrofia (classe 4):"; alta "nom=Nil&cognoms=Prova&email=nil@example.com&password=provaprova&tarifa_id=1&mesos=0" >/dev/null; J4=$(mktemp); T=$(csrf $J4 /compte/login.php); curl -s -b $J4 -c $J4 -o /dev/null -d "csrf=$T&email=nil@example.com&password=provaprova" $B/compte/login.php; acc $J4 reservar 4
 echo "19. Pàgina de classes del Nil:"; curl -s -b $J4 $B/reserves/ | grep -o 'class="error">[^<]*\|>Sense quota<' | sort | uniq -c | sed 's/^ */   /'
 echo "20. Laia (quota caducada fa 3 dies) reserva Hipertrofia (classe 4):"; J5=$(mktemp); entra $J5 laia@example.com; acc $J5 reservar 4
 echo "21. Pau amb la quota fins demà reserva Powerlifting (classe 3, d'aquí a 2 dies):"; mariadb gymzero_db -e "UPDATE usuaris SET quota_fins = CURDATE() + INTERVAL 1 DAY WHERE email = 'pau@example.com'"; J6=$(mktemp); entra $J6 pau@example.com; acc $J6 reservar 3

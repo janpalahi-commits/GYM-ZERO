@@ -3,11 +3,15 @@
 // així no hi ha comptes de gent que no és client.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
+require_once __DIR__ . '/../inc/pagaments.php';
 requereix_admin($connexio);
+
+$tarifes = $connexio->query('SELECT * FROM tarifes ORDER BY nivell')->fetchAll();
 
 $errors = [];
 $nom = $cognoms = $email = $polsera = '';
 $mesos = 1;
+$tarifa_id = 1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     comprova_csrf();
@@ -18,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $polsera = strtoupper(preg_replace('/[^0-9a-fA-F]/', '', $_POST['polsera'] ?? ''));
     $pass    = $_POST['password'] ?? '';
     $mesos   = (int) ($_POST['mesos'] ?? 0);
+    $tarifa_id = (int) ($_POST['tarifa_id'] ?? 0);
 
     if ($nom === '' || $cognoms === '') {
         $errors[] = 'Cal omplir el nom i els cognoms.';
@@ -34,17 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!in_array($mesos, [0, 1, 3], true)) {
         $errors[] = 'La quota ha de ser d\'1 o 3 mesos.';
     }
+    if (!in_array($tarifa_id, array_map('intval', array_column($tarifes, 'id')), true)) {
+        $errors[] = 'Tria una tarifa.';
+    }
 
     if (!$errors) {
         try {
-            // La quota va d'avui fins al dia abans del mateix dia d'aquí a 1 o 3 mesos (com els botons d'usuaris.php)
             $st = $connexio->prepare(
-                "INSERT INTO usuaris (nom, cognoms, email, password_hash, rol, targeta_rfid, quota_fins)
-                 VALUES (?, ?, ?, ?, 'client', ?, IF(? > 0, CURDATE() - INTERVAL 1 DAY + INTERVAL ? MONTH, NULL))"
+                "INSERT INTO usuaris (nom, cognoms, email, password_hash, rol, targeta_rfid, tarifa_id)
+                 VALUES (?, ?, ?, ?, 'client', ?, ?)"
             );
             $st->execute([$nom, $cognoms, $email, password_hash($pass, PASSWORD_DEFAULT),
-                          $polsera === '' ? null : $polsera, $mesos, $mesos]);
-            avis('ok', 'Compte de ' . $nom . ' ' . $cognoms . ' creat. Ja pot entrar a la web amb el seu correu.');
+                          $polsera === '' ? null : $polsera, $tarifa_id]);
+            $text = 'Compte de ' . $nom . ' ' . $cognoms . ' creat. Ja pot entrar a la web amb el seu correu.';
+            // El primer cobrament queda apuntat a pagaments, com tots els altres
+            if ($mesos > 0) {
+                $cobrat = cobra($connexio, (int) $connexio->lastInsertId(), $tarifa_id, $mesos, usuari_actual()['id']);
+                $text .= ' Cobrat: ' . euros($cobrat['import']) . ', quota fins al ' . date('d/m/Y', strtotime($cobrat['fins'])) . '.';
+            }
+            avis('ok', $text);
             header('Location: usuaris.php');
             exit;
         } catch (PDOException $e) {
@@ -84,6 +97,15 @@ require __DIR__ . '/../inc/capcalera.php';
 
   <label for="password">Contrasenya (mínim 8 caràcters)</label>
   <input id="password" name="password" type="password" minlength="8" required autocomplete="new-password">
+
+  <label for="tarifa_id">Tarifa</label>
+  <select id="tarifa_id" name="tarifa_id">
+    <?php foreach ($tarifes as $t): ?>
+      <option value="<?= (int) $t['id'] ?>" <?= (int) $t['id'] === $tarifa_id ? 'selected' : '' ?>>
+        <?= h($t['nom']) ?> · <?= euros($t['preu_mes']) ?> al mes · <?= euros($t['preu_3mesos']) ?> 3 mesos
+      </option>
+    <?php endforeach; ?>
+  </select>
 
   <label for="mesos">Quota que paga ara</label>
   <select id="mesos" name="mesos">

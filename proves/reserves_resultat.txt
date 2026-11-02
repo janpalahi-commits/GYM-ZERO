@@ -1,42 +1,42 @@
-Proves de la Fase 3 i de la quota a les reserves (Fase 11, web amb el disseny nou, 2026-10-27, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova.
+Proves de la Fase 3 i de la quota a les reserves (Fase 12, 2026-10-28, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD i les dades de prova.
 
 1. Anònim a /reserves/:
    files taula: 5
    botons: 0
 2. Anònim a /client/:
-   302 -> http://127.0.0.1:8092/compte/login.php
+   302 -> http://127.0.0.1:8095/compte/login.php
 3. Recepció dona d'alta el Jan i cobra el primer mes:
-   ok: Compte de Jan Prova creat. Ja pot entrar a la web amb el seu correu.
-   login del Jan: 302 -> http://127.0.0.1:8092/client/
+   ok: Compte de Jan Prova creat. Ja pot entrar a la web amb el seu correu. Cobrat: 55,00 €, quota fins al 27/11/2026.
+   login del Jan: 302 -> http://127.0.0.1:8095/client/
 4. Alta amb email repetit:
    class="error">Ja hi ha un compte amb aquest correu.
 5. Anònim a l'antic /compte/registre.php:
-   302 -> http://127.0.0.1:8092/compte/login.php
+   302 -> http://127.0.0.1:8095/compte/login.php
    error: El compte te&#039;l fem a recepció quan t&#039;apuntes al gimnàs.
 6. Login contrasenya incorrecta:
    class="error">Correu o contrasenya incorrectes.
 7. Login correcte (Marc):
-   302 -> http://127.0.0.1:8092/client/
+   302 -> http://127.0.0.1:8095/client/
 8. Marc reserva Cross Training (classe 2):
-   ok: Reserva confirmada: Cross Training, 28/10/2026 19:00.
+   ok: Reserva confirmada: Cross Training, 29/10/2026 19:00.
 9. Marc la torna a reservar:
    error: Ja tens una reserva per a aquesta classe.
 10. Marc reserva Mobilitat (classe 5, 2 places, 1 ocupada):
-   ok: Reserva confirmada: Mobilitat, 30/10/2026 10:00.
+   ok: Reserva confirmada: Mobilitat, 31/10/2026 10:00.
 11. Jan reserva Mobilitat (ja plena):
    error: No queden places per a aquesta classe.
 12. Marc cancel·la Mobilitat:
-   ok: Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.
+   ok: Reserva cancel·lada: Mobilitat, 31/10/2026 10:00.
 13. Jan reserva Mobilitat ara:
-   ok: Reserva confirmada: Mobilitat, 30/10/2026 10:00.
+   ok: Reserva confirmada: Mobilitat, 31/10/2026 10:00.
 14. Jan cancel·la una classe que no té (classe 3):
    error: No tens cap reserva activa per a aquesta classe.
 15. POST sense token CSRF:
    400
 16. Àrea de Marc:
-   Musculació|28/10/2026 18:00|Cross Training|28/10/2026 19:00|Powerlifting|29/10/2026 18:00|Reserva cancel·lada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:49|Reserva confirmada: Mobilitat, 30/10/2026 10:00.|27/10/2026 11:49|Reserva confirmada: Cross Training, 28/10/2026 19:00.|27/10/2026 11:49|Reserva confirmada: Musculació, demà a les 18:00.|27/10/2026 11:49
+   Musculació|29/10/2026 18:00|Cross Training|29/10/2026 19:00|Powerlifting|30/10/2026 18:00|Reserva cancel·lada: Mobilitat, 31/10/2026 10:00.|28/10/2026 08:51|Reserva confirmada: Mobilitat, 31/10/2026 10:00.|28/10/2026 08:51|Reserva confirmada: Cross Training, 29/10/2026 19:00.|28/10/2026 08:51|Reserva confirmada: Musculació, demà a les 18:00.|28/10/2026 08:51
 17. Logout i tornar a /client/:
-   302 -> http://127.0.0.1:8092/compte/login.php
+   302 -> http://127.0.0.1:8095/compte/login.php
 18. Client donat d'alta sense pagar (Nil) reserva Hipertrofia (classe 4):
    error: Per reservar has de tenir la quota pagada. Passa per recepció.
    error: Per reservar has de tenir la quota pagada. Passa per recepció.
@@ -47,9 +47,9 @@ Proves de la Fase 3 i de la quota a les reserves (Fase 11, web amb el disseny no
    error: Per reservar has de tenir la quota pagada. Passa per recepció.
    error: Per reservar has de tenir la quota pagada. Passa per recepció.
 21. Pau amb la quota fins demà reserva Powerlifting (classe 3, d'aquí a 2 dies):
-   error: La teva quota acaba el 28/10, abans d&#039;aquesta classe. Renova-la a recepció per poder-la reservar.
+   error: La teva quota acaba el 29/10, abans d&#039;aquesta classe. Renova-la a recepció per poder-la reservar.
 22. Pau reserva Musculació (classe 1, demà):
-   ok: Reserva confirmada: Musculació, 28/10/2026 18:00.
+   ok: Reserva confirmada: Musculació, 29/10/2026 18:00.
 23. Estat a la BD:
 +------------------+-----------+------------+
 | email            | classe_id | estat      |

@@ -1,0 +1,35 @@
+inici [ 'pg0' ]
+ERR [
+  'En quin idioma vols el teu pla? * => Aquesta pregunta és obligatòria',
+  'Data de naixement * => Aquesta pregunta és obligatòria',
+  'Alçada (cm) * => Aquesta pregunta és obligatòria',
+  'Pes actual (kg) * => Aquesta pregunta és obligatòria',
+  'Com ha canviat el teu pes els últims 6 mesos? * => Aquesta pregunta és obligatòria',
+  'Tens bàscula per pesar-te a casa? * => Aquesta pregunta és obligatòria',
+  'Com et veus ara mateix? * => Aquesta pregunta és obligatòria',
+  'Sexe * => Aquesta pregunta és obligatòria'
+]
+-> pg0 
+errors visibles: [
+  'Aquesta pregunta és obligatòria',
+  'Aquesta pregunta és obligatòria',
+  'Aquesta pregunta és obligatòria'
+]
+-> pSalud Pas 2
+-> pLesion Pas 3
+-> pObjetivo Pas 4
+-> pRitmo Pas 5
+-> pExp Pas 6
+-> pDisp Pas 7
+després de canviar a castellà: [ 'pDisp' ] Disponibilidad
+enrere -> [ 'pExp' ]
+seguent -> [ 'pDisp' ]
+-> pPref Paso 8
+-> pVida Paso 9
+-> pSueno Paso 10
+-> pComida Paso 11
+-> pFinal Paso 12
+-> pg16 Paso 13
+últim pas, botó enviar visible: true
+error check4: [ 'Marca las 4 casillas para enviar' ]
+url http://127.0.0.1:8095/client/ ¡Gracias! Ya tengo todo lo que necesito. Me pongo con tu plan y te escribo pronto.

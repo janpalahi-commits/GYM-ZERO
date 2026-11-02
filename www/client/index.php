@@ -25,6 +25,25 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $quota = $st->fetch();
 
+// El pla personalitzat i el seguiment depenen de la tarifa
+$t = tarifa_usuari($connexio, $u['id']);
+$tarifes = array_column($connexio->query('SELECT nivell, nom, preu_mes FROM tarifes')->fetchAll(), null, 'nivell');
+if ($t['nivell'] >= 2) {
+    $st = $connexio->prepare('SELECT MAX(enviat) FROM questionaris WHERE usuari_id = ?');
+    $st->execute([$u['id']]);
+    $questionari = $st->fetchColumn();
+    $st = $connexio->prepare('SELECT MAX(pujat) FROM plans WHERE usuari_id = ?');
+    $st->execute([$u['id']]);
+    $pla = $st->fetchColumn();
+}
+if ($t['nivell'] >= 3) {
+    require_once __DIR__ . '/../inc/seguiment.php';
+    $propera = propera_revisio($connexio, $u['id']);
+    $st = $connexio->prepare('SELECT COUNT(*) FROM missatges WHERE usuari_id = ? AND llegit = 0 AND (autor_id IS NULL OR autor_id <> ?)');
+    $st->execute([$u['id'], $u['id']]);
+    $sense_llegir = (int) $st->fetchColumn();
+}
+
 $st = $connexio->prepare(
     'SELECT missatge, data FROM notificacions WHERE usuari_id = ? ORDER BY data DESC, id DESC LIMIT 5'
 );
@@ -70,6 +89,53 @@ require __DIR__ . '/../inc/capcalera.php';
     <?php endforeach; ?>
   </table>
   <a class="btn" href="../reserves/">Reservar una altra classe</a>
+<?php endif; ?>
+
+<?php if ($u['rol'] !== 'admin'): ?>
+  <h2>El meu pla</h2>
+  <p>Tens la tarifa <b><?= h($t['tarifa']) ?></b>.</p>
+  <div class="serveis">
+    <?php if ($t['nivell'] >= 2): ?>
+      <article>
+        <h3>Qüestionari</h3>
+        <p><?= $questionari ? 'Enviat el ' . date('d/m/Y', strtotime($questionari)) . '.' : 'És el primer pas: amb les respostes l\'entrenador et fa el pla.' ?></p>
+        <a class="btn<?= $questionari ? ' btn-secundari' : '' ?>" href="questionari.php"><?= $questionari ? 'Revisar-lo' : 'Omplir-lo' ?></a>
+      </article>
+      <article>
+        <h3>Pla d'entrenament i alimentació</h3>
+        <?php if ($pla): ?>
+          <p>Actualitzat el <?= date('d/m/Y', strtotime($pla)) ?>.</p>
+          <a class="btn" href="pla.php">Descarregar el PDF</a>
+        <?php else: ?>
+          <p><?= $questionari ? 'L\'entrenador te l\'està preparant.' : 'Sortirà aquí quan hagis enviat el qüestionari.' ?></p>
+        <?php endif; ?>
+      </article>
+      <article>
+        <h3>La meva llibreta</h3>
+        <p>La rutina en un full, amb el que aixeques cada setmana.</p>
+        <a class="btn btn-secundari" href="llibreta.php">Obrir la llibreta</a>
+      </article>
+    <?php else: ?>
+      <article class="tancat">
+        <h3>Pla personalitzat i llibreta</h3>
+        <p>Rutina i dieta fetes per a tu, i una llibreta per apuntar el que aixeques. Disponible amb la tarifa <?= h($tarifes[2]['nom']) ?> (<?= number_format($tarifes[2]['preu_mes'], 0, ',', '.') ?> € al mes).</p>
+      </article>
+    <?php endif; ?>
+    <?php if ($t['nivell'] >= 3): ?>
+      <article>
+        <h3>Seguiment</h3>
+        <p><?= $propera <= date('Y-m-d') ? '<span class="etiqueta groga">Toca</span> Ja pots enviar la revisió.' : 'Propera revisió: ' . date('d/m/Y', strtotime($propera)) . '.' ?>
+          <?= $sense_llegir ? '<br><span class="etiqueta verda">' . $sense_llegir . ' nou' . ($sense_llegir > 1 ? 's' : '') . '</span> Tens missatges de l\'entrenador.' : '' ?></p>
+        <a class="btn btn-secundari" href="seguiment.php">Anar al seguiment</a>
+      </article>
+    <?php else: ?>
+      <article class="tancat">
+        <h3>Seguiment</h3>
+        <p>Una revisió cada 2 setmanes i missatges amb l'entrenador per als dubtes i els canvis de rutina. Disponible amb la tarifa <?= h($tarifes[3]['nom']) ?> (<?= number_format($tarifes[3]['preu_mes'], 0, ',', '.') ?> € al mes).</p>
+      </article>
+    <?php endif; ?>
+  </div>
+  <?php if ($t['nivell'] < 3): ?><p class="subtil">Per canviar de tarifa, demana-ho a recepció.</p><?php endif; ?>
 <?php endif; ?>
 
 <h2>El meu entrenament</h2>

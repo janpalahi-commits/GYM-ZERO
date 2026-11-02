@@ -1,0 +1,145 @@
+{
+    "client": "Marc",
+    "id": 2,
+    "enviat": "2026-09-06 20:00:00",
+    "respostes": {
+        "Fecha de envío": "06/09/2026 20:00:00",
+        "Idioma del formulario": "Català",
+        "¿En qué idioma quieres tu plan?": "Català",
+        "Fecha de nacimiento": "14/03/2002",
+        "Altura (cm)": 178,
+        "Peso actual (kg)": 76.5,
+        "¿Cómo ha cambiado tu peso en los últimos 6 meses?": "Estable",
+        "¿Tienes báscula para pesarte en casa?": "Sí",
+        "¿Cómo te ves ahora mismo?": "Normal, con algo de grasa en la tripa",
+        "Sexo": "Hombre",
+        "¿Estás embarazada, has dado a luz en el último año o das el pecho?": "",
+        "¿Cómo es tu ciclo menstrual?": "",
+        "¿Algún médico te ha dicho que tienes un problema de corazón o tensión alta?": "No",
+        "¿Sientes dolor en el pecho, mareos o pierdes el conocimiento al hacer esfuerzo?": "No",
+        "¿Tienes alguna enfermedad diagnosticada?": [
+            "Ninguna"
+        ],
+        "¿Tomas alguna medicación de forma habitual? ¿Cuál?": "Cap",
+        "¿Tienes alguna alergia o intolerancia alimentaria?": [
+            "Ninguna"
+        ],
+        "¿Te has lesionado u operado alguna vez, aunque ya estés recuperado? ¿Qué te pasó?": "",
+        "¿Tienes ahora mismo alguna lesión, dolor o molestia?": "No",
+        "¿Dónde?": [],
+        "Cuéntame qué te pasa y desde cuándo": "",
+        "¿Qué ejercicios o movimientos te duelen?": "",
+        "¿Te está tratando un médico o fisioterapeuta?": "",
+        "¿Cuál es tu objetivo principal?": "Ganar músculo",
+        "¿Qué zonas quieres mejorar más?": [
+            "Pecho",
+            "Brazos"
+        ],
+        "¿Tienes una fecha o evento en mente? ¿Cuál y cuándo?": "",
+        "¿Qué te ha hecho dejarlo o no avanzar otras veces?": [
+            "No saber qué hacer"
+        ],
+        "¿Cuánto compromiso puedes poner ahora mismo?": 8,
+        "¿Por qué quieres empezar ahora?": "Vull fer-ho bé d'una vegada.",
+        "¿A qué ritmo quieres avanzar?": "Normal: el equilibrio (recomendado)",
+        "¿Cuánto tiempo llevas entrenando con pesas de forma constante?": "Entre 6 meses y 2 años",
+        "¿Estás entrenando ahora?": "Sí",
+        "¿Qué rutina hacías? (días por semana y cómo la repartías)": "3 dies, cos sencer, d'un vídeo de YouTube",
+        "¿Qué ejercicios sabes hacer con buena técnica?": [
+            "Sentadilla",
+            "Press banca",
+            "Remo con barra"
+        ],
+        "Si los haces: ¿cuánto peso mueves y a cuántas repeticiones?": "Press banca 60 kg x 8, esquat 70 kg x 8",
+        "¿Sabes lo que es el RIR (repeticiones en recámara)?": "Me suena",
+        "¿Cuántos días a la semana puedes entrenar de verdad?": "3",
+        "¿Qué días podrías ir? (marca todos los posibles)": [
+            "Lunes",
+            "Miércoles",
+            "Viernes"
+        ],
+        "¿Cuánto tiempo tienes por sesión?": "60-90 min",
+        "¿A qué hora sueles empezar a entrenar?": "18:00 (tarde)",
+        "Si entrenas a horas distintas según el día, explícalo": "",
+        "¿Qué ejercicios te gustan mucho?": [
+            "Press banca",
+            "Ejercicios de brazos"
+        ],
+        "¿Qué ejercicios odias o no quieres hacer?": [
+            "Ninguno"
+        ],
+        "¿Quieres incluir cardio?": "No",
+        "Si haces cardio, ¿cuál prefieres?": [],
+        "Aparte del gimnasio, ¿practicas algún deporte o actividad física?": "No",
+        "¿Qué deporte o actividad?": "",
+        "¿Qué días lo practicas?": [],
+        "¿A qué hora empiezas normalmente?": "",
+        "¿Cuánto dura cada sesión o partido?": "",
+        "¿Cómo de intenso es?": "",
+        "Si tienes más de un deporte o cambian los días u horas, explícalo": "",
+        "¿Cómo es tu trabajo o estudio?": "Sentado casi todo el día",
+        "¿Qué días trabajas o estudias?": [
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes"
+        ],
+        "¿A qué hora empiezas a trabajar o estudiar?": "08:00 (mañana)",
+        "¿A qué hora terminas?": "16:00 (tarde)",
+        "Si tienes jornada partida o tu horario cambia según el día, explícalo": "",
+        "¿Cuántos pasos haces al día más o menos?": "5.000-8.000",
+        "¿Tienes turnos rotativos? (por ejemplo, una semana de mañanas y otra de tardes)": "No",
+        "¿Cómo son tus turnos y a qué hora entrenarías en cada uno?": "",
+        "¿A qué hora te levantas normalmente entre semana?": "07:30 (mañana)",
+        "¿A qué hora te acuestas normalmente entre semana?": "23:30 (noche)",
+        "¿Cómo duermes?": "Regular",
+        "¿Cuánto estrés tienes últimamente?": 5,
+        "¿Fumas o bebes alcohol?": [
+            "Alcohol los fines de semana"
+        ],
+        "¿Cómo es tu apetito?": "Normal",
+        "Cuéntame todo lo que comiste y bebiste AYER, con la hora y la cantidad aproximada": "Torrades amb pernil, macarrons amb tonyina, iogurt i fruita, truita amb amanida.",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Desayuno]": "7-9 h",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Media mañana]": "No la hago",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Comida]": "13-15 h",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Merienda]": "17-19 h",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Cena]": "21-23 h",
+        "¿A qué hora haces cada comida en un día normal entre semana? [Algo antes de dormir]": "No la hago",
+        "¿Cuántas comidas al día te verías capaz de hacer?": "4",
+        "¿Dónde sueles comer entre semana?": [
+            "En casa",
+            "De tupper en el trabajo o estudio"
+        ],
+        "¿Quién cocina normalmente en casa?": "Un poco de todo",
+        "¿Cuánto tiempo puedes dedicar a cocinar?": "Algo",
+        "¿Tienes báscula de cocina?": "Sí",
+        "¿Sigues alguna dieta especial?": "Ninguna",
+        "¿Qué alimentos NO comes o no te gustan nada?": [
+            "Como de todo"
+        ],
+        "¿Qué alimentos te encantan?": [
+            "Pollo",
+            "Arroz",
+            "Pasta"
+        ],
+        "¿Cómo son tus fines de semana con la comida?": "Como fuera alguna vez",
+        "¿Tomas algún suplemento?": [
+            "Ninguno"
+        ],
+        "¿Cuánta agua bebes al día?": "1-2 litros",
+        "¿Qué presupuesto tienes para la compra?": "Normal",
+        "¿Tienes o has tenido una relación difícil con la comida? (atracones, comer muy poco a propósito, compensar con ejercicio)": "No",
+        "¿Algo más que deba saber?": "",
+        "Confirmo que:": [
+            "La información que he dado es verdadera y avisaré si mi salud cambia.",
+            "Entiendo que es un plan de entrenamiento y orientación nutricional general, no un tratamiento médico.",
+            "Si tengo alguna enfermedad o tomo medicación, consultaré el plan con mi médico antes de empezar.",
+            "Doy permiso para que mis datos se usen solo para preparar y revisar mi plan."
+        ],
+        "¿Me dejas usar tus resultados de forma anónima como ejemplo?": "Sí",
+        "Si eres menor de 18 años: ¿tu padre, madre o tutor está de acuerdo?": "Soy mayor de edad",
+        "Nombre y apellido": "Marc Puig Serra",
+        "¿Dónde vas a entrenar?": "Gimnasio completo"
+    }
+}

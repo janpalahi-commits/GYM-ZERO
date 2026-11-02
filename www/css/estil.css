@@ -433,3 +433,116 @@ tr.dia th { padding: 26px 0 6px; border-bottom: none; font: 800 26px/1 var(--tit
 table tr.dia:first-child th { padding-top: 6px; }
 td.hora { font: 600 15px var(--mono); }
 .punt { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border-radius: 3px; background: var(--c); vertical-align: -1px; }
+
+/* ---------- Tarifes, pla personalitzat, llibreta i seguiment ---------- */
+
+/* Portada: les tres tarifes */
+.tarifes h2 { margin-top: 0; font-size: 44px; }
+.cartes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.cartes article { border: 2px solid var(--linia); border-radius: 12px; padding: 18px 20px; }
+.cartes article.destacada { border-color: var(--tinta); box-shadow: inset 0 6px 0 var(--vermell); }
+.cartes h3 { margin: 0; }
+.cartes .preu { margin: 12px 0 0; color: var(--mut); }
+.cartes .preu b { font: 800 46px/1 var(--titol); color: var(--tinta); margin-right: 4px; }
+.cartes .preu3 { margin: 2px 0 10px; font: 500 14px/1.4 var(--mono); color: var(--mut); }
+.cartes p:last-child { margin-bottom: 0; }
+
+/* Àrea del client: serveis del pla (oberts o tancats segons la tarifa) */
+.serveis { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.serveis article { background: var(--gris); border-radius: 8px; padding: 14px 16px; }
+.serveis h3 { margin: 0; font-size: 20px; }
+.serveis p { margin: 6px 0 0; font-size: 16px; }
+.serveis .btn { margin-top: 12px; font-size: 16px; padding: 9px 16px; }
+.serveis article.tancat { background: #fff; border: 2px dashed var(--linia); color: var(--mut); }
+
+/* Qüestionari (el formulari d'APP GYM): pàgines, opcions, escala de l'1 al 10 i graella d'hores */
+form.questionari [hidden] { display: none !important; }
+.idiomes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.idiomes button { margin: 0; padding: 6px 14px; font-size: 15px; background: #fff; color: var(--tinta); border-color: var(--linia); border-radius: 99px; }
+.idiomes button.actiu { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+.progres { position: sticky; top: 0; z-index: 2; height: 6px; margin: 18px 0 0; background: var(--gris); }
+.progres div { height: 100%; width: 0; background: var(--pista); transition: width .3s; }
+form.questionari section.full-questionari { border-top: 3px solid var(--tinta); margin-top: 28px; }
+form.questionari.per-passos section.full-questionari { margin-top: 18px; }
+form.questionari section.full-questionari h2 { margin: 14px 0 4px; }
+.pas { margin: 12px 0 0; font: 600 13px var(--mono); text-transform: uppercase; color: var(--mut); }
+.pregunta { margin-top: 18px; padding: 12px 14px; border-radius: 8px; background: var(--gris); }
+.pregunta.err { background: #fdecea; box-shadow: inset 4px 0 0 var(--vermell); }
+.enunciat { display: block; margin: 0; font-size: 17px; font-weight: 600; color: var(--tinta); }
+.obligatoria { color: var(--vermell); }
+.ajuda { margin: 2px 0 0; font-size: 15px; color: var(--mut); }
+.pregunta .msg { display: none; margin: 8px 0 0; color: #b3261e; font-weight: 600; font-size: 15px; }
+.pregunta.err .msg { display: block; }
+.pregunta input[type="text"], .pregunta input[type="date"], .pregunta textarea, .pregunta select { background: #fff; }
+.opcions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+label.opcio { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 8px 12px; border: 2px solid var(--linia); border-radius: 99px; background: #fff; color: var(--tinta); font-weight: 400; cursor: pointer; }
+label.opcio input { width: auto; margin: 0; accent-color: var(--pista); }
+label.opcio:has(input:checked) { border-color: var(--pista); background: #e3f1ea; }
+label.opcio.altres { flex: 1 1 260px; }
+label.opcio.altres input[type="text"] { flex: 1; min-width: 0; margin: 0; padding: 2px 4px; border: 0; border-bottom: 2px solid var(--linia); border-radius: 0; background: transparent; }
+.escala { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }
+.escala label.opcio { justify-content: center; padding: 10px 0; border-radius: 8px; font: 600 16px var(--mono); }
+.escala label.opcio input { position: absolute; opacity: 0; }
+.escala label.opcio:has(input:focus-visible) { outline: 2px solid var(--tinta); }
+.escala-extrems { display: flex; justify-content: space-between; gap: 10px; margin: 4px 0 0; font-size: 14px; color: var(--mut); }
+.fila-graella { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 12px; align-items: center; margin-top: 8px; }
+.fila-graella label, .fila-graella select { margin: 0; }
+.botons-questionari { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.botons-questionari button { margin: 0; }
+.botons-questionari [data-seguent], .botons-questionari [data-enviar] { flex: 1 1 200px; }
+
+/* Llibreta: la rutina en un full com el d'Excel */
+.accions-llibreta { display: flex; flex-wrap: wrap; gap: 10px; }
+.accions-llibreta .btn { margin-top: 0; }
+nav.dies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+nav.dies a { padding: 10px 16px; border: 2px solid var(--linia); border-radius: 99px; font: 700 17px/1 var(--titol); text-transform: uppercase; text-decoration: none; }
+nav.dies a[aria-current="page"] { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+.llegenda-llibreta { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 14px; color: var(--mut); }
+.llegenda-llibreta .rec { font: 600 14px var(--mono); }
+table.full { min-width: 900px; border-collapse: separate; border-spacing: 0; }
+table.full th { white-space: nowrap; }
+table.full th small { display: block; margin-top: 2px; font: 500 12px var(--mono); text-transform: none; }
+table.full td { vertical-align: top; min-width: 86px; }
+table.full .ex { position: sticky; left: 0; z-index: 1; background: #fff; min-width: 200px; border-right: 1px solid var(--linia); }
+table.full tbody .ex { font: 400 16px/1.3 var(--text); text-transform: none; color: var(--tinta); border-bottom: 1px solid var(--linia); }
+table.full tbody .ex b { display: block; }
+table.full tbody .ex .subtil { display: block; font-size: 13px; }
+table.full tbody .ex .etiqueta { margin-top: 6px; font-size: 12px; }
+a.apunta { font-size: 13px; margin-left: 6px; }
+.set { display: block; font: 500 13px/1.6 var(--mono); white-space: nowrap; }
+.rec { color: var(--vermell); font-weight: 600; }
+table.full td small { display: block; font: 500 11px var(--mono); color: var(--mut); margin-top: 4px; }
+td.te-record { background: #fdf1ef; }
+td.te-record .etiqueta { margin-top: 6px; font-size: 12px; }
+td.buida { font-size: 13px; color: var(--mut); background: repeating-linear-gradient(135deg, #f5f6f6 0 6px, #fff 6px 12px); }
+form.apunta table { max-width: 420px; }
+form.apunta input { margin-top: 0; padding: 6px 8px; font: 500 16px var(--mono); }
+tr.avui td { background: #e3f1ea; }
+.set-linia { font: 500 14px var(--mono); }
+
+/* Seguiment: revisions i missatges */
+.revisio { border-left: 4px solid var(--linia); padding: 2px 0 2px 14px; margin-top: 16px; }
+.revisio p { margin: 4px 0; }
+.resposta { margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #e3f1ea; }
+.conversa { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.conversa li { max-width: 80%; padding: 8px 12px; border-radius: 12px; background: var(--gris); }
+.conversa li.meu { align-self: flex-end; background: #e3f1ea; }
+.conversa li small { font: 500 12px var(--mono); color: var(--mut); }
+.conversa li p { margin: 4px 0 0; }
+table.respostes td:first-child { color: var(--mut); width: 55%; }
+
+/* Recepció: triar tarifa a l'hora de cobrar */
+form.quota select { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px; }
+form.quota button { margin-top: 0; padding: 7px 14px; font-size: 16px; }
+form.quota input[type="file"] { width: auto; flex: 1 1 220px; }
+form.quota label { margin-top: 0; }
+
+@media (max-width: 860px) {
+  .cartes { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .conversa li { max-width: 95%; }
+  .escala { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .fila-graella { grid-template-columns: minmax(0, 1fr); }
+  table.full .ex { min-width: 150px; }
+}

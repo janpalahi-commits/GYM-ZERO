@@ -44,6 +44,8 @@ foreach ($connexio->query("SELECT ubicacio, tipus FROM maquines WHERE estat = 'a
 }
 $total_maquines = array_sum(array_map('count', $zones));
 
+$tarifes = $connexio->query('SELECT * FROM tarifes ORDER BY nivell')->fetchAll();
+
 $arrel = '';
 $portada = true;
 $titol = 'Gym Zero';
@@ -131,6 +133,24 @@ require __DIR__ . '/inc/capcalera.php';
       <div style="--c: #8c96a0"><div class="zc"><b>Pes lliure</b><span>zona oberta</span></div><p>Manuelles i bancs</p></div>
     </div>
     <p class="nota-pols"><span class="ico-pols" aria-hidden="true"></span>Les <?= $total_maquines ?> màquines de força apunten les teves sèries quan hi acostes la polsera.</p>
+  </div>
+</section>
+
+<section class="tarifes">
+  <div class="wrap">
+    <h2>Tarifes</h2>
+    <div class="cartes">
+      <?php foreach ($tarifes as $t): ?>
+        <article<?= $t['nivell'] == 2 ? ' class="destacada"' : '' ?>>
+          <h3><?= h($t['nom']) ?></h3>
+          <p class="preu"><b><?= number_format($t['preu_mes'], 0, ',', '.') ?> €</b> al mes</p>
+          <p class="preu3">o <?= number_format($t['preu_3mesos'], 0, ',', '.') ?> € cada 3 mesos
+            (estalvies <?= number_format(3 * $t['preu_mes'] - $t['preu_3mesos'], 0, ',', '.') ?> €)</p>
+          <p><?= h($t['inclou']) ?></p>
+        </article>
+      <?php endforeach; ?>
+    </div>
+    <p class="nota">Es paga a recepció. Pots canviar de tarifa quan vulguis: la nova compta des del dia que la pagues.</p>
   </div>
 </section>
 

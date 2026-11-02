@@ -1,12 +1,14 @@
-# GYM-ZERO · Disseny de la base de dades (Fase 2)
+# GYM-ZERO · Disseny de la base de dades (Fase 2, ampliat a la fase 12)
 
 Estat: **dissenyada i provada en local** (MariaDB 10.11). Encara no està a Dinahosting.
 
 Fitxers:
-- `gymzero_bd.sql`: crea les 12 taules i la vista.
+- `gymzero_bd.sql`: crea les 20 taules i la vista.
 - `actualitza_fase9.sql`: afegeix la quota i les taules del torn a una base de dades que ja existeix, sense esborrar res.
 - `actualitza_fase10.sql`: treu la columna `coef_1rm` (el 1RM es calcula igual a totes les màquines).
 - `actualitza_fase11.sql`: afegeix la taula `recuperacions`.
+- `actualitza_fase12.sql`: afegeix les tarifes, els pagaments i les taules del pla personalitzat, la llibreta i el seguiment.
+- `dades_prova_fase12.sql`: tarifes, rutina, llibreta, revisions i missatges d'exemple (només per a proves, mai al servidor).
 - `dades_prova.sql`: usuaris, classes, reserves i entrenaments d'exemple.
 - `diagrama-bd.png` / `diagrama-bd.svg`: diagrama entitat-relació.
 - `proves/prova_concurrencia.php` i `proves/resultat_prova.txt`: prova del límit de places.
@@ -29,6 +31,14 @@ Fitxers:
 | `torns` | Els torns d'accés amb lector de polsera (codi, estat i clau de l'API). | Control d'accés |
 | `entrades` | Cada vegada que algú acosta la polsera al torn: qui, quan, si ha passat i per què. | Control d'accés |
 | `recuperacions` | Enllaços per posar una contrasenya nova quan l'usuari l'ha oblidada. Només se'n guarda el hash, caduquen en 1 hora i només serveixen una vegada. | Usuaris i login |
+| `tarifes` | Les 3 tarifes (Gimnàs, + pla, + seguiment) amb el preu d'1 i de 3 mesos. El `nivell` diu quins serveis té. | Tarifes |
+| `pagaments` | Cada cobrament de recepció: tarifa, mesos, import, fins quan paga i qui l'ha cobrat. | Tarifes |
+| `questionaris` | Les respostes del qüestionari del pla, en JSON, amb el consentiment per a les dades de salut. | Pla personalitzat |
+| `plans` | El PDF del pla que puja l'entrenador. | Pla personalitzat |
+| `rutina` | Els exercicis de cada dia de la rutina del client, amb la màquina si en té. | Llibreta |
+| `registre` | Les sèries que el client apunta a mà (exercicis sense màquina). | Llibreta |
+| `revisions` | La revisió de cada 2 setmanes: pes, com li va i la resposta de l'entrenador. | Seguiment |
+| `missatges` | La conversa entre el client i l'entrenador. | Seguiment |
 
 A més, la vista `v_resum_series` calcula el resum de cada sèrie: repeticions, velocitat mitjana, velocitat màxima i **pèrdua de velocitat** (de la repetició més ràpida a l'última). És el que farà servir l'historial del client.
 
@@ -40,6 +50,9 @@ A més, la vista `v_resum_series` calcula el resum de cada sèrie: repeticions, 
 - Un entrenament té moltes sèries; una sèrie té moltes repeticions (1:N).
 - Una màquina té moltes sèries (1:N).
 - Un torn i un usuari tenen moltes entrades (1:N). Si la polsera no és de ningú, l'entrada es guarda sense usuari.
+- Una tarifa té molts usuaris i molts pagaments; un usuari té molts pagaments (1:N).
+- Un usuari té molts qüestionaris, plans, revisions i missatges (1:N). Es guarden tots: l'últim és el que val.
+- Un usuari té moltes files de rutina; cada fila té moltes sèries apuntades a `registre` (1:N). Si la fila és d'una màquina, les sèries surten de `series` (polsera) i no de `registre`.
 
 ## 3. Decisions i per què
 
@@ -86,12 +99,22 @@ En realitat, amb el mateix percentatge del màxim no es fan les mateixes repetic
 
 **Còpies de seguretat.** No són una taula: es faran amb `mysqldump` des del servidor (ho veurem a la fase de backups).
 
+**Tarifes en una taula, no al codi.** Els preus i el que inclou cada tarifa són a `tarifes`. Si el gimnàs canvia un preu, es canvia a la base de dades i la portada i recepció ja surten bé. El `nivell` (1, 2, 3) és el que fa servir la web per decidir si un client pot entrar a la llibreta o al seguiment.
+
+**Cobrar en una transacció.** En cobrar, es bloqueja la fila del client (`FOR UPDATE`), es calcula la nova data i s'apunta el pagament. Si continua amb la mateixa tarifa, els mesos s'afegeixen al final del que ja tenia; si canvia de tarifa o li havia caducat, compta des del dia que paga.
+
+**Qüestionari en JSON.** Les preguntes poden canviar i l'eina de Python (carpeta `plans/`) llegeix el JSON tal qual. Una restricció `CHECK (JSON_VALID(respostes))` fa que la base de dades no accepti un text que no sigui JSON, i `CHECK (consentiment = 1)` fa que no es pugui guardar sense consentiment.
+
+**El PDF dins la base de dades.** Els plans es guarden com a `MEDIUMBLOB` (fins a 16 MB; la web en deixa pujar 10). Així no hi ha fitxers amb dades de salut en una carpeta pública del servidor i la còpia de seguretat de la base de dades ja els inclou.
+
+**Llibreta: màquina o a mà.** Una fila de la rutina amb `maquina_id` agafa les sèries de la polsera; sense màquina, el client les apunta a `registre`. La clau única `(rutina_id, data, num_serie)` fa que tornar a apuntar la mateixa sèrie la corregeixi en lloc de duplicar-la.
+
 ## 4. Com provar-ho a XAMPP
 
 1. Arrenca XAMPP: `sudo /opt/lampp/lampp start`.
 2. Obre `http://localhost/phpmyadmin` i crea una base de dades `gymzero_db` (cotejament `utf8mb4_unicode_ci`).
 3. Selecciona-la > **Importar** > `gymzero_bd.sql`.
-4. Torna a **Importar** > `dades_prova.sql`.
+4. Torna a **Importar** > `dades_prova.sql` i després `dades_prova_fase12.sql`.
 5. Comprova-ho a la pestanya SQL: `SELECT * FROM v_resum_series;`
 
 Usuaris de prova: `admin@gymzero.cat` / `Admin1234` i `marc@example.com` / `Client1234`.

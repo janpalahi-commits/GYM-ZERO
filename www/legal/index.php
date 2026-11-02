@@ -12,21 +12,25 @@ require __DIR__ . '/../inc/capcalera.php';
   <tr><th>Dada</th><th>Per a què</th></tr>
   <tr><td>Nom, cognoms i correu</td><td>Identificar-te i entrar a la web. El correu també serveix per recuperar la contrasenya.</td></tr>
   <tr><td>Contrasenya</td><td>Entrar a la web. Es guarda xifrada (amb un hash): ni el personal del gimnàs la pot llegir.</td></tr>
-  <tr><td>Quota</td><td>Saber fins quan la tens pagada. El pagament es fa a recepció i la web no guarda cap dada bancària.</td></tr>
+  <tr><td>Quota, tarifa i pagaments</td><td>Saber quina tarifa tens, fins quan la tens pagada i què has pagat. El pagament es fa a recepció i la web no guarda cap dada bancària.</td></tr>
   <tr><td>Codi de la polsera</td><td>Obrir el torn d'entrada i apuntar les sèries a les màquines.</td></tr>
   <tr><td>Reserves</td><td>Guardar la teva plaça a les classes.</td></tr>
   <tr><td>Entrades</td><td>Saber qui ha passat pel torn i quan, també quan no et deixa passar.</td></tr>
   <tr><td>Sèries de les màquines</td><td>Ensenyar-te el teu entrenament: pes, repeticions i velocitat.</td></tr>
+  <tr><td>Qüestionari del pla <span class="subtil">(tarifes amb pla)</span></td><td>Fer-te el pla d'entrenament i alimentació. Inclou dades de salut (lesions, malalties, embaràs).</td></tr>
+  <tr><td>Pla en PDF i llibreta <span class="subtil">(tarifes amb pla)</span></td><td>Donar-te el pla i guardar les sèries que apuntes a mà.</td></tr>
+  <tr><td>Revisions i missatges <span class="subtil">(tarifa amb seguiment)</span></td><td>El seguiment amb l'entrenador: el teu pes, com et va i els dubtes que li escrius.</td></tr>
 </table>
 
 <h2>Per què les podem fer servir</h2>
 <p>Perquè són necessàries per donar-te el servei del gimnàs que has contractat (article 6.1.b del RGPD). No les fem servir per a publicitat ni les donem a ningú.</p>
+<p>Les dades de salut del qüestionari són especials (article 9 del RGPD): només les guardem si hi dones el consentiment quan l'envies (article 9.2.a), i només les fa servir l'entrenador per fer-te el pla i el seguiment. El pla en PDF es fa a l'ordinador del gimnàs i, un cop pujat a la web, la còpia de l'ordinador s'esborra. Pots retirar el consentiment quan vulguis a recepció: esborrem el qüestionari i deixem de fer-te el pla.</p>
 
 <h2>Qui les veu</h2>
-<p>Tu, des de la teva àrea, i el personal de recepció. La web i la base de dades són en un servidor de Dinahosting, a Espanya, que només les guarda per nosaltres.</p>
+<p>Tu, des de la teva àrea, i el personal de recepció. El qüestionari, les revisions i els missatges només els veu l'entrenador. La web i la base de dades són en un servidor de Dinahosting, a Espanya, que només les guarda per nosaltres.</p>
 
 <h2>Quant de temps les guardem</h2>
-<p>Mentre siguis client. Quan et dones de baixa, el compte es desactiva; si demanes que s'esborri, s'esborra, i les entrades pel torn es queden sense el teu nom. Cada dia es fa una còpia de seguretat de la base de dades.</p>
+<p>Mentre siguis client. Quan et dones de baixa, el compte es desactiva; si demanes que s'esborri, s'esborra, i les entrades pel torn es queden sense el teu nom. Si deixes una tarifa amb pla, pots demanar a recepció que esborrem el qüestionari, els plans, les revisions i els missatges sense esborrar-te el compte. Cada dia es fa una còpia de seguretat de la base de dades.</p>
 
 <h2>Els teus drets</h2>
 <p>Pots demanar a recepció veure les teves dades, corregir-les, esborrar-les, que no les fem servir o que te les donem en un fitxer. Si creus que no les tractem bé, pots reclamar a l'<a href="https://www.aepd.es">Agència Espanyola de Protecció de Dades</a>.</p>

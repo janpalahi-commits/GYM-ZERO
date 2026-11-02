@@ -1,0 +1,124 @@
+Proves de la fase 12: tarifes, qüestionari, pla en PDF, llibreta i seguiment (2026-10-28, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Fetes amb curl contra el servidor PHP, amb la BD, dades_prova.sql i dades_prova_fase12.sql.
+1. Portada: preus de les tarifes
+   Gimnàs    55 € al mes ·    Gimnàs + pla    80 € al mes ·    Gimnàs + pla + seguiment    110 € al mes ·
+2. Qui pot entrar a cada servei (codi HTTP)
+   pàgina                      Laia    Pau   Marc Anònim
+   /client/questionari.php       403    200    200    302
+   /client/llibreta.php          403    200    200    302
+   /client/apunta.php            403    200    200    302
+   /client/pla.php               403    404    404    302
+   /client/seguiment.php         403    403    200    302
+   /admin/plans.php              403    403    403    302
+   /admin/client.php?id=2        403    403    403    302
+   Missatge que veu la Laia al qüestionari:
+   Aquest servei és de la tarifa Gimnàs + pla (80 € al mes). Ara tens la tarifa Gimnàs. Si la vols canviar, demana-ho a recepció.
+   El Pau a seguiment:
+   Aquest servei és de la tarifa Gimnàs + pla + seguiment (110 € al mes). Ara tens la tarifa Gimnàs + pla. Si la vols canviar, demana-ho a recepció.
+3. La meva àrea: secció El meu pla
+   Tens la tarifa Gimnàs|class="tancat"|Pla personalitzat i llibreta|class="tancat"|Seguiment
+   Tens la tarifa Gimnàs + pla|Qüestionari|Pla d'entrenament i alimentació|La meva llibreta|class="tancat"|Seguiment
+   Tens la tarifa Gimnàs + pla + seguiment|Qüestionari|Pla d'entrenament i alimentació|La meva llibreta|Seguiment
+4. El Pau envia el qüestionari amb una alçada impossible i la resta per omplir
+   Avís: Revisa les preguntes marcades en vermell
+   Preguntes en vermell: 58
+   Alçada -> Escriu la teva alçada en centímetres, per exemple 175
+   Confirmo -> Aquesta pregunta és obligatòria
+5. El Pau l'envia bé, en anglès (amb una opció inventada i una resposta d'una pàgina que no li toca)
+   ok: Thank you! I have everything I need. I&#039;ll start on your plan and message you soon.
++---------+------+-------------+-------+-----------------+--------------+
+| idioma  | pes  | alergies    | lesio | hora            | consentiment |
++---------+------+-------------+-------+-----------------+--------------+
+| English | 87.5 | ["Lactosa"] | []    | 07:00 (mañana)  |            1 |
++---------+------+-------------+-------+-----------------+--------------+
+6. L'entrenador: llista de plans pendents
+   Marc Puig Serra Gimnàs + pla + seguiment [Fer el pla] 
+   Pau Costa Mas Gimnàs + pla [Fer el pla] [Posar la rutina] 
+   Al panell: Plans i seguiment (2)
+7. Descarregar el JSON del Pau i pujar-li el pla
+   Content-Type: application/json; charset=UTF-8
+   Content-Disposition: attachment; filename="questionari_4.json"
+   client: Pau Costa Mas · objectiu: Perder grasa · al·lèrgies: ['Lactosa'] · columnes: 92
+   Un fitxer que no és PDF:
+   error: El fitxer no és un PDF.
+   El PDF:
+   ok: Pla pujat. Al client li surt un avís.
+   El Pau el descarrega:
+   Content-Type: application/pdf
+   Content-Disposition: attachment; filename="pla_pau.pdf"
+   És el mateix fitxer que s'ha pujat
+   La Laia no el pot descarregar ni posant-hi un altre usuari:
+   403
+   El Marc posa ?usuari= del Pau i rep el seu, no el del Pau:
+   404
+   Correcte: no és el del Pau
+8. Llibreta del Marc
+   Pestanyes: Dilluns Dimecres Divendres
+   Exercicis del dilluns: 4 · caselles amb rècord: 4 · setmanes: 8
+   Rècord del press de banca: 65 × 9
+   CSV: Content-Type: text/csv; charset=UTF-8 · 182 línies
+   ﻿"Dia de la rutina";Exercici;Data;Sèrie;Kg;Repeticions;"Apuntat per"
+   Dilluns;"Press de banca";14/09/2026;1;55;10;Polsera
+   Dilluns;"Press de banca";14/09/2026;2;55;9;Polsera
+9. El Marc apunta el press inclinat d'avui
+   Amb una sèrie dolenta:
+   Sèrie 2: les repeticions van d&#039;1 a 100 i el pes de 0 a 500 kg (buit si és amb el pes del cos).
+   Bé (la 3a buida):
+   ok: Press inclinat amb manuelles: 2 sèries apuntades el 28/10/2026.
+   Corregeix: la 2a amb 8 reps i n'afegeix una 3a:
+   ok: Press inclinat amb manuelles: 3 sèries apuntades el 28/10/2026.
++------------+-----------+------------+------+
+| data       | num_serie | carrega_kg | reps |
++------------+-----------+------------+------+
+| 2026-10-28 |         1 |       22.5 |   10 |
+| 2026-10-28 |         2 |       22.5 |    8 |
+| 2026-10-28 |         3 |       20.0 |   10 |
++------------+-----------+------------+------+
+   Amb una data de demà:
+   La data ha de ser d&#039;avui o dels últims 60 dies.
+   Un exercici de màquina (no es pot apuntar a mà) i un del Marc des del compte del Pau:
+   Marc, màquina: surt la llista: Tria l'exercici
+   Pau: La teva rutina no té exercicis per apuntar a mà: totes les sèries les apunten les màquines amb la polsera.
++----------------+
+| series_de_99kg |
++----------------+
+|              0 |
++----------------+
+10. Seguiment del Marc
+   Ja toca la revisió
+   ok: Revisió enviada. L&#039;entrenador te la respondrà i t&#039;arribarà un avís.
+   Una altra revisió el mateix dia:
+   La propera revisió toca el 11/11/2026. Si tens algun dubte abans, escriu un missatge.
+   Missatge buit i missatge bo:
+   El missatge no pot estar buit ni passar de 1000 caràcters.
+   Tu  · &lt;b&gt;Puc&lt;/b&gt; canviar la sentadilla per premsa?
+   Sense CSRF:
+   400
+11. L'entrenador respon
+   error: Revisa l&#039;exercici: cal el dia, el nom (màxim 80 caràcters) i d&#039;1 a 10 sèries.
++-----+-------+------------------------+--------+------------+--------------------------+
+| dia | ordre | exercici               | series | maquina_id | nota                     |
++-----+-------+------------------------+--------+------------+--------------------------+
+|   5 |     1 | Sentadilla             |      3 |          2 | amb cinturó              |
+|   5 |     2 | Hip thrust             |      3 |         15 | NULL                     |
+|   5 |     3 | Gambades amb manuelles |      3 |       NULL | per cama                 |
+|   5 |     4 | Premsa de cames        |      3 |       NULL | en lloc de la sentadilla |
++-----+-------+------------------------+--------+------------+--------------------------+
+   Avisos que rep el Marc:
+   L&#039;entrenador t&#039;ha canviat la rutina. Mira-la a la llibreta.
+   Tens un missatge nou de l&#039;entrenador.
+   L&#039;entrenador ha respost la teva revisió.
+   L&#039;entrenador t&#039;ha canviat la rutina. Mira-la a la llibreta.
+   Missatges del Marc sense llegir per l'entrenador: 0
+   Un client no pot fer servir el formulari de l'entrenador:
+   403
+12. Treure un exercici esborra el que s'hi havia apuntat a mà
+   Abans: 24 sèries
+   Després: 0 sèries
+13. El Pau retira el consentiment: recepció esborra les dades del pla
+   Sense marcar la confirmació: 2 qüestionaris
+   ok: Qüestionari, plans, revisions i missatges esborrats.
++--------------+-------+-----------+
+| questionaris | plans | pagaments |
++--------------+-------+-----------+
+|            0 |     0 |         1 |
++--------------+-------+-----------+

@@ -2,7 +2,10 @@
 // Gestió d'usuaris (els clients nous es donen d'alta a alta.php): activar/desactivar comptes, canviar el rol, donar la polsera RFID i apuntar la quota
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
+require_once __DIR__ . '/../inc/pagaments.php';
 requereix_admin($connexio);
+
+$tarifes = $connexio->query('SELECT * FROM tarifes ORDER BY nivell')->fetchAll();
 
 $jo = usuari_actual()['id'];
 
@@ -29,19 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 avis('error', 'Aquesta polsera ja és d\'un altre usuari.');
             }
         }
-    } elseif ($accio === 'pagar_mes' || $accio === 'pagar_3mesos') {
-        // 1 o 3 mesos més a partir del dia que acaba la quota; si ja havia caducat, a partir d'avui
-        $mesos = $accio === 'pagar_3mesos' ? 3 : 1;
-        $connexio->prepare(
-            "UPDATE usuaris
-                SET quota_fins = GREATEST(COALESCE(quota_fins, CURDATE() - INTERVAL 1 DAY), CURDATE() - INTERVAL 1 DAY)
-                                 + INTERVAL ? MONTH
-              WHERE id = ? AND rol = 'client'"
-        )->execute([$mesos, $usuari_id]);
-        $st = $connexio->prepare('SELECT quota_fins FROM usuaris WHERE id = ?');
-        $st->execute([$usuari_id]);
-        $fins = $st->fetchColumn();
-        avis('ok', $fins ? 'Quota pagada fins al ' . date('d/m/Y', strtotime($fins)) . '.' : 'Usuari no trobat.');
+    } elseif ($accio === 'cobrar') {
+        // Mateixa tarifa: s'allarga el que ja tenia. Tarifa nova (o quota caducada): compta des d'avui.
+        $mesos = (int) ($_POST['mesos'] ?? 0);
+        $cobrat = in_array($mesos, [1, 3], true)
+            ? cobra($connexio, $usuari_id, (int) ($_POST['tarifa_id'] ?? 0), $mesos, $jo)
+            : null;
+        avis($cobrat ? 'ok' : 'error', $cobrat
+            ? 'Cobrat: ' . euros($cobrat['import']) . ' (' . $cobrat['tarifa'] . ', ' . $mesos . ($mesos === 1 ? ' mes' : ' mesos')
+              . '). Quota pagada fins al ' . date('d/m/Y', strtotime($cobrat['fins'])) . '.'
+            : 'No s\'ha pogut cobrar: revisa la tarifa i els mesos.');
     } elseif ($accio === 'canviar_quota') {
         // Per corregir la data a mà. Buida vol dir que no té cap quota pagada.
         $data = $_POST['quota_fins'] ?? '';
@@ -71,7 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $usuaris = $connexio->query(
-    "SELECT u.id, u.nom, u.cognoms, u.email, u.rol, u.actiu, u.data_registre, u.targeta_rfid, u.quota_fins,
+    "SELECT u.id, u.nom, u.cognoms, u.email, u.rol, u.actiu, u.data_registre, u.targeta_rfid, u.quota_fins, u.tarifa_id,
+            (SELECT nom FROM tarifes t WHERE t.id = u.tarifa_id) AS tarifa,
+            (SELECT nivell FROM tarifes t WHERE t.id = u.tarifa_id) AS nivell,
             u.quota_fins >= CURDATE() AS quota_al_dia,
             u.quota_fins <= CURDATE() + INTERVAL 7 DAY AS caduca_aviat,
             (SELECT COUNT(*) FROM reserves r JOIN classes c ON c.id = r.classe_id
@@ -94,6 +96,7 @@ require __DIR__ . '/../inc/capcalera.php';
       <td>
         <?= h($us['nom'] . ' ' . $us['cognoms']) ?>
         <?php if ($us['rol'] === 'admin'): ?><span class="etiqueta">Admin</span><?php endif; ?>
+        <?php if ($us['rol'] === 'client' && $us['nivell'] >= 2): ?><br><a href="client.php?id=<?= (int) $us['id'] ?>">Pla i seguiment</a><?php endif; ?>
         <br><span class="subtil amaga-mobil"><?= h($us['email']) ?></span>
       </td>
       <td class="amaga-mobil"><?= (int) $us['reserves'] ?></td>
@@ -113,13 +116,24 @@ require __DIR__ . '/../inc/capcalera.php';
           <?php if (!$us['quota_al_dia']): ?><span class="etiqueta vermella">Sense pagar</span>
           <?php elseif ($us['caduca_aviat']): ?><span class="etiqueta groga">Caduca aviat</span>
           <?php else: ?><span class="etiqueta verda">Pagada</span><?php endif; ?>
+          <span class="subtil"><?= h($us['tarifa']) ?></span>
+          <form method="POST" class="quota">
+            <?= camp_csrf() ?>
+            <input type="hidden" name="usuari_id" value="<?= (int) $us['id'] ?>">
+            <input type="hidden" name="accio" value="cobrar">
+            <select name="tarifa_id" aria-label="Tarifa que paga">
+              <?php foreach ($tarifes as $t): ?>
+                <option value="<?= (int) $t['id'] ?>" <?= (int) $t['id'] === (int) $us['tarifa_id'] ? 'selected' : '' ?>><?= h($t['nom']) ?></option>
+              <?php endforeach; ?>
+            </select>
+            <button class="btn-secundari" name="mesos" value="1">Cobrar 1 mes</button>
+            <button class="btn-secundari" name="mesos" value="3">Cobrar 3 mesos</button>
+          </form>
           <form method="POST" class="quota">
             <?= camp_csrf() ?>
             <input type="hidden" name="usuari_id" value="<?= (int) $us['id'] ?>">
             <input type="date" name="quota_fins" value="<?= h($us['quota_fins']) ?>" aria-label="Quota pagada fins al">
-            <button class="btn-secundari" name="accio" value="canviar_quota">Desar</button>
-            <button class="btn-secundari" name="accio" value="pagar_mes">+1 mes</button>
-            <button class="btn-secundari" name="accio" value="pagar_3mesos">+3 mesos</button>
+            <button class="btn-secundari" name="accio" value="canviar_quota">Corregir la data</button>
           </form>
         <?php endif; ?>
       </td>
@@ -152,6 +166,6 @@ require __DIR__ . '/../inc/capcalera.php';
 </table>
 </div>
 <p class="subtil">Un compte desactivat no pot entrar. Les seves reserves no s'esborren.</p>
-<p class="subtil">Quota: quan un client paga a recepció, prem <b>+1 mes</b> o <b>+3 mesos</b>. La data és l'últim dia que la té pagada; a partir de l'endemà el torn de les sales no el deixa passar (a recepció sí que hi pot entrar). Els administradors (personal) entren sempre.</p>
+<p class="subtil">Quota: quan un client paga a recepció, tria la seva tarifa i prem <b>Cobrar 1 mes</b> o <b>Cobrar 3 mesos</b>. Si continua amb la mateixa tarifa, els mesos s'afegeixen al final del que ja tenia pagat; si canvia de tarifa, la nova compta des d'avui. Cada cobrament queda apuntat amb el preu. La data és l'últim dia que la té pagada; a partir de l'endemà el torn de les sales no el deixa passar (a recepció sí que hi pot entrar). Els administradors (personal) entren sempre.</p>
 <p class="subtil">Polsera: posa el cursor al quadre i acosta la polsera al lector RFID USB de recepció, que hi escriu el codi sol (també es pot escriure a mà). Si un client la perd, posa-hi el codi de la nova i l'antiga deixa de funcionar. Deixa-ho buit per treure-la.</p>
 <?php require __DIR__ . '/../inc/peu.php'; ?>
