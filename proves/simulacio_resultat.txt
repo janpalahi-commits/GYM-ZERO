@@ -1,0 +1,83 @@
+1. El botó surt a cada client (i no a l'administrador)
+   botons: 4
+   clients: 4 · text a sota: 4
+2. Client nou, sense polsera ni dades: primera setmana
+   Setmana simulada per a Nou (del 26/10/2026 al 01/11/2026): 4 dies d'entrenament i 77 sèries. No tenia polsera i se li ha posat la 002ED42A.
+   polsera: 002ED42A
+   2026-10-26 Mon · entrada 07:11 · 6 màquines, 20 sèries
+   2026-10-27 Tue · entrada 07:37 · 6 màquines, 19 sèries
+   2026-10-29 Thu · entrada 07:41 · 6 màquines, 19 sèries
+   2026-10-30 Fri · entrada 07:38 · 6 màquines, 19 sèries
+   entrades pel torn: 4
+3. Una sèrie de mostra (press de banca), repetició a repetició
+   60.0 kg · rep 1: 0.59 m/s, 0.40 m, 0.67 s
+   60.0 kg · rep 2: 0.58 m/s, 0.40 m, 0.69 s
+   60.0 kg · rep 3: 0.58 m/s, 0.40 m, 0.69 s
+   60.0 kg · rep 4: 0.55 m/s, 0.41 m, 0.76 s
+   60.0 kg · rep 5: 0.56 m/s, 0.40 m, 0.72 s
+   60.0 kg · rep 6: 0.54 m/s, 0.40 m, 0.75 s
+   60.0 kg · rep 7: 0.51 m/s, 0.41 m, 0.81 s
+   60.0 kg · rep 8: 0.51 m/s, 0.41 m, 0.81 s
+   60.0 kg · rep 9: 0.48 m/s, 0.40 m, 0.83 s
+   60.0 kg · rep 10: 0.45 m/s, 0.41 m, 0.91 s
+   60.0 kg · rep 11: 0.46 m/s, 0.41 m, 0.88 s
+   resum (vista): 11 reps, pèrdua de velocitat 22.0 %
+   resum (vista): 11 reps, pèrdua de velocitat 25.0 %
+   resum (vista): 11 reps, pèrdua de velocitat 25.9 %
+   resum (vista): 10 reps, pèrdua de velocitat 27.8 %
+4. Tres vegades més: cada vegada la setmana d'abans, i la càrrega puja cap al present
+   Setmana simulada per a Nou (del 19/10/2026 al 25/10/2026): 3 dies d'entrenament i 58 sèries.
+   Setmana simulada per a Nou (del 12/10/2026 al 18/10/2026): 4 dies d'entrenament i 77 sèries.
+   Setmana simulada per a Nou (del 05/10/2026 al 11/10/2026): 4 dies d'entrenament i 77 sèries.
+   CURL-01: 05/10 25.0 kg → 12/10 25.0 kg → 19/10 25.0 kg → 26/10 25.0 kg
+   PRESS-01: 05/10 60.0 kg → 12/10 60.0 kg → 19/10 60.0 kg → 26/10 60.0 kg
+   SQUAT-01: 06/10 80.0 kg → 09/10 80.0 kg → 13/10 82.5 kg → 16/10 82.5 kg → 23/10 82.5 kg → 27/10 85.0 kg → 30/10 85.0 kg
+   setmanes amb dades: 4 · dies: 15
+5. El Marc té rutina a la llibreta i dades fins ara: la setmana va abans de la primera que té
+   abans: primer entrenament 2026-09-21, apuntades a mà 66
+   Setmana simulada per a Marc (del 14/09/2026 al 20/09/2026): 3 dies d'entrenament i 29 sèries.
+   després: primer entrenament 2026-09-14, apuntades a mà 77
+   dies de la setmana nova = dies de la rutina: 1,3,5 / 1,3,5
+   a mà: Press inclinat amb manuelles 2026-09-14 sèrie 1: 15.5 kg × 10
+   a mà: Press inclinat amb manuelles 2026-09-14 sèrie 2: 15.5 kg × 10
+   a mà: Press inclinat amb manuelles 2026-09-14 sèrie 3: 15.5 kg × 9
+   a mà: Flexions 2026-09-14 sèrie 1: pes del cos × 9
+   a mà: Flexions 2026-09-14 sèrie 2: pes del cos × 8
+   a mà: Curl de bíceps amb manuelles 2026-09-16 sèrie 1: 10.0 kg × 9
+6. Les pàgines del client i de l'administrador es veuen bé amb les dades noves
+   /client/entrenament.php    200 0 avisos PHP
+   /client/llibreta.php       200 0 avisos PHP
+   /admin/usuaris.php         200 0 avisos PHP
+   /admin/entrades.php        200 0 avisos PHP
+   /admin/client.php?id=2     200 0 avisos PHP
+   /admin/                    200 0 avisos PHP
+7. Seguretat: sense ser administrador o sense CSRF no fa res
+   client: 403 · entrenaments de la Laia: 0
+   sense CSRF: 400 · entrenaments de la Laia: 0
+   a l'administrador:
+   Només es poden simular dades de clients.
+8. Client amb llibreta (tarifa amb pla) i sense rutina, 8 vegades (2 mesos): la rutina es crea sola i la càrrega puja poc a poc
+   Setmana simulada per a Pla (del 26/10/2026 al 01/11/2026): 4 dies d'entrenament i 77 sèries. No tenia polsera i se li ha posat la 91C2B39C. No tenia rutina a la llibreta i se li ha posat la de torso / cames (es pot canviar a Pla i seguiment).
+   rutina: 24 exercicis, dies 1,2,4,5
+   ABDUC-01: de 50.0 a 52.5 kg (+5 % en 8 setmanes)
+   CONTR-01: de 52.5 a 52.5 kg (+0 % en 6 setmanes)
+   CRUNCH-01: de 35.0 a 35.0 kg (+0 % en 6 setmanes)
+   CURL-01: de 17.5 a 22.5 kg (+29 % en 7 setmanes)
+   CURLP-01: de 22.5 a 22.5 kg (+0 % en 6 setmanes)
+   EXTQ-01: de 52.5 a 52.5 kg (+0 % en 6 setmanes)
+   FEME-01: de 35.0 a 35.0 kg (+0 % en 8 setmanes)
+   FEMS-01: de 42.5 a 42.5 kg (+0 % en 6 setmanes)
+   FONS-01: de 47.5 a 47.5 kg (+0 % en 6 setmanes)
+   HIP-01: de 85.0 a 95.0 kg (+12 % en 8 setmanes)
+   JALO-01: de 57.5 a 60.0 kg (+4 % en 8 setmanes)
+   LATERAL-01: de 12.5 a 12.5 kg (+0 % en 6 setmanes)
+   MILITAR-01: de 32.5 a 35.0 kg (+8 % en 7 setmanes)
+   PRESS-01: de 60.0 a 60.0 kg (+0 % en 7 setmanes)
+   REM-01: de 55.0 a 60.0 kg (+9 % en 8 setmanes)
+   ROTA-01: de 27.5 a 30.0 kg (+9 % en 8 setmanes)
+   SQUAT-01: de 77.5 a 82.5 kg (+6 % en 8 setmanes)
+   TALOA-01: de 47.5 a 47.5 kg (+0 % en 8 setmanes)
+   TALOD-01: de 70.0 a 70.0 kg (+0 % en 6 setmanes)
+   TRICEP-01: de 27.5 a 30.0 kg (+9 % en 7 setmanes)
+   llibreta: 95 sèries a la setmana visible · avisos PHP: 0
+   gràfic del press de banca: <h3>Press de banca intel·ligent</h3> punts 20, textos de pes 5

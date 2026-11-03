@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/pagaments.php';
+require_once __DIR__ . '/../inc/simulacio.php';
 requereix_admin($connexio);
 
 $tarifes = $connexio->query('SELECT * FROM tarifes ORDER BY nivell')->fetchAll();
@@ -52,6 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connexio->prepare("UPDATE usuaris SET quota_fins = ? WHERE id = ? AND rol = 'client'")
                      ->execute([$data === '' ? null : $data, $usuari_id]);
             avis('ok', 'Quota desada.');
+        }
+    } elseif ($accio === 'simular') {
+        // Una setmana d'entrenament inventada però realista (inc/simulacio.php)
+        try {
+            $sim = simula_setmana($connexio, $usuari_id);
+            avis('ok', 'Setmana simulada per a ' . $sim['nom'] . ' (del ' . $sim['des_de'] . ' al ' . $sim['fins_a'] . '): '
+                . $sim['dies'] . ' dies d\'entrenament i ' . $sim['series'] . ' sèries.'
+                . ($sim['polsera_nova'] ? ' No tenia polsera i se li ha posat la ' . $sim['polsera_nova'] . '.' : '')
+                . ($sim['rutina_nova'] ? ' No tenia rutina a la llibreta i se li ha posat la de torso / cames (es pot canviar a Pla i seguiment).' : ''));
+        } catch (RuntimeException $e) {
+            avis('error', $e->getMessage());
         }
     } elseif ($usuari_id === $jo) {
         // Així l'administrador no es pot treure l'accés a si mateix per error
@@ -156,6 +168,15 @@ require __DIR__ . '/../inc/capcalera.php';
               <input type="hidden" name="usuari_id" value="<?= (int) $us['id'] ?>">
               <button class="btn-secundari"><?= $us['rol'] === 'admin' ? 'Fer client' : 'Fer admin' ?></button>
             </form>
+            <?php if ($us['rol'] === 'client'): ?>
+              <form method="POST" class="simular">
+                <?= camp_csrf() ?>
+                <input type="hidden" name="accio" value="simular">
+                <input type="hidden" name="usuari_id" value="<?= (int) $us['id'] ?>">
+                <button class="btn-secundari">Simular dades</button>
+                <span class="subtil">(1 setmana)</span>
+              </form>
+            <?php endif; ?>
           </div>
         <?php else: ?>
           <span class="subtil">(tu)</span>
@@ -167,5 +188,6 @@ require __DIR__ . '/../inc/capcalera.php';
 </div>
 <p class="subtil">Un compte desactivat no pot entrar. Les seves reserves no s'esborren.</p>
 <p class="subtil">Quota: quan un client paga a recepció, tria la seva tarifa i prem <b>Cobrar 1 mes</b> o <b>Cobrar 3 mesos</b>. Si continua amb la mateixa tarifa, els mesos s'afegeixen al final del que ja tenia pagat; si canvia de tarifa, la nova compta des d'avui. Cada cobrament queda apuntat amb el preu. La data és l'últim dia que la té pagada; a partir de l'endemà el torn de les sales no el deixa passar (a recepció sí que hi pot entrar). Els administradors (personal) entren sempre.</p>
+<p class="subtil">Simular dades: omple una setmana d'entrenament del client com si hagués vingut al gimnàs (entrades pel torn, sèries a les màquines i, si té rutina, el que apunta a mà a la llibreta). Cada vegada que el prems afegeix la setmana d'abans, amb una mica menys de càrrega, i així es veu com progressa. Si el client no té polsera, se n'hi posa una; si té la llibreta però encara no té rutina, se li posa la de torso / cames perquè s'hi vegin les sèries.</p>
 <p class="subtil">Polsera: posa el cursor al quadre i acosta la polsera al lector RFID USB de recepció, que hi escriu el codi sol (també es pot escriure a mà). Si un client la perd, posa-hi el codi de la nova i l'antiga deixa de funcionar. Deixa-ho buit per treure-la.</p>
 <?php require __DIR__ . '/../inc/peu.php'; ?>

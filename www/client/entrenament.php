@@ -70,6 +70,27 @@ function esforc($perdua)
     return '<span class="etiqueta vermella">Molt exigent</span>';
 }
 
+// Quins punts del gràfic porten text: d'esquerra a dreta, només si queda prou lloc des de l'anterior.
+// L'últim punt sempre en porta (si no hi cap, es treu el d'abans).
+function etiquetes_que_caben(array $coords, $espai, callable $vol)
+{
+    $n = count($coords);
+    $triats = [];
+    $ultima_x = -1000;
+    foreach ($coords as $i => [$x]) {
+        if ($i === $n - 1) {
+            while ($triats && $x - $coords[array_key_last($triats)][0] < $espai && array_key_last($triats) !== 0) {
+                array_pop($triats);
+            }
+            $triats[$i] = true;
+        } elseif ($vol($i) && $x - $ultima_x >= $espai) {
+            $triats[$i] = true;
+            $ultima_x = $x;
+        }
+    }
+    return $triats;
+}
+
 // Gràfic de línia en SVG de la càrrega màxima de cada dia (sense cap llibreria)
 function grafic(array $punts)
 {
@@ -88,12 +109,22 @@ function grafic(array $punts)
         $coords[] = [round($x), round($y), $p];
     }
 
+    // Amb moltes setmanes els textos es trepitjarien: només s'escriuen els que hi caben.
+    // Pes: el primer, l'últim i quan canvia. Data: repartides i sempre l'última.
+    $pes = etiquetes_que_caben($coords, 70, fn($i) => $i === 0 || $i === $n - 1
+        || $coords[$i][2]['carrega_max'] != $coords[$i - 1][2]['carrega_max']);
+    $dates = etiquetes_que_caben($coords, 55, fn($i) => true);
+
     $svg = '<svg class="grafic" viewBox="0 0 ' . $amplada . ' ' . $alcada . '" role="img" aria-label="Evolució de la càrrega màxima">';
     $svg .= '<polyline points="' . implode(' ', array_map(fn($c) => $c[0] . ',' . $c[1], $coords)) . '" />';
-    foreach ($coords as [$x, $y, $p]) {
-        $svg .= '<circle cx="' . $x . '" cy="' . $y . '" r="5" />';
-        $svg .= '<text x="' . $x . '" y="' . ($y - 10) . '" class="valor">' . kg($p['carrega_max']) . ' kg</text>';
-        $svg .= '<text x="' . $x . '" y="' . ($alcada - 8) . '">' . date('d/m', strtotime($p['data'])) . '</text>';
+    foreach ($coords as $i => [$x, $y, $p]) {
+        $svg .= '<circle cx="' . $x . '" cy="' . $y . '" r="5"><title>' . date('d/m', strtotime($p['data'])) . ': ' . kg($p['carrega_max']) . ' kg</title></circle>';
+        if (isset($pes[$i])) {
+            $svg .= '<text x="' . $x . '" y="' . ($y - 10) . '" class="valor">' . kg($p['carrega_max']) . ' kg</text>';
+        }
+        if (isset($dates[$i])) {
+            $svg .= '<text x="' . $x . '" y="' . ($alcada - 8) . '">' . date('d/m', strtotime($p['data'])) . '</text>';
+        }
     }
     return $svg . '</svg>';
 }
