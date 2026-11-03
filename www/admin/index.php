@@ -4,6 +4,21 @@ require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
 
+// Clau nova perquè el PC de recepció es pugui descarregar les còpies (api/copia.php).
+// Es mostra una sola vegada; a la base de dades només en queda el hash. La d'abans deixa de servir.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clau_copies'])) {
+    comprova_csrf();
+    $clau = bin2hex(random_bytes(24));
+    $connexio->prepare("INSERT INTO configuracio (clau, valor) VALUES ('copies_token_hash', ?)
+                        ON DUPLICATE KEY UPDATE valor = VALUES(valor)")
+             ->execute([password_hash($clau, PASSWORD_DEFAULT)]);
+    $_SESSION['clau_copies'] = $clau;
+    header('Location: ./#copies');
+    exit;
+}
+$clau_nova = $_SESSION['clau_copies'] ?? null;
+unset($_SESSION['clau_copies']);
+
 $clients = $connexio->query("SELECT COUNT(*) FROM usuaris WHERE rol = 'client' AND actiu = 1")->fetchColumn();
 $classes = $connexio->query('SELECT COUNT(*) FROM classes WHERE inici > NOW() AND cancelada = 0')->fetchColumn();
 $entrades = $connexio->query(
@@ -23,12 +38,18 @@ $properes = $connexio->query(
       LIMIT 8"
 )->fetchAll();
 
-// L'última còpia de seguretat: el script copia_bd.sh deixa un avís 'sistema' als administradors
+// Còpies de seguretat: les fa la web sola cada dia (inc/copies.php). Si l'última ha fallat, ho diu l'avís.
+$copies = llista_copies();
 $st = $connexio->prepare(
-    "SELECT missatge, data FROM notificacions WHERE usuari_id = ? AND tipus = 'sistema' ORDER BY data DESC, id DESC LIMIT 1"
+    "SELECT missatge, data FROM notificacions
+      WHERE usuari_id = ? AND tipus = 'sistema' AND missatge LIKE 'ERROR: la còpia%' AND data >= NOW() - INTERVAL 1 DAY
+      ORDER BY data DESC, id DESC LIMIT 1"
 );
 $st->execute([usuari_actual()['id']]);
-$copia = $st->fetch();
+$error_copia = $st->fetch();
+$dir_copies = carpeta_copies();
+$descarregada = $dir_copies && is_file("$dir_copies/.descarregada") ? filemtime("$dir_copies/.descarregada") : null;
+$te_clau = (bool) $connexio->query("SELECT COUNT(*) FROM configuracio WHERE clau = 'copies_token_hash'")->fetchColumn();
 
 // Clients del pla amb feina pendent (els mateixos que surten marcats a plans.php)
 $pendent_plans = $connexio->query(
@@ -60,14 +81,48 @@ require __DIR__ . '/../inc/capcalera.php';
   <a class="btn btn-secundari" href="entrades.php">Veure les entrades</a>
 </p>
 
-<h2>Còpies de seguretat</h2>
-<?php if (!$copia): ?>
-  <p class="subtil">Encara no s'ha fet cap còpia de seguretat de la base de dades.</p>
-<?php elseif (str_starts_with($copia['missatge'], 'ERROR')): ?>
-  <div class="error"><?= h($copia['missatge']) ?> (<?= date('d/m/Y H:i', strtotime($copia['data'])) ?>)</div>
-<?php else: ?>
-  <p><span class="etiqueta verda">OK</span> <?= h($copia['missatge']) ?> <span class="subtil"><?= date('d/m/Y H:i', strtotime($copia['data'])) ?></span></p>
+<h2 id="copies">Còpies de seguretat</h2>
+<?php if ($error_copia && (!$copies || strtotime($error_copia['data']) > current($copies)['data'])): ?>
+  <div class="error"><?= h($error_copia['missatge']) ?> (<?= date('d/m/Y H:i', strtotime($error_copia['data'])) ?>)</div>
 <?php endif; ?>
+<?php if (!$copies): ?>
+  <p class="subtil">Encara no s'ha fet cap còpia. La web en fa una sola cada dia, la primera en acabar de carregar aquesta pàgina.</p>
+<?php else: ?>
+  <p class="subtil">La web en fa una cada dia i guarda les <?= COPIES_GUARDAR ?> últimes. Descarrega'n una de tant en tant
+     i guarda-la fora del servidor. Per restaurar-ne una: phpMyAdmin › Importar.</p>
+  <table>
+    <tr><th>Còpia</th><th>Feta</th><th>Mida</th><th></th></tr>
+    <?php foreach (array_slice($copies, 0, 3, true) as $nom => $c): ?>
+      <tr>
+        <td><span class="etiqueta verda">OK</span> <?= h($nom) ?></td>
+        <td><?= date('d/m/Y H:i', $c['data']) ?></td>
+        <td><?= number_format($c['mida'] / 1024, 0, ',', '.') ?> KB</td>
+        <td><a href="copia.php?f=<?= urlencode($nom) ?>">Descarregar</a></td>
+      </tr>
+    <?php endforeach; ?>
+  </table>
+  <?php if (count($copies) > 3): ?><p class="subtil">I <?= count($copies) - 3 ?> més d'abans.</p><?php endif; ?>
+<?php endif; ?>
+
+<h3>Còpia fora del servidor (PC de recepció)</h3>
+<?php if ($clau_nova): ?>
+  <div class="ok">Clau nova del PC de recepció: <code><?= h($clau_nova) ?></code><br>
+    Escriu-la a l'instal·lador del PC (<code>bash installa_pc.sh</code>). No es tornarà a veure: si la perds, en generes una altra.</div>
+<?php endif; ?>
+<?php if (!$te_clau): ?>
+  <p class="subtil">Encara no està configurada. Genera una clau i posa-la al PC de recepció.</p>
+<?php elseif (!$descarregada): ?>
+  <p class="subtil">El PC de recepció encara no s'ha descarregat cap còpia.</p>
+<?php elseif (time() - $descarregada > 3 * 86400): ?>
+  <div class="error">Fa <?= intdiv(time() - $descarregada, 86400) ?> dies que el PC de recepció no es descarrega cap còpia
+    (l'última, el <?= date('d/m/Y H:i', $descarregada) ?>). Mira que estigui encès i amb internet.</div>
+<?php else: ?>
+  <p><span class="etiqueta verda">OK</span> L'última descàrrega del PC de recepció: <?= date('d/m/Y H:i', $descarregada) ?>.</p>
+<?php endif; ?>
+<form method="POST"<?= $te_clau ? " onsubmit=\"return confirm('La clau d\\'ara deixarà de servir. Segur?')\"" : '' ?>>
+  <?= camp_csrf() ?>
+  <button type="submit" name="clau_copies" value="1" class="btn-secundari"><?= $te_clau ? 'Canviar la clau del PC' : 'Generar la clau del PC' ?></button>
+</form>
 
 <h2>Properes classes</h2>
 <?php if (!$properes): ?>

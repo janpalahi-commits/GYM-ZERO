@@ -25,3 +25,7 @@ try {
     http_response_code(500);
     die($text);
 }
+
+// Còpia de seguretat automàtica: un cop enviada la pàgina, si fa més d'un dia de l'última
+require_once __DIR__ . '/copies.php';
+register_shutdown_function('copia_si_toca', $connexio);

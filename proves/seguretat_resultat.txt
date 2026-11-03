@@ -1,0 +1,50 @@
+Proves de la fase 13 · seguretat (2026-11-03, Apache 2.4.58, PHP 8.3.6, 10.11.14-MariaDB-0ubuntu0.24.04.1). Amb la BD, dades_prova.sql i dades_prova_fase12.sql.
+
+1. Còpia automàtica: no n'hi ha cap; s'obre la portada
+   -rw------- gymzero_2026-11-03_102341.sql.gz
+   gzip: bé · taules: 22 · última línia: -- Fi de la còpia
+2. Una altra pàgina el mateix dia: no en fa cap més
+   còpies: 1
+3. Restaurar la còpia en una BD nova i comparar totes les taules
+   activitats=igual classes=igual configuracio=igual entrades=igual entrenaments=igual 
+   intents_login=igual maquines=igual missatges=igual pagaments=igual plans=igual questionaris=igual 
+   recuperacions=igual registre=igual repeticions=igual reserves=igual revisions=igual rutina=igual 
+   series=igual tarifes=igual torns=igual usuaris=igual 
+   vista v_resum_series: 118 files (original: 118)
+4. Avís als administradors: Còpia de seguretat feta: gymzero_2026-11-03_102341.sql.gz (19 KB).
+5. Des del navegador no es pot arribar a res de dins (codi HTTP)
+   /inc/                    403
+   /inc/config.php          403
+   /inc/copies.php          403
+   /inc/questionari.json    403
+   /css/                    403
+   /bd.sql                  403
+   /copies/                 404
+   /css/estil.css           200
+   /                        200
+6. Capçaleres de seguretat:
+   X-Frame-Options: SAMEORIGIN
+   Content-Security-Policy: frame-ancestors 'self'
+   X-Content-Type-Options: nosniff
+   Referrer-Policy: strict-origin-when-cross-origin
+   Permissions-Policy: camera=(), microphone=(), geolocation=()
+7. A gymzero.cat per http va a https:
+   301 -> https://gymzero.cat/reserves/?a=1
+8. Límit d'intents: 5 contrasenyes dolentes del Marc i després la bona
+   200 Correu o contrasenya incorrectes.
+   200 Correu o contrasenya incorrectes.
+   200 Correu o contrasenya incorrectes.
+   200 Correu o contrasenya incorrectes.
+   200 Correu o contrasenya incorrectes.
+   bona: 200 Massa intents seguits. Espera 15 minuts i torna-ho a provar, o demana a recepció que t'ajudin.
+   la Laia, des de la mateixa IP, sí que entra: 302 
+   passats 15 minuts, el Marc: 302 
+9. 20 errors des d'una IP (proxy del hosting: X-Forwarded-For), amb correus diferents:
+   des d'aquesta IP: 200 Massa intents seguits. Espera 15 minuts i torna-ho a provar, o demana a recepció que t'ajudin.
+   des d'una altra:  302 
+10. API de les còpies (PC de recepció)
+   sense clau: Clau incorrecta. [401]
+   clau dolenta: Clau incorrecta. [401]
+   clau generada al panell: 48 caràcters · a la BD: $2y$10$...
+   amb la clau: X-Copia: gymzero_2026-11-03_102341.sql.gz · igual que la del servidor: sí
+   panell: L'última descàrrega del PC de recepció: 03/11/2026 10:23.

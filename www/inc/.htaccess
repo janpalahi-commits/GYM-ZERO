@@ -1,2 +1,7 @@
-# Aquí només hi ha fitxers que inclouen les pàgines (config.php, bd.php...): ningú els ha d'obrir des del navegador
-Require all denied
+# Aquí hi ha la configuració i les funcions: no s'obren mai des del navegador
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Deny from all
+</IfModule>

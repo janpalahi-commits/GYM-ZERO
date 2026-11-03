@@ -12,7 +12,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP VIEW  IF EXISTS v_resum_series;
-DROP TABLE IF EXISTS missatges, revisions, registre, rutina, plans, questionaris, pagaments,
+DROP TABLE IF EXISTS configuracio, intents_login, missatges, revisions, registre, rutina, plans, questionaris, pagaments,
                      recuperacions, entrades, torns, notificacions, repeticions, series, entrenaments,
                      maquines, reserves, classes, activitats, usuaris, tarifes;
 SET FOREIGN_KEY_CHECKS = 1;
@@ -228,6 +228,29 @@ CREATE TABLE recuperacions (
   CONSTRAINT uq_recuperacions_token UNIQUE (token_hash),
   CONSTRAINT fk_recuperacions_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- INTENTS_LOGIN: entrades fallides, per bloquejar qui prova contrasenyes una rere l'altra.
+-- 5 errors amb el mateix correu o 20 des de la mateixa IP en 15 minuts: 15 minuts sense poder entrar.
+-- ---------------------------------------------------------------------
+CREATE TABLE intents_login (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email       VARCHAR(150) NOT NULL,             -- el que s'ha escrit, encara que no sigui de ningú
+  ip          VARCHAR(45)  NOT NULL,             -- IPv4 o IPv6
+  data        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX ix_intents_email (email, data),
+  INDEX ix_intents_ip (ip, data)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- CONFIGURACIO: valors de la web que no són de cap taula concreta.
+-- Ara: el hash de la clau amb què el PC de recepció es descarrega les còpies de seguretat.
+-- ---------------------------------------------------------------------
+CREATE TABLE configuracio (
+  clau        VARCHAR(40)  PRIMARY KEY,
+  valor       VARCHAR(255) NOT NULL,
+  canviat     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
