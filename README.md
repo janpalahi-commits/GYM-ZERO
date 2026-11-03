@@ -1,108 +1,114 @@
-### SMX2-2025/2026
+# GYM-ZERO
 
+Projecte Intermodular de 2n de SMX (INS Palamós), curs 2026-27. Autor: Jan Palahí.
 
-# Projecte Intermodular
+GYM-ZERO és un gimnàs inventat que funciona sense cap tecnologia: les reserves es fan per telèfon, les quotes s'apunten en paper i cadascú porta els entrenaments a la seva llibreta. El projecte el digitalitza. El gimnàs és fictici; la web, el codi i la base de dades són reals.
 
-## Context i situació inicial
+La web funciona a **[gymzero.cat](https://gymzero.cat)** (Dinahosting, PHP 8.4 i MariaDB).
 
-El projecte GYM ZERO neix amb l’objectiu de modernitzar un gimnàs tradicional que actualment no disposa de tecnología.
-Aquest gimnàs treballa de manera completament analògica: els registres de socis, els pagaments i les reserves de classes es fan manualment, no hi ha ordinadors ni wifi, i la comunicació amb els clients es realitza de manera presencial o telefònica
+## Què hi ha fet
 
-Aquesta manca de digitalització genera problemes com:
+| Part | Estat | On és |
+|---|---|---|
+| Web pública: portada amb l'horari i les places lliures, activitats i càlculs (1RM, IMC, calories) | Funciona | `www/index.php`, `www/activitats/`, `www/calculs/` |
+| Reserves de classes amb control de l'aforament (transacció i `SELECT … FOR UPDATE`) | Funciona | `www/reserves/`, `www/inc/reserves.php` |
+| Entrar, sortir i recuperar la contrasenya per correu | Funciona | `www/compte/` |
+| Àrea del client: reserves, avisos, el meu entrenament (gràfics i historial de sèries) | Funciona | `www/client/` |
+| Panell d'administració: classes, activitats, altes a recepció, polsera, quotes, entrades | Funciona | `www/admin/` |
+| Tres tarifes (Gimnàs, + pla, + seguiment) i cobrament de quotes de 1 o 3 mesos | Funciona | `www/inc/pagaments.php` |
+| Pla personalitzat: qüestionari en 4 idiomes i PDF del pla fet amb Python | Funciona | `www/client/questionari.php`, `plans/` |
+| Llibreta d'entrenament (full com un Excel, 8 setmanes, rècords, CSV) | Funciona | `www/client/llibreta.php` |
+| Seguiment amb l'entrenador: revisió cada 2 setmanes i missatges | Funciona | `www/client/seguiment.php` |
+| Còpies de seguretat automàtiques al servidor i còpia diària al PC de recepció | Funciona | `www/inc/copies.php`, `copies/` |
+| Seguretat: https, contrasenyes amb hash, CSRF, límit d'intents d'entrada | Funciona | `www/.htaccess`, `www/compte/login.php` |
+| API de les màquines (rep cada sèrie amb les seves repeticions) | Funciona | `www/api/serie.php` |
+| API del torn d'entrada (deixa passar si la quota està pagada) | Funciona | `www/api/entrada.php` |
+| Sèries de les màquines i entrades pel torn | Simulat (simulador en C++ i botó «Simular dades») | `simulador/`, `www/inc/simulacio.php` |
+| Màquina intel·ligent: polsera RFID, sensor de desplaçament, ESP32 | Dissenyat | `maquina/` |
+| Torn d'accés amb lector de polsera | Dissenyat | `acces/` |
+| Xarxa del gimnàs: 3 VLAN, 4 punts d'accés, 20 màquines, 2 PCs | Dissenyat | `xarxa/` |
+| Maqueta 3D del gimnàs | Model | `gimnas/gimnas-3d.html` |
 
--Errors en la gestió de cobraments i quotes.
+## Carpetes
 
--Dificultats per controlar l’ocupació de les sales i els horaris dels entrenadors.
+```
+www/         aplicació web en PHP (la que es puja al servidor, dins de web/)
+bd/          script de la base de dades, actualitzacions de cada fase, dades de prova i diagrama
+simulador/   simuladors de la màquina i del torn, en C++
+plans/       eina en Python que fa el PDF del pla personalitzat
+copies/      scripts de còpia: el PC de recepció es baixa la del dia; còpia i restauració en local
+proves/      scripts de prova de cada fase, amb el resultat i captures
+maquina/     disseny de la màquina intel·ligent
+acces/       disseny del control d'accés amb torn
+xarxa/       disseny de la xarxa
+gimnas/      maqueta 3D
+```
 
--Pèrdua d’informació o duplicació de dades en paper.
+## Com provar-ho en local (XAMPP)
 
--Absència de canals digitals per contactar amb els clients o promocionar serveis.
+1. Copia la carpeta `www` a `/opt/lampp/htdocs/` i canvia-li el nom a `gymzero`.
+2. Engega l'XAMPP i obre phpMyAdmin (`http://localhost/phpmyadmin`).
+3. Crea una base de dades buida que es digui `gymzero_db` (cotejament `utf8mb4_unicode_ci`), selecciona-la i importa-hi `bd/gymzero_bd.sql`.
+4. Per tenir dades de prova, importa també `bd/dades_prova.sql` i després `bd/dades_prova_fase12.sql`.
+5. A `www/inc/` copia `config.exemple.php` i anomena la còpia `config.php`. Amb l'XAMPP per defecte no cal canviar res.
+6. Obre `http://localhost/gymzero/`.
 
--Inexistència de còpies de seguretat i protocols de seguretat informàtica.
+Usuaris de prova (només amb les dades de prova, mai al servidor real):
 
-El projecte planteja la transformació del GYM ZERO en un Gimnàs 4.0, capaç d’integrar tecnologies de xarxa, serveis web, aplicacions internes, bases de dades i eines d’anàlisi de dades per millorar la gestió i l’experiència dels clients.
+| Usuari | Contrasenya | Rol |
+|---|---|---|
+| admin@gymzero.cat | Admin1234 | admin |
+| marc@example.com | Client1234 | client |
+| laia@example.com | Client1234 | client |
+| pau@example.com | Client1234 | client |
 
-A més, el nou gimnàs incorporarà un Laboratori Científic Simulat on s’analitzaran dades de rendiment i condició física dels usuaris (de forma simulada) per oferir un servei més personalitzat i basat en dades.
+## Base de dades
 
-### Abast del projecte
+22 taules InnoDB amb claus foranes i la vista `v_resum_series`, que calcula per a cada sèrie les repeticions, la velocitat mitjana i quanta velocitat s'ha perdut. El disseny i el diagrama són a `bd/disseny-bd.md` i `bd/diagrama-bd.png`.
 
-L’abast del projecte cobreix tots els àmbits essencials d’una transformació digital dins d’un entorn de formació professional de SMX.
-Concretament, el projecte inclou:
-Àmbit tècnic
+Les reserves es fan dins d'una transacció que bloqueja la classe, perquè dues persones no puguin agafar l'última plaça alhora (prova a `proves/bd_concurrencia.php`).
 
--Infraestructura de xarxa local (LAN) amb connexions Wi-Fi i segments separats per personal, clients i dispositius IoT.
+## Les màquines, el torn i els simuladors
 
--Instal·lació i configuració de servidors (físics o virtuals) per a serveis interns: DNS, DHCP, web, base de dades i còpies de seguretat.
+Cada màquina té un codi (per exemple `PRESS-01`) i una clau. Quan el client acosta la polsera i fa una sèrie, la màquina envia a l'API la càrrega i, per a cada repetició, la velocitat, el recorregut i la durada:
 
--Pàgina web pública allotjada a GitHub Pages, amb informació del gimnàs, guies i calculadores interactives (1RM, IMC, TDEE…).
+```
+POST /api/serie.php
+X-Token: <clau de la màquina>
 
--Portal intern per a entrenadors amb gestió de classes, reserves, incidències i accés al Laboratori.
+{"maquina": "PRESS-01", "targeta": "04A1B2C3", "carrega_kg": 62.5,
+ "repeticions": [{"velocitat": 0.77, "recorregut": 0.41, "durada": 0.52}, ...]}
+```
 
--Simulació del Laboratori Científic (LAB) per al càlcul i anàlisi de dades esportives mitjançant programes desenvolupats en Python, JavaScript o C++ (principalment seria C++).
+Els simuladors fan el paper de la màquina i del torn. Necessiten `g++` i `curl`:
 
-#### Àmbit de seguretat i manteniment
+```
+cd simulador
+g++ -std=c++17 -Wall -o simulador simulador.cpp
+./simulador http://localhost/gymzero/api/serie.php PRESS-01 token-PRESS-01
 
--Polítiques de còpies de seguretat 3-2-1, control d’usuaris i permisos, i protecció bàsica de la xarxa amb tallafocs i contrasenyes segures.
+g++ -std=c++17 -Wall -o torn torn.cpp
+./torn http://localhost/gymzero/api/entrada.php TORN-01 token-TORN-01
+```
 
--Gestió d’incidències i manteniment del sistema.
+Per ensenyar la web amb dades, a **Administració › Usuaris** cada client té el botó **Simular dades (1 setmana)**: fa com si hagués vingut una setmana sencera (entrades pel torn i sèries a les màquines). Cada vegada que es prem afegeix la setmana d'abans.
 
--Formació mínima del personal per fer ús dels nous sistemes digitals.
+## Còpies de seguretat
 
-#### Àmbit funcional
+Al servidor no hi ha cron, així que la mateixa web fa una còpia de la base de dades cada dia, amb la primera visita del dia. La guarda comprimida a `backup_db/`, fora de la carpeta pública, i en manté les 14 últimes. El panell d'administració avisa si falla.
 
--Digitalització del registre de socis i de les quotes.
+El PC de recepció se'n baixa una cada dia (`copies/baixa_copia.sh`, s'instal·la una vegada amb `copies/installa_pc.sh` i la clau que es genera al panell). Així hi ha la base de dades original, la còpia al servidor i la còpia fora del servidor.
 
--Automatització del procés de reserva de classes i control d’accés.
+Per a l'ordinador de proves hi ha `copies/copia_bd.sh` (mysqldump) i `copies/restaura_bd.sh`, que restaura una còpia en una base de dades a part per comprovar que funciona.
 
--Millora de la comunicació amb els clients (correu, web i xarxes socials).
+Les còpies no es pugen mai a GitHub.
 
--Creació d’un sistema centralitzat de dades per facilitar la gestió i els informes.
+## Proves
 
-#### Limitacions
+A `proves/` hi ha un script per a cada part (reserves, administració, API, accés, pla, seguretat, simulació...) i el resultat que dona. Les captures són de l'ordinador de proves, amb les persones inventades de les dades de prova.
 
--No s’instal·larà equipament físic real (és una simulació educativa).
+## Publicació
 
--No s’integraran sistemes de pagament reals ni sensors biomètrics físics.
+La web és a gymzero.cat des del 2 de novembre de 2026. Al servidor es puja el contingut de `www/` a la carpeta `web/`.
 
--L’abast se centra en la planificació, disseny i demostració funcional mitjançant eines de programari i simulació.
-
-Tot aquest abast és una planificació general que pot anar variant segons el transcurs del projecte i com ho vulgui acomodar segons les tasques que tingui plantejades fer, això ara mateix és el que m’agradaria més o menys acabar fent.
-
-
-# FASES
-
-## Fase 1 — Disseny i implementació de la infraestructura bàsica
-En aquesta primera fase es dissenya i es posa en marxa tota la infraestructura tècnica mínima perquè el GYM ZERO passi de ser un gimnàs 0.0 a tenir un sistema informàtic funcional i estable. En primer lloc, es defineix la xarxa local (LAN) del centre: s’instal·la un router amb sortida a internet, un switch principal i, si cal, punts d’accés Wi-Fi per donar cobertura a recepció, sales d’entrenament i zona de personal. Es planifica un esquema d’adreçament intern (per exemple, una subxarxa 192.168.X.0/24) i, com a millora, es poden separar tràfics per tipus d’ús (personal, convidats, dispositius LAB) mitjançant VLANs o SSIDs diferents.
-
-En paral·lel, s’instal·la un servidor principal (o una màquina virtual/contenidor en un host) amb un sistema operatiu tipus Ubuntu Server. Aquest servidor actua com a nucli dels serveis interns del gimnàs: servidor web intern (per al panell d’entrenadors), servidor de base de dades (MySQL/MariaDB) per guardar la informació de socis, reserves, incidències i dades del LAB, i servei de compartició d’arxius (per exemple, Samba o NFS) per emmagatzemar documents, informes i còpies de configuració. També es prepara un sistema de còpies de seguretat bàsic, que pot consistir en un disc extern o un repositori addicional on es desa regularment la base de dades i els fitxers crítics seguint una política senzilla (per exemple, còpia diària + còpia setmanal completa).
-
-A nivell de postos de treball, es configuren com a mínim un ordinador de recepció i un equip per al personal tècnic/entrenadors, amb sistemes operatius tipus Windows o Ubuntu Desktop, connectats a la LAN i amb accés al servidor central. Aquests equips s’utilitzen per gestionar l’alta de socis, consultar reserves, registrar incidències i accedir al panell intern. Paral·lelament, es desplega la pàgina web pública del gimnàs mitjançant GitHub Pages (carpeta /docs del repositori), que inclou informació bàsica del centre, tarifes i les primeres eines interactives com les calculadores d’entrenament (1RM, IMC, TDEE) implementades amb HTML i JavaScript.
-
-Finalment, en aquesta fase també s’implementa una primera versió del panell intern per a entrenadors i personal, encara que sigui amb funcionalitats bàsiques: inici de sessió, visualització i gestió de classes i reserves, registre d’incidències i, si és possible, un primer prototip del mòdul de LAB per poder importar dades simulades (per exemple, fitxers CSV) i guardar-les a la base de dades. Tot plegat es complementa amb una configuració mínima de seguretat: tallafocs al servidor (UFW), comptes d’usuari separades, contrasenyes fortes i desactivació de serveis innecessaris. Amb la finalització de la Fase 1, el gimnàs ja disposa d’una infraestructura informàtica bàsica operativa, amb xarxa, servidors i programes funcionant i preparats per ser millorats i ampliats en fases posteriors.
-
-## Fase 2 — Optimització, seguretat i consolidació del sistema
-Un cop la infraestructura bàsica i els programes principals ja estan en funcionament, la Fase 2 se centra en fer que el sistema del GYM ZERO sigui més segur, més estable i més còmode de gestionar en el dia a dia. L’objectiu no és afegir grans coses noves, sinó polir, reforçar i professionalitzar allò que ja s’ha muntat a la Fase 1.
-
-En primer lloc, es treballa la seguretat del sistema. Al servidor principal (Ubuntu Server) es revisen i es tanquen tots els ports que no siguin estrictament necessaris, configurant un tallafocs senzill amb UFW (per exemple, permetent només HTTP/HTTPS, SSH restringit i els ports interns de base de dades si cal). També s’instal·la i configura una eina com fail2ban per detectar intents repetits de connexió fallida i bloquejar automàticament possibles atacs de força bruta. A més, s’ordenen els usuaris i permisos: es creen grups diferenciats per administrador, personal del gimnàs i eventuals comptes tècniques, i s’assignen permisos mínims segons el rol (principi de “mínim privilegi”).
-
-En paral·lel, es dissenya i documenta una política de còpies de seguretat més clara i sistemàtica. Partint de la base implementada a la Fase 1, s’aplica una estratègia inspirada en la regla 3-2-1: tres còpies de les dades, en dos suports diferents, amb almenys una còpia fora de la màquina principal. Per exemple, es pot planificar una còpia diària incremental i una còpia setmanal completa de la base de dades i dels fitxers importants del servidor, guardades en un disc extern i, si és possible, en un servei de núvol privat o un segon equip. Aquesta fase també inclou la prova real de restauració d’una còpia, per assegurar que la documentació és correcta i que, en cas de problema, el sistema es podria recuperar.
-
-També es fan millores d’optimització i manteniment. S’automatitzen certes tasques amb scripts i cron (per exemple, neteja de fitxers temporals, rotació de logs o llançament de còpies de seguretat), es revisa el rendiment de la base de dades (indexació bàsica de les taules més consultades), i es comprova que el panell intern respongui de manera fluida amb les dades i funcionalitats actuals. En aquesta fase es poden incorporar eines senzilles de monitoratge, com scripts que comproven periòdicament si els serveis principals (web, DB) estan encesos i enregistres en un log, o eines gràfiques si el temps ho permet.
-
-Des del punt de vista funcional, la Fase 2 també serveix per refinar el panell intern i la web pública segons el feedback inicial. Això pot incloure millorar la usabilitat del panell d’entrenadors (per exemple, filtres de classes, millor visualització de reserves o estat de les incidències), afegir validacions a formularis, traduccions i petites millores visuals. A la web pública es poden acabar de polir les seccions d’informació, afegir enllaços clars a les calculadores i estructurar millor el contingut perquè sigui entenedor tant per als clients com per als professors que avaluen el projecte.
-
-Finalment, aquesta fase s’aprofita per consolidar la documentació tècnica: es deixa per escrit la configuració dels serveis, els passos de desplegament, els procediments de còpia i restauració i les normes bàsiques de seguretat i ús per al personal del gimnàs. D’aquesta manera, en tancar la Fase 2, el sistema del GYM ZERO no només funciona, sinó que és més segur, més mantenible i millor documentat, i queda preparat per poder créixer cap a funcionalitats més avançades a la Fase 3.
-
-## Fase 3 — Expansió, millores avançades i evolució cap al Gimnàs 4.0 complet
-La Fase 3 representa la part més innovadora i evolucionada del projecte, on el GYM ZERO deixa de ser només un gimnàs digitalitzat per convertir-se en un centre intel·ligent capaç d’oferir serveis avançats basats en dades, automatització i experiència de l’usuari. En aquesta fase ja no s’està “activant” la infraestructura bàsica ni reforçant la seguretat, sinó que s’estan incorporant funcionalitats que aporten valor afegit, milloren l’eficiència i introdueixen elements propis d’un Gimnàs 4.0.
-
-Un dels punts centrals d’aquesta fase és l’ampliació i potenciació del Laboratori Científic (LAB). S’afegeixen noves funcionalitats que permeten analitzar dades de rendiment esportiu de manera més completa i visual. Tot i que la recollida de dades continua sent simulada (d’acord amb les limitacions del projecte educatiu), es poden integrar nous tipus de dades com velocitat de barra, índex de fatiga, salts, pulsacions estimades, o progressió de càrregues al llarg de les setmanes. Aquestes dades s’emmagatzemen a la base de dades i es presenten mitjançant gràfics interactius, informes automàtics i estadístiques bàsiques. Opcionalment, s’hi pot incorporar algun mòdul experimental en C++ o Python que ofereixi càlculs avançats (per exemple, prediccions de 1RM, estimacions de volum d’entrenament o recomanacions automàtiques simples).
-
-Paral·lelament, es milloren diferents aspectes de la pàgina web pública i del panell intern. La web pública pot incorporar noves seccions com guies d’entrenament més completes, eines interactives addicionals o fins i tot una simulació d’assistent virtual senzill per ajudar els clients a trobar la informació que busquen. El panell intern pot rebre millores com una millor integració del calendari, avisos inteligents quan una classe està plena, estadístiques bàsques de participació o fins i tot un sistema intern de notificacions entre entrenadors.
-
-A nivell d’automatització i sistematització, la Fase 3 explora la possibilitat d’incloure dispositius IoT simulats dins la infraestructura del gimnàs. Aquests dispositius poden representar sensors d’ocupació, temperatura o ús de màquines, que envien dades simulades al servidor per tal de practicar la integració de dispositius externs dins la xarxa. També es pot incorporar un petit motor d’alertes o recomanacions (per exemple, quan un valor supera un llindar), demostrant el funcionament bàsic de sistemes proactius.
-
-Finalment, aquesta fase inclou la documentació de millores futures, deixant clar com podria evolucionar el sistema real si fos un projecte professional: integració amb passarel·les de pagament reals, control d’accés físic amb RFID, aplicació mòbil pròpia, recomanacions basades en IA o implementació real de monitors de ritme cardíac, velocitat i potència. Tot i no desenvolupar-se plenament, aquestes millores queden descrites per demostrar visió de futur i capacitat d’escalabilitat del sistema.
-
-En acabar la Fase 3, el GYM ZERO presenta una estructura digital sòlida, segura i evolucionada, complementada amb funcionalitats avançades que el situen com un projecte complet, modern i perfectament alineat amb el concepte de Gimnàs 4.0, demostrant una integració efectiva de tots els coneixements adquirits al llarg del cicle de SMX.
-
+`www/inc/config.php` no es puja mai a GitHub perquè conté la contrasenya de la base de dades.
