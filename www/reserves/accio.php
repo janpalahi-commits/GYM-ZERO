@@ -1,5 +1,4 @@
 <?php
-// Rep els formularis de "Reservar" i "Cancel·lar" i torna a la pàgina d'on venia.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/reserves.php';

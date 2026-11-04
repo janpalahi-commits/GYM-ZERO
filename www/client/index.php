@@ -1,5 +1,4 @@
 <?php
-// Àrea privada del client: les seves reserves i els seus avisos.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_login();
@@ -17,7 +16,6 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $reserves = $st->fetchAll();
 
-// La quota es mira a la base de dades: la pot haver canviat recepció mentre el client tenia la sessió oberta
 $st = $connexio->prepare(
     'SELECT quota_fins, quota_fins >= CURDATE() AS al_dia, quota_fins <= CURDATE() + INTERVAL 7 DAY AS caduca_aviat
        FROM usuaris WHERE id = ?'
@@ -25,7 +23,6 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $quota = $st->fetch();
 
-// El pla personalitzat i el seguiment depenen de la tarifa
 $t = tarifa_usuari($connexio, $u['id']);
 $tarifes = array_column($connexio->query('SELECT nivell, nom, preu_mes FROM tarifes')->fetchAll(), null, 'nivell');
 if ($t['nivell'] >= 2) {
@@ -50,7 +47,6 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $avisos = $st->fetchAll();
 
-// En obrir l'àrea, els avisos es marquen com a llegits
 $connexio->prepare('UPDATE notificacions SET llegida = 1 WHERE usuari_id = ?')->execute([$u['id']]);
 
 $titol = 'Hola, ' . $u['nom'];

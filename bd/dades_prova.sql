@@ -1,12 +1,5 @@
--- =====================================================================
--- GYM-ZERO · Dades de prova (Fase 2)
--- Importa-ho DESPRÉS de gymzero_bd.sql. Només per a proves:
--- contrasenyes de prova -> admin: Admin1234 · clients: Client1234
--- Les dates són relatives al dia que s'importa (CURDATE()).
--- =====================================================================
 SET NAMES utf8mb4;
 
--- Quota: el Marc la té pagada fins a final de mes, la Laia la té caducada i al Pau li caduca d'aquí a 5 dies
 INSERT INTO usuaris (id, nom, cognoms, email, password_hash, rol, targeta_rfid, quota_fins) VALUES
  (1, 'Admin', 'GYM-ZERO', 'admin@gymzero.cat', '$2y$10$eRJUxortN4WJSfhhfLdcHuU75awd6ySVm8c1C6HF42c8V0D1dv5Qa', 'admin', 'AD000001', NULL),
  (2, 'Marc', 'Puig Serra', 'marc@example.com', '$2y$10$FTfrEng3/G2qWY5JCEqwC./Y/4ftFp2Hk.ISNgGZe6cQFeykluye2', 'client', '04A1B2C3', LAST_DAY(CURDATE())),
@@ -20,7 +13,6 @@ INSERT INTO activitats (id, nom, descripcio, durada_min, places_per_defecte) VAL
  (4, 'Hipertrofia', 'Rutina orientada a guanyar massa muscular.', 60, 15),
  (5, 'Mobilitat', 'Sessió de mobilitat i estiraments.', 45, 2);
 
--- Classes dels propers dies (la de Mobilitat té només 2 places per provar el límit)
 INSERT INTO classes (id, activitat_id, inici, places) VALUES
  (1, 1, CURDATE() + INTERVAL 1 DAY + INTERVAL 18 HOUR, 15),
  (2, 2, CURDATE() + INTERVAL 1 DAY + INTERVAL 19 HOUR, 12),
@@ -31,8 +23,6 @@ INSERT INTO classes (id, activitat_id, inici, places) VALUES
 INSERT INTO reserves (usuari_id, classe_id) VALUES
  (2, 1), (3, 1), (2, 3), (4, 5);
 
--- 20 màquines, dues per grup muscular (vegeu xarxa/disseny-xarxa.md)
--- Clau de prova de cada màquina: token-<CODI> (ex.: token-PRESS-01, token-CURL-01)
 INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash) VALUES
  (1, 'PRESS-01', 'Press de banca intel·ligent', 'press de banca', 'Sala de força · tren superior', '$2y$10$sF5gXHi2ts6Z8f4jUe9kEuSITWYPg4po5ez/cO/LPnOY155gp08n6'),
  (2, 'SQUAT-01', 'Rack de sentadilla intel·ligent', 'sentadilla', 'Sala de força · cames', '$2y$10$Zib2GmLU20H7qVzRSFsp7.WIRZZq2VYDHcJDal/1/ONpyeYc5zDYO'),
@@ -55,7 +45,6 @@ INSERT INTO maquines (id, codi, nom, tipus, ubicacio, token_hash) VALUES
  (19, 'CRUNCH-01', 'Crunch en màquina intel·ligent', 'crunch', 'Sala de força · cames', '$2y$10$idmlWkdiHrPLnwRZzawol.j5NuRRwAo2qzT.gE1cOJ/t.tf8Zza1K'),
  (20, 'ROTA-01', 'Rotació de tronc intel·ligent', 'rotació de tronc', 'Sala de força · cames', '$2y$10$g9SQl1jNhcr85M0uD9o/t.3qt7u/NaYgI7ekDDCXRbrPOBny3xNFC');
 
--- Dos entrenaments del Marc (fa 7 dies i fa 2 dies), dades com les enviaria el simulador
 INSERT INTO entrenaments (id, usuari_id, data) VALUES
  (1, 2, CURDATE() - INTERVAL 7 DAY),
  (2, 2, CURDATE() - INTERVAL 2 DAY);
@@ -159,11 +148,9 @@ INSERT INTO repeticions (serie_id, num_rep, velocitat_mitjana, recorregut_m, dur
  (10, 6, 0.53, 0.56, 1.06),
  (10, 7, 0.50, 0.54, 1.07);
 
--- El torn d'entrada a les sales. Clau de prova: token-TORN-01
 INSERT INTO torns (id, codi, nom, token_hash) VALUES
  (1, 'TORN-01', 'Torn d''entrada a les sales', '$2y$10$VWAHG8kjSXJERqXJqkTLV.SOzmc.U91e/tdl0W1mUQaEDRLnd64f.');
 
--- Entrades dels dies que el Marc va entrenar, i un intent de la Laia (quota caducada)
 INSERT INTO entrades (torn_id, usuari_id, targeta, data_hora, permesa, motiu) VALUES
  (1, 2, '04A1B2C3', CURDATE() - INTERVAL 7 DAY + INTERVAL '17:58' HOUR_MINUTE, 1, 'Quota pagada'),
  (1, 2, '04A1B2C3', CURDATE() - INTERVAL 2 DAY + INTERVAL '17:57' HOUR_MINUTE, 1, 'Quota pagada'),

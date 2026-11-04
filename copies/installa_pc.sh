@@ -1,6 +1,4 @@
 #!/bin/bash
-# GYM-ZERO · Instal·la la còpia diària fora del servidor al PC de recepció (Ubuntu).
-# Ús: bash installa_pc.sh   (des d'aquesta carpeta). Es pot tornar a executar per canviar la clau.
 set -e
 cd "$(dirname "$0")"
 DESTI="$HOME/gymzero-copies"
@@ -23,7 +21,6 @@ fi
 printf '%s\n' "$CLAU" > "$FITXER_CLAU"
 chmod 600 "$FITXER_CLAU"
 
-# Cada hora i en engegar l'ordinador (sense duplicar les línies si ja hi eren)
 ( crontab -l 2>/dev/null | grep -v 'gymzero-copies/baixa_copia.sh' || true
   echo "17 * * * * bash $DESTI/baixa_copia.sh"
   echo "@reboot sleep 120 && bash $DESTI/baixa_copia.sh"

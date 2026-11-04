@@ -1,5 +1,4 @@
 <?php
-// Gestió d'activitats: crear-ne i activar/desactivar-les
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
@@ -37,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($accio === 'canviar_estat') {
-        // Una activitat desactivada no surt a la llista de classes ni es poden crear classes noves
         $st = $connexio->prepare('UPDATE activitats SET activa = 1 - activa WHERE id = ?');
         $st->execute([(int) ($_POST['activitat_id'] ?? 0)]);
         avis('ok', 'Activitat actualitzada.');

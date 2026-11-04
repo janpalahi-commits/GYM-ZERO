@@ -1,28 +1,23 @@
 <?php
-// Sessió de l'usuari i funcions que fan servir totes les pàgines.
-
 date_default_timezone_set('Europe/Madrid');
 
 session_set_cookie_params([
-    'httponly' => true,     // JavaScript no pot llegir la cookie de sessió
+    'httponly' => true,
     'samesite' => 'Lax',
-    'secure'   => !empty($_SERVER['HTTPS']),   // amb https, la cookie només viatja xifrada
+    'secure'   => !empty($_SERVER['HTTPS']),
 ]);
 session_start();
 
-// Escapa text abans d'escriure'l a l'HTML (evita XSS)
 function h($text)
 {
     return htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8');
 }
 
-// Usuari connectat, o null si no n'hi ha cap
 function usuari_actual()
 {
     return $_SESSION['usuari'] ?? null;
 }
 
-// Si no hi ha ningú connectat, l'envia al login
 function requereix_login()
 {
     if (!usuari_actual()) {
@@ -31,8 +26,6 @@ function requereix_login()
     }
 }
 
-// Només per a administradors. El rol es torna a mirar a la base de dades,
-// així si a algú li treuen el rol d'admin o el desactiven, deixa d'entrar a l'instant.
 function requereix_admin(PDO $bd)
 {
     requereix_login();
@@ -44,8 +37,6 @@ function requereix_admin(PDO $bd)
     }
 }
 
-// Tarifa del client i si té la quota al dia. Es mira a la base de dades cada vegada:
-// si recepció li canvia la tarifa o li caduca la quota, es nota a l'instant.
 function tarifa_usuari(PDO $bd, $usuari_id)
 {
     $st = $bd->prepare(
@@ -58,8 +49,6 @@ function tarifa_usuari(PDO $bd, $usuari_id)
     return $st->fetch();
 }
 
-// Serveis de pagament: el pla personalitzat i la llibreta (nivell 2) i el seguiment (nivell 3).
-// Cal tenir una tarifa d'aquest nivell i la quota pagada. Els administradors (l'entrenador) hi entren sempre.
 function requereix_tarifa(PDO $bd, $nivell)
 {
     requereix_login();
@@ -83,8 +72,6 @@ function requereix_tarifa(PDO $bd, $nivell)
     return $t;
 }
 
-// Token CSRF: cada formulari porta un codi secret de la sessió.
-// Així una altra web no pot enviar formularis en nom de l'usuari.
 function token_csrf()
 {
     if (empty($_SESSION['csrf'])) {
@@ -105,7 +92,6 @@ function comprova_csrf()
     }
 }
 
-// Missatges que es mostren una sola vegada després de redirigir
 function avis($tipus, $text)
 {
     $_SESSION['avis'] = ['tipus' => $tipus, 'text' => $text];
@@ -120,13 +106,10 @@ function mostra_avis()
     }
 }
 
-// Pàgina d'error amb el disseny de la web, en lloc d'una línia de text sola.
-// Es fa servir abans d'haver escrit res a la pàgina.
 function pagina_error($codi, $text, $titol = null)
 {
     http_response_code($codi);
     $titol ??= [400 => 'Formulari caducat', 403 => 'Sense permís', 404 => 'No l\'hem trobat'][$codi] ?? 'Hi ha hagut un error';
-    // La portada és a l'arrel; la resta de pàgines són dins d'una carpeta
     $arrel = dirname($_SERVER['SCRIPT_FILENAME']) === dirname(__DIR__) ? '' : '../';
     require __DIR__ . '/capcalera.php';
     echo '<p>' . h($text) . '</p>';
@@ -135,9 +118,6 @@ function pagina_error($codi, $text, $titol = null)
     exit;
 }
 
-// Color de cada activitat (el mateix a la portada, a Activitats i a Classes).
-// Va per l'id, així no cal guardar-lo a la base de dades.
-// El segon valor diu si el text ha de ser blanc perquè el fons és fosc.
 function color_activitat($id)
 {
     $colors = [

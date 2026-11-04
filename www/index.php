@@ -1,10 +1,7 @@
 <?php
-// Portada de la web: l'horari dels propers dies amb les places i el gimnàs.
-// Tothom la pot veure, no cal haver entrat.
 require_once __DIR__ . '/inc/sessio.php';
 require_once __DIR__ . '/inc/bd.php';
 
-// Els propers 6 dies que obrim (el diumenge és tancat), començant per avui
 $noms_dies = ['Dg', 'Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds'];
 $dies = [];
 for ($d = 0; count($dies) < 6; $d++) {
@@ -24,7 +21,6 @@ $st = $connexio->prepare(
 );
 $st->execute([$ultim]);
 
-// $tauler[hora][dia] = classes que comencen aquell dia a aquella hora
 $tauler = [];
 foreach ($st->fetchAll() as $c) {
     $tauler[date('H:i', strtotime($c['inici']))][date('Y-m-d', strtotime($c['inici']))][] = $c;
@@ -33,7 +29,6 @@ ksort($tauler);
 
 $activitats = $connexio->query('SELECT id, nom FROM activitats WHERE activa = 1 ORDER BY id')->fetchAll();
 
-// Màquines de força per zones. Els clients només en veuen el nom, no el codi.
 $zones_bd = [
     'Sala de força · tren superior' => ['Tren superior', 'var(--forca)'],
     'Sala de força · cames'         => ['Cames i abdominals', 'var(--cames)'],

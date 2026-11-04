@@ -1,6 +1,4 @@
 <?php
-// Fitxa d'un client per a l'entrenador: tarifa i pagaments, respostes del qüestionari,
-// el PDF del pla, la rutina de la llibreta i, si té la tarifa de seguiment, les revisions i els missatges.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/pagaments.php';
@@ -22,7 +20,6 @@ $st = $connexio->prepare('SELECT respostes, enviat FROM questionaris WHERE usuar
 $st->execute([$id]);
 $questionari = $st->fetch();
 
-// Les respostes en JSON, per passar-les a l'eina de Python que fa el PDF del pla (carpeta plans/)
 if (isset($_GET['json'])) {
     if (!$questionari) {
         pagina_error(404, 'Aquest client encara no ha enviat el qüestionari.');
@@ -30,7 +27,6 @@ if (isset($_GET['json'])) {
     header('Content-Type: application/json; charset=UTF-8');
     header('Content-Disposition: attachment; filename="questionari_' . $id . '.json"');
     header('Cache-Control: private, no-store');
-    // Com una fila de la fulla de Google d'APP GYM: hi afegim el que la web no pregunta (nom i lloc)
     $fila = ['Fecha de envío' => date('d/m/Y H:i:s', strtotime($questionari['enviat']))]
         + json_decode($questionari['respostes'], true)
         + array_replace(questionari()['fixos'], ['Nombre y apellido' => $c['nom'] . ' ' . $c['cognoms']]);
@@ -39,7 +35,6 @@ if (isset($_GET['json'])) {
     exit;
 }
 
-// Avís a l'àrea del client quan l'entrenador li respon o li canvia alguna cosa
 function avisa_client(PDO $bd, $usuari_id, $text)
 {
     $bd->prepare("INSERT INTO notificacions (usuari_id, tipus, missatge) VALUES (?, 'sistema', ?)")->execute([$usuari_id, $text]);
@@ -90,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $torna = '#rutina';
     } elseif ($accio === 'treure_exercici') {
-        // També s'esborra el que el client hi havia apuntat a mà (ON DELETE CASCADE); les sèries de màquina no es toquen
         $connexio->prepare('DELETE FROM rutina WHERE id = ? AND usuari_id = ?')->execute([(int) ($_POST['rutina_id'] ?? 0), $id]);
         avis('ok', 'Exercici tret de la rutina.');
         $torna = '#rutina';
@@ -110,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $torna = '#seguiment';
     } elseif ($accio === 'esborrar_dades_pla' && !empty($_POST['confirmo'])) {
-        // El client retira el consentiment o deixa el pla: fora les dades de salut i el seguiment (la rutina i la llibreta es queden)
         foreach (['questionaris', 'plans', 'revisions', 'missatges'] as $taula) {
             $connexio->prepare("DELETE FROM $taula WHERE usuari_id = ?")->execute([$id]);
         }
@@ -145,7 +138,6 @@ $maquines = $connexio->query("SELECT id, codi, nom FROM maquines WHERE estat <> 
 
 $revisions = revisions_client($connexio, $id);
 $missatges = missatges_client($connexio, $id);
-// L'entrenador ha llegit els missatges del client
 $connexio->prepare('UPDATE missatges SET llegit = 1 WHERE usuari_id = ? AND autor_id = ?')->execute([$id, $id]);
 
 $respostes = $questionari ? json_decode($questionari['respostes'], true) : null;

@@ -1,6 +1,4 @@
 <?php
-// Descarrega el PDF del pla personalitzat del client (l'últim que ha pujat l'entrenador).
-// L'administrador pot descarregar el de qualsevol client amb ?usuari=ID.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 $t = requereix_tarifa($connexio, 2);

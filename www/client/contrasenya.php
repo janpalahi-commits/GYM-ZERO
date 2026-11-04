@@ -1,5 +1,4 @@
 <?php
-// Canvi de contrasenya del client (la primera la posa a recepció quan es dona d'alta)
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_login();

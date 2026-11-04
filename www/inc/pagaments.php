@@ -1,8 +1,4 @@
 <?php
-// Cobrar la quota a recepció: es tria la tarifa i 1 o 3 mesos.
-// Si el client continua amb la mateixa tarifa, els mesos s'afegeixen al final del que ja tenia pagat.
-// Si canvia de tarifa (o ja li havia caducat), la nova compta des d'avui.
-
 function preu_tarifa(array $tarifa, $mesos)
 {
     return $mesos === 3 ? $tarifa['preu_3mesos'] : $tarifa['preu_mes'];
@@ -13,7 +9,6 @@ function euros($import)
     return number_format($import, 2, ',', '.') . ' €';
 }
 
-// Torna ['fins' => 'Y-m-d', 'import' => 80.00, 'tarifa' => 'Gimnàs + pla'], o null si l'usuari no és un client
 function cobra(PDO $bd, $usuari_id, $tarifa_id, $mesos, $cobrat_per)
 {
     if (!in_array($mesos, [1, 3], true)) {
@@ -25,7 +20,6 @@ function cobra(PDO $bd, $usuari_id, $tarifa_id, $mesos, $cobrat_per)
         $st->execute([$tarifa_id]);
         $tarifa = $st->fetch();
 
-        // FOR UPDATE: si dues persones de recepció cobren alhora el mateix client, no es trepitgen
         $st = $bd->prepare("SELECT tarifa_id, quota_fins, quota_fins >= CURDATE() AS al_dia
                               FROM usuaris WHERE id = ? AND rol = 'client' FOR UPDATE");
         $st->execute([$usuari_id]);

@@ -1,9 +1,3 @@
--- =====================================================================
--- GYM-ZERO · Afegir les 17 màquines noves (20 en total, dues per grup muscular)
--- Per a una base de dades que ja existeix. No esborra res i es pot executar dues vegades.
--- phpMyAdmin > gymzero_db > SQL > enganxa-ho i Continua.
--- Clau de prova de cada màquina: token-<CODI> (ex.: token-CURL-01). Només per a proves.
--- =====================================================================
 SET NAMES utf8mb4;
 
 UPDATE maquines SET ubicacio = 'Sala de força · tren superior' WHERE codi IN ('PRESS-01', 'REM-01');

@@ -1,7 +1,4 @@
 <?php
-// Seguiment amb l'entrenador (tarifa Gimnàs + pla + seguiment):
-// cada 2 setmanes el client explica com li va i l'entrenador li respon i, si cal, li canvia la rutina.
-// Entre revisió i revisió, li pot escriure els dubtes per missatge.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/seguiment.php';
@@ -47,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $revisions = revisions_client($connexio, $u['id']);
 $missatges = missatges_client($connexio, $u['id']);
-// En obrir la pàgina, els missatges de l'entrenador queden llegits
 $connexio->prepare('UPDATE missatges SET llegit = 1 WHERE usuari_id = ? AND (autor_id IS NULL OR autor_id <> ?)')
          ->execute([$u['id'], $u['id']]);
 

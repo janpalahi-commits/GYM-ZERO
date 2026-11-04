@@ -1,5 +1,3 @@
-// Qüestionari per passos: ensenya una pàgina cada vegada i salta les que no toquen, com el formulari d'APP GYM.
-// Sense aquest fitxer el formulari també funciona (surten totes les pàgines i el servidor ho comprova tot).
 (function () {
   var form = document.querySelector('form.questionari');
   if (!form) return;
@@ -16,7 +14,6 @@
   var historial = [];
   var actual = 0;
 
-  // On va després d'aquesta pàgina: el salt de l'última pregunta amb salt que tingui resposta
   function desti(n) {
     var d = null;
     pagines[n].querySelectorAll('.pregunta[data-nav]').forEach(function (q) {
@@ -88,7 +85,6 @@
   form.classList.add('per-passos');
   barra.hidden = false;
 
-  // Comença on era (si ha canviat d'idioma) o a la primera pàgina amb errors del servidor
   var inici = parseInt(campPagina.value, 10) || 0;
   var ambError = form.querySelector('.pregunta.err');
   if (ambError) inici = pagines.indexOf(ambError.closest('section.full-questionari'));
@@ -112,16 +108,12 @@
     if (e.submitter === enviar && !valida(actual)) e.preventDefault();
   });
 
-  // Escriure a "Altres" ja marca l'opció
   form.querySelectorAll('input[name^="o["]').forEach(function (t) {
     t.addEventListener('input', function () { if (t.value.trim()) t.parentNode.querySelector('input[value=o]').checked = true; });
   });
-  // La tecla Enter en un camp no envia el formulari (aniria al botó d'idioma)
   form.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.preventDefault();
   });
-  // En corregir una pregunta, treu el vermell
-  // (també mentre escriu: si no, el missatge desapareix en sortir del camp i la pàgina es mou sota el dit)
   function treuError(e) {
     var q = e.target.closest('.pregunta');
     if (q && q.classList.contains('err') && !error(q)) { q.classList.remove('err'); q.querySelector('.msg').textContent = ''; }

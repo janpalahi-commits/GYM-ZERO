@@ -1,4 +1,3 @@
-# Proves de l'alta de clients a recepció i del canvi de contrasenya (Fase 10). Des de la fase 12, amb tarifa.
 B=${B:-http://127.0.0.1:8088}
 BD=${BD:-gymzero_db}
 JA=$(mktemp); JC=$(mktemp)

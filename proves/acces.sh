@@ -1,5 +1,4 @@
 #!/bin/bash
-# Proves de l'API del torn d'entrada a les sales (api/entrada.php)
 B=${1:-http://127.0.0.1:8090}/api/entrada.php
 envia(){ echo "   $(curl -s -w ' [HTTP %{http_code}]' -H "X-Token: $1" -H 'Content-Type: application/json' -d "$2" $B)"; }
 echo "1. GET (no permès):";                   echo "   $(curl -s -w ' [HTTP %{http_code}]' $B)"

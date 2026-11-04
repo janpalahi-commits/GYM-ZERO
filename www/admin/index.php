@@ -1,11 +1,8 @@
 <?php
-// Panell d'administració: resum i properes classes
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
 
-// Clau nova perquè el PC de recepció es pugui descarregar les còpies (api/copia.php).
-// Es mostra una sola vegada; a la base de dades només en queda el hash. La d'abans deixa de servir.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clau_copies'])) {
     comprova_csrf();
     $clau = bin2hex(random_bytes(24));
@@ -38,7 +35,6 @@ $properes = $connexio->query(
       LIMIT 8"
 )->fetchAll();
 
-// Còpies de seguretat: les fa la web sola cada dia (inc/copies.php). Si l'última ha fallat, ho diu l'avís.
 $copies = llista_copies();
 $st = $connexio->prepare(
     "SELECT missatge, data FROM notificacions
@@ -51,7 +47,6 @@ $dir_copies = carpeta_copies();
 $descarregada = $dir_copies && is_file("$dir_copies/.descarregada") ? filemtime("$dir_copies/.descarregada") : null;
 $te_clau = (bool) $connexio->query("SELECT COUNT(*) FROM configuracio WHERE clau = 'copies_token_hash'")->fetchColumn();
 
-// Clients del pla amb feina pendent (els mateixos que surten marcats a plans.php)
 $pendent_plans = $connexio->query(
     "SELECT COUNT(*) FROM usuaris u JOIN tarifes t ON t.id = u.tarifa_id
       WHERE u.rol = 'client' AND u.actiu = 1 AND t.nivell >= 2

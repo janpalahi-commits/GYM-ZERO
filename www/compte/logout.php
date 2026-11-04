@@ -1,5 +1,4 @@
 <?php
-// Tancar la sessió
 require_once __DIR__ . '/../inc/sessio.php';
 
 $_SESSION = [];

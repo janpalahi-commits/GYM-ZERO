@@ -1,5 +1,4 @@
 <?php
-// Plans i seguiment: els clients de les tarifes amb pla, amb el que l'entrenador té pendent de cadascun
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
@@ -16,7 +15,6 @@ $clients = $connexio->query(
       ORDER BY u.nom, u.cognoms"
 )->fetchAll();
 
-// Què ha de fer l'entrenador amb cada client
 foreach ($clients as &$c) {
     $c['pendent'] = [];
     if ($c['questionari'] && (!$c['pla'] || $c['questionari'] > $c['pla'])) {

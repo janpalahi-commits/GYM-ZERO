@@ -1,9 +1,4 @@
 <?php
-// Enviament de correus de la web (de moment, només el de recuperar la contrasenya).
-// A Dinahosting s'envien amb mail() de PHP. A XAMPP no hi ha servidor de correu:
-// el correu es desa en un fitxer de text de la carpeta temporal (/tmp/gymzero-correus.txt)
-// per poder-lo obrir i provar l'enllaç. Es tria a config.php amb CORREU_MODE ('mail' o 'fitxer').
-
 function envia_correu($a, $assumpte, $text)
 {
     $mode = defined('CORREU_MODE') ? CORREU_MODE : 'fitxer';
@@ -21,8 +16,6 @@ function envia_correu($a, $assumpte, $text)
     return $ok;
 }
 
-// Adreça de la web per als enllaços dels correus. Es posa a config.php i no es treu de la petició:
-// si es fes servir el nom que envia el navegador, algú podria fer que l'enllaç portés a una altra web.
 function url_web()
 {
     return rtrim(defined('WEB_URL') ? WEB_URL : 'http://localhost/gymzero', '/');

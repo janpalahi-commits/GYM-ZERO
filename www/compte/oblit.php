@@ -1,5 +1,4 @@
 <?php
-// "Has oblidat la contrasenya?": envia per correu un enllaç per posar-ne una de nova.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/correu.php';
@@ -21,11 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuari = $st->fetch();
 
     if ($usuari) {
-        // Com a molt 3 correus per hora per compte, perquè ningú no pugui omplir la bústia d'una altra persona
         $st = $connexio->prepare('SELECT COUNT(*) FROM recuperacions WHERE usuari_id = ? AND creada > NOW() - INTERVAL 1 HOUR');
         $st->execute([$usuari['id']]);
         if ($st->fetchColumn() < 3) {
-            // El codi de l'enllaç només va al correu; a la base de dades se'n guarda el hash
             $codi = bin2hex(random_bytes(32));
             $connexio->prepare('INSERT INTO recuperacions (usuari_id, token_hash, caduca) VALUES (?, ?, NOW() + INTERVAL 1 HOUR)')
                      ->execute([$usuari['id'], hash('sha256', $codi)]);
@@ -40,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
     }
-    // Sempre el mateix missatge, hi hagi compte o no: així no es pot saber quins correus estan registrats
     $enviat = true;
 }
 

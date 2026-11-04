@@ -1,14 +1,3 @@
-// GYM-ZERO · Simulador del torn d'entrada a les sales
-//
-// Fa el que faria el torn real (dissenyat però no construït):
-//   1. El client acosta la polsera RFID al lector del torn (aquí s'escriu el codi de la polsera).
-//   2. El torn pregunta a l'API PHP si pot passar.
-//   3. Si l'API diu que sí, desbloqueja el torn per a una volta; si diu que no, ensenya el motiu.
-//
-// Compilar:  g++ -std=c++17 -Wall -o torn torn.cpp
-// Executar:  ./torn [url_api] [codi_torn] [clau]
-//   ex.:     ./torn http://localhost/gymzero/api/entrada.php TORN-01 token-TORN-01
-
 #include <iostream>
 #include <string>
 
@@ -38,7 +27,6 @@ int main(int argc, char* argv[])
         long codi = envia(url, clau, json, resposta);
 
         if (codi == 0) {
-            // Sense connexió el torn no pot saber si la quota està pagada: queda bloquejat
             cout << "[TORN BLOQUEJAT] Sense connexió. Passa per recepció (" << resposta << ")\n";
         } else if (codi == 200) {
             bool obrir = camp(resposta, "obrir") == "true";

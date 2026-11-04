@@ -1,4 +1,3 @@
-# Aquí hi ha la configuració i les funcions: no s'obren mai des del navegador
 <IfModule mod_authz_core.c>
   Require all denied
 </IfModule>

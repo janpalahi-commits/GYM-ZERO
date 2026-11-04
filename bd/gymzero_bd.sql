@@ -1,14 +1,3 @@
--- =====================================================================
--- GYM-ZERO · Base de dades (Fase 2)
--- MariaDB 10.11 / 11.x · motor InnoDB · utf8mb4
---
--- Com importar-ho:
---   phpMyAdmin > selecciona la base de dades > Importar > aquest fitxer.
---
--- ATENCIÓ: el principi del fitxer esborra les taules si ja existeixen
--- (incloent l'antiga taula `reserves`). Prova-ho primer a XAMPP.
--- =====================================================================
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP VIEW  IF EXISTS v_resum_series;
@@ -17,17 +6,13 @@ DROP TABLE IF EXISTS configuracio, intents_login, missatges, revisions, registre
                      maquines, reserves, classes, activitats, usuaris, tarifes;
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ---------------------------------------------------------------------
--- TARIFES: el que paga cada client cada mes. El nivell diu quins serveis té:
--- 1 = gimnàs, 2 = + pla personalitzat i llibreta, 3 = + seguiment amb l'entrenador
--- ---------------------------------------------------------------------
 CREATE TABLE tarifes (
   id           TINYINT UNSIGNED PRIMARY KEY,
   nom          VARCHAR(40)  NOT NULL,
   nivell       TINYINT UNSIGNED NOT NULL,
   preu_mes     DECIMAL(6,2) NOT NULL,
   preu_3mesos  DECIMAL(6,2) NOT NULL,
-  inclou       VARCHAR(255) NOT NULL,            -- el que es mostra a la portada
+  inclou       VARCHAR(255) NOT NULL,
   CONSTRAINT uq_tarifes_nivell UNIQUE (nivell),
   CONSTRAINT ck_tarifes_preus CHECK (preu_mes > 0 AND preu_3mesos > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -37,20 +22,17 @@ INSERT INTO tarifes (id, nom, nivell, preu_mes, preu_3mesos, inclou) VALUES
  (2, 'Gimnàs + pla', 2, 80.00, 210.00, 'Tot el del gimnàs, un pla d''entrenament i alimentació fet per a tu i la llibreta per apuntar els entrenos.'),
  (3, 'Gimnàs + pla + seguiment', 3, 110.00, 300.00, 'Tot l''anterior, una revisió amb l''entrenador cada 2 setmanes i missatges per resoldre dubtes i canviar la rutina.');
 
--- ---------------------------------------------------------------------
--- USUARIS: clients i administradors del gimnàs
--- ---------------------------------------------------------------------
 CREATE TABLE usuaris (
   id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nom            VARCHAR(60)  NOT NULL,
   cognoms        VARCHAR(100) NOT NULL,
   email          VARCHAR(150) NOT NULL,
-  password_hash  VARCHAR(255) NOT NULL,          -- password_hash() de PHP, mai la contrasenya
+  password_hash  VARCHAR(255) NOT NULL,
   rol            ENUM('client','admin') NOT NULL DEFAULT 'client',
-  targeta_rfid   VARCHAR(32)  NULL,              -- UID del xip de la polsera, per passar el torn i fer servir les màquines
+  targeta_rfid   VARCHAR(32)  NULL,
   actiu          TINYINT(1)   NOT NULL DEFAULT 1,
-  quota_fins     DATE         NULL,              -- últim dia amb la quota pagada (NULL: no l'ha pagada mai)
-  tarifa_id      TINYINT UNSIGNED NOT NULL DEFAULT 1,  -- tarifa que paga (i quins serveis té)
+  quota_fins     DATE         NULL,
+  tarifa_id      TINYINT UNSIGNED NOT NULL DEFAULT 1,
   data_registre  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT uq_usuaris_email UNIQUE (email),
   CONSTRAINT uq_usuaris_rfid  UNIQUE (targeta_rfid),
@@ -58,9 +40,6 @@ CREATE TABLE usuaris (
     REFERENCES tarifes(id) ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- ACTIVITATS: el tipus d'activitat (Musculació, Cross Training...)
--- ---------------------------------------------------------------------
 CREATE TABLE activitats (
   id                 INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nom                VARCHAR(60)  NOT NULL,
@@ -71,10 +50,6 @@ CREATE TABLE activitats (
   CONSTRAINT uq_activitats_nom UNIQUE (nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- CLASSES: una activitat concreta en un dia i hora, amb places limitades
--- (és el que el client reserva)
--- ---------------------------------------------------------------------
 CREATE TABLE classes (
   id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   activitat_id  INT UNSIGNED NOT NULL,
@@ -87,11 +62,6 @@ CREATE TABLE classes (
   CONSTRAINT ck_classes_places CHECK (places > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- RESERVES: un usuari reserva una plaça en una classe
---  · uq_reserves_usuari_classe impedeix reserves duplicades
---  · el límit de places es controla amb una transacció (vegeu disseny-bd.md)
--- ---------------------------------------------------------------------
 CREATE TABLE reserves (
   id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id        INT UNSIGNED NOT NULL,
@@ -107,23 +77,17 @@ CREATE TABLE reserves (
   INDEX ix_reserves_classe_estat (classe_id, estat)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- MAQUINES: màquines intel·ligents (dissenyades; les dades són simulades)
--- ---------------------------------------------------------------------
 CREATE TABLE maquines (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  codi        VARCHAR(20)  NOT NULL,             -- ex.: PRESS-01
+  codi        VARCHAR(20)  NOT NULL,
   nom         VARCHAR(80)  NOT NULL,
-  tipus       VARCHAR(40)  NOT NULL,             -- ex.: press de banca, premsa de cames
+  tipus       VARCHAR(40)  NOT NULL,
   ubicacio    VARCHAR(60)  NULL,
   estat       ENUM('activa','manteniment','baixa') NOT NULL DEFAULT 'activa',
-  token_hash  VARCHAR(255) NOT NULL,             -- clau de l'API de la màquina, guardada amb hash
+  token_hash  VARCHAR(255) NOT NULL,
   CONSTRAINT uq_maquines_codi UNIQUE (codi)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- ENTRENAMENTS: el dia que un usuari entrena (agrupa les seves sèries)
--- ---------------------------------------------------------------------
 CREATE TABLE entrenaments (
   id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id  INT UNSIGNED NOT NULL,
@@ -133,14 +97,11 @@ CREATE TABLE entrenaments (
   CONSTRAINT uq_entrenaments_usuari_data UNIQUE (usuari_id, data)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- SERIES: una sèrie feta en una màquina dins d'un entrenament
--- ---------------------------------------------------------------------
 CREATE TABLE series (
   id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   entrenament_id  INT UNSIGNED NOT NULL,
   maquina_id      INT UNSIGNED NOT NULL,
-  num_serie       TINYINT UNSIGNED NOT NULL,     -- 1a, 2a, 3a sèrie a aquesta màquina aquest dia
+  num_serie       TINYINT UNSIGNED NOT NULL,
   carrega_kg      DECIMAL(5,1) NOT NULL,
   inici           DATETIME     NOT NULL,
   CONSTRAINT fk_series_entrenament FOREIGN KEY (entrenament_id)
@@ -151,26 +112,19 @@ CREATE TABLE series (
   CONSTRAINT ck_series_carrega CHECK (carrega_kg >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- REPETICIONS: cada repetició d'una sèrie, tal com l'envia la màquina
--- (permet calcular la pèrdua de velocitat dins de la sèrie)
--- ---------------------------------------------------------------------
 CREATE TABLE repeticions (
   id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   serie_id          INT UNSIGNED NOT NULL,
   num_rep           TINYINT UNSIGNED NOT NULL,
-  velocitat_mitjana DECIMAL(4,2) NOT NULL,       -- m/s
-  recorregut_m      DECIMAL(4,2) NOT NULL,       -- ROM, en metres
-  durada_s          DECIMAL(4,2) NOT NULL,       -- segons
+  velocitat_mitjana DECIMAL(4,2) NOT NULL,
+  recorregut_m      DECIMAL(4,2) NOT NULL,
+  durada_s          DECIMAL(4,2) NOT NULL,
   CONSTRAINT fk_repeticions_serie FOREIGN KEY (serie_id)
     REFERENCES series(id) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT uq_repeticions_num UNIQUE (serie_id, num_rep),
   CONSTRAINT ck_repeticions_valors CHECK (velocitat_mitjana > 0 AND recorregut_m > 0 AND durada_s > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- NOTIFICACIONS: avisos per a l'usuari (reserva confirmada, classe cancel·lada...)
--- ---------------------------------------------------------------------
 CREATE TABLE notificacions (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
@@ -183,30 +137,23 @@ CREATE TABLE notificacions (
   INDEX ix_notificacions_usuari_llegida (usuari_id, llegida)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- TORNS: torns d'accés amb lector de polsera (dissenyats; les dades són simulades)
--- ---------------------------------------------------------------------
 CREATE TABLE torns (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  codi        VARCHAR(20)  NOT NULL,             -- ex.: TORN-01
+  codi        VARCHAR(20)  NOT NULL,
   nom         VARCHAR(80)  NOT NULL,
   estat       ENUM('activa','baixa') NOT NULL DEFAULT 'activa',
-  token_hash  VARCHAR(255) NOT NULL,             -- clau de l'API del lector, guardada amb hash
+  token_hash  VARCHAR(255) NOT NULL,
   CONSTRAINT uq_torns_codi UNIQUE (codi)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- ENTRADES: cada vegada que algú acosta la polsera a un torn,
--- tant si el deixa passar com si no (així es veu qui ho ha intentat i per què no ha pogut)
--- ---------------------------------------------------------------------
 CREATE TABLE entrades (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   torn_id     INT UNSIGNED NOT NULL,
-  usuari_id   INT UNSIGNED NULL,                 -- NULL si la polsera no és de ningú
-  targeta     VARCHAR(32)  NOT NULL,             -- codi llegit, encara que no sigui de ningú
+  usuari_id   INT UNSIGNED NULL,
+  targeta     VARCHAR(32)  NOT NULL,
   data_hora   DATETIME     NOT NULL,
   permesa     TINYINT(1)   NOT NULL,
-  motiu       VARCHAR(60)  NOT NULL,             -- Quota pagada, Quota sense pagar, Polsera desconeguda...
+  motiu       VARCHAR(60)  NOT NULL,
   CONSTRAINT fk_entrades_torn FOREIGN KEY (torn_id)
     REFERENCES torns(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_entrades_usuari FOREIGN KEY (usuari_id)
@@ -214,57 +161,42 @@ CREATE TABLE entrades (
   INDEX ix_entrades_data (data_hora)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- RECUPERACIONS: enllaços per posar una contrasenya nova ("Has oblidat la contrasenya?")
--- Només es guarda el hash de l'enllaç; l'enllaç sencer només és al correu de l'usuari
--- ---------------------------------------------------------------------
 CREATE TABLE recuperacions (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
-  token_hash  CHAR(64)     NOT NULL,             -- SHA-256 del codi de l'enllaç
+  token_hash  CHAR(64)     NOT NULL,
   creada      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  caduca      DATETIME     NOT NULL,             -- l'enllaç serveix 1 hora
-  usada       TINYINT(1)   NOT NULL DEFAULT 0,   -- cada enllaç només es pot fer servir una vegada
+  caduca      DATETIME     NOT NULL,
+  usada       TINYINT(1)   NOT NULL DEFAULT 0,
   CONSTRAINT uq_recuperacions_token UNIQUE (token_hash),
   CONSTRAINT fk_recuperacions_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- INTENTS_LOGIN: entrades fallides, per bloquejar qui prova contrasenyes una rere l'altra.
--- 5 errors amb el mateix correu o 20 des de la mateixa IP en 15 minuts: 15 minuts sense poder entrar.
--- ---------------------------------------------------------------------
 CREATE TABLE intents_login (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  email       VARCHAR(150) NOT NULL,             -- el que s'ha escrit, encara que no sigui de ningú
-  ip          VARCHAR(45)  NOT NULL,             -- IPv4 o IPv6
+  email       VARCHAR(150) NOT NULL,
+  ip          VARCHAR(45)  NOT NULL,
   data        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX ix_intents_email (email, data),
   INDEX ix_intents_ip (ip, data)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- CONFIGURACIO: valors de la web que no són de cap taula concreta.
--- Ara: el hash de la clau amb què el PC de recepció es descarrega les còpies de seguretat.
--- ---------------------------------------------------------------------
 CREATE TABLE configuracio (
   clau        VARCHAR(40)  PRIMARY KEY,
   valor       VARCHAR(255) NOT NULL,
   canviat     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- PAGAMENTS: cada cobrament de recepció (quina tarifa, quants mesos, quant i fins quan)
--- ---------------------------------------------------------------------
 CREATE TABLE pagaments (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
   tarifa_id   TINYINT UNSIGNED NOT NULL,
   mesos       TINYINT UNSIGNED NOT NULL,
   import      DECIMAL(6,2) NOT NULL,
-  fins        DATE         NOT NULL,             -- últim dia pagat amb aquest cobrament
+  fins        DATE         NOT NULL,
   data        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  cobrat_per  INT UNSIGNED NULL,                 -- qui de recepció l'ha cobrat
+  cobrat_per  INT UNSIGNED NULL,
   CONSTRAINT fk_pagaments_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_pagaments_tarifa FOREIGN KEY (tarifa_id)
@@ -274,15 +206,11 @@ CREATE TABLE pagaments (
   CONSTRAINT ck_pagaments_mesos CHECK (mesos IN (1, 3))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- QUESTIONARIS: les respostes del qüestionari inicial del pla personalitzat.
--- Hi ha dades de salut (lesions, malalties): només les veu l'entrenador i cal el consentiment.
--- ---------------------------------------------------------------------
 CREATE TABLE questionaris (
   id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id     INT UNSIGNED NOT NULL,
-  respostes     LONGTEXT     NOT NULL,           -- JSON com una fila de la fulla d'APP GYM: {"Peso actual (kg)": 78.5, ...}
-  consentiment  TINYINT(1)   NOT NULL,           -- ha acceptat que es facin servir les dades de salut
+  respostes     LONGTEXT     NOT NULL,
+  consentiment  TINYINT(1)   NOT NULL,
   enviat        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_questionaris_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -290,14 +218,11 @@ CREATE TABLE questionaris (
   CONSTRAINT ck_questionaris_consentiment CHECK (consentiment = 1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- PLANS: el PDF del pla d'entrenament i alimentació que fa l'entrenador i descarrega el client
--- ---------------------------------------------------------------------
 CREATE TABLE plans (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
   nom_fitxer  VARCHAR(120) NOT NULL,
-  pdf         MEDIUMBLOB   NOT NULL,             -- fins a 16 MB
+  pdf         MEDIUMBLOB   NOT NULL,
   pujat       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   pujat_per   INT UNSIGNED NULL,
   CONSTRAINT fk_plans_usuari FOREIGN KEY (usuari_id)
@@ -306,20 +231,15 @@ CREATE TABLE plans (
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- RUTINA: els exercicis del pla de cada client, per dia de la setmana.
--- Són les files de la llibreta. Si l'exercici es fa en una màquina intel·ligent,
--- les sèries hi surten soles (taula series).
--- ---------------------------------------------------------------------
 CREATE TABLE rutina (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
-  dia         TINYINT UNSIGNED NOT NULL,         -- 1 = dilluns ... 7 = diumenge
+  dia         TINYINT UNSIGNED NOT NULL,
   ordre       TINYINT UNSIGNED NOT NULL,
   exercici    VARCHAR(80)  NOT NULL,
   series      TINYINT UNSIGNED NOT NULL,
   maquina_id  INT UNSIGNED NULL,
-  nota        VARCHAR(120) NULL,                 -- ex.: banc a 30°, agafada neutra
+  nota        VARCHAR(120) NULL,
   CONSTRAINT fk_rutina_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_rutina_maquina FOREIGN KEY (maquina_id)
@@ -328,16 +248,12 @@ CREATE TABLE rutina (
   CONSTRAINT ck_rutina_series CHECK (series BETWEEN 1 AND 10)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- REGISTRE: les sèries que el client apunta a mà a la llibreta
--- (manuelles, pes corporal... el que no fa una màquina intel·ligent)
--- ---------------------------------------------------------------------
 CREATE TABLE registre (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   rutina_id   INT UNSIGNED NOT NULL,
   data        DATE         NOT NULL,
   num_serie   TINYINT UNSIGNED NOT NULL,
-  carrega_kg  DECIMAL(5,1) NULL,                 -- NULL: pes corporal
+  carrega_kg  DECIMAL(5,1) NULL,
   reps        TINYINT UNSIGNED NOT NULL,
   CONSTRAINT fk_registre_rutina FOREIGN KEY (rutina_id)
     REFERENCES rutina(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -345,16 +261,13 @@ CREATE TABLE registre (
   CONSTRAINT ck_registre_valors CHECK (reps BETWEEN 1 AND 100 AND (carrega_kg IS NULL OR carrega_kg BETWEEN 0 AND 500))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- REVISIONS: cada 2 setmanes el client explica com li va i l'entrenador li respon
--- ---------------------------------------------------------------------
 CREATE TABLE revisions (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   usuari_id   INT UNSIGNED NOT NULL,
   data        DATE         NOT NULL,
   pes_kg      DECIMAL(5,1) NULL,
-  com_va      TEXT         NOT NULL,             -- el que escriu el client
-  resposta    TEXT         NULL,                 -- el que respon l'entrenador
+  com_va      TEXT         NOT NULL,
+  resposta    TEXT         NULL,
   respost_per INT UNSIGNED NULL,
   respost     DATETIME     NULL,
   CONSTRAINT fk_revisions_usuari FOREIGN KEY (usuari_id)
@@ -363,16 +276,13 @@ CREATE TABLE revisions (
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- MISSATGES: dubtes i canvis entre el client i l'entrenador (una conversa per client)
--- ---------------------------------------------------------------------
 CREATE TABLE missatges (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  usuari_id   INT UNSIGNED NOT NULL,             -- el client de la conversa
-  autor_id    INT UNSIGNED NULL,                 -- el client o algú del gimnàs
+  usuari_id   INT UNSIGNED NOT NULL,
+  autor_id    INT UNSIGNED NULL,
   text        TEXT         NOT NULL,
   data        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  llegit      TINYINT(1)   NOT NULL DEFAULT 0,   -- l'ha llegit l'altra part
+  llegit      TINYINT(1)   NOT NULL DEFAULT 0,
   CONSTRAINT fk_missatges_usuari FOREIGN KEY (usuari_id)
     REFERENCES usuaris(id) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_missatges_autor FOREIGN KEY (autor_id)
@@ -380,11 +290,6 @@ CREATE TABLE missatges (
   INDEX ix_missatges_usuari (usuari_id, data)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- VISTA: resum de cada sèrie (per a l'historial i l'anàlisi)
---  perdua_velocitat_pct = quant ha baixat la velocitat de la
---  repetició més ràpida a l'última repetició de la sèrie
--- ---------------------------------------------------------------------
 CREATE VIEW v_resum_series AS
 SELECT s.id                               AS serie_id,
        e.usuari_id,

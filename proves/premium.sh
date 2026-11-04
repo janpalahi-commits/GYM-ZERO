@@ -1,6 +1,3 @@
-# Proves de la fase 12: tarifes, qüestionari, pla en PDF, llibreta i seguiment.
-# Abans: bd/gymzero_bd.sql (o actualitza_fase12.sql), dades_prova.sql i dades_prova_fase12.sql.
-# Marc = tarifa amb seguiment, Pau = tarifa amb pla, Laia = tarifa Gimnàs (i quota caducada).
 B=${B:-http://127.0.0.1:8088}
 BD=${BD:-gymzero_db}
 JA=$(mktemp); JM=$(mktemp); JP=$(mktemp); JL=$(mktemp); TMP=$(mktemp -d)

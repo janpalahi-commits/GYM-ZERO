@@ -1,6 +1,4 @@
 <?php
-// Alta d'un client nou. Els comptes només els crea recepció, quan el client s'apunta al gimnàs:
-// així no hi ha comptes de gent que no és client.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/pagaments.php';
@@ -52,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $st->execute([$nom, $cognoms, $email, password_hash($pass, PASSWORD_DEFAULT),
                           $polsera === '' ? null : $polsera, $tarifa_id]);
             $text = 'Compte de ' . $nom . ' ' . $cognoms . ' creat. Ja pot entrar a la web amb el seu correu.';
-            // El primer cobrament queda apuntat a pagaments, com tots els altres
             if ($mesos > 0) {
                 $cobrat = cobra($connexio, (int) $connexio->lastInsertId(), $tarifa_id, $mesos, usuari_actual()['id']);
                 $text .= ' Cobrat: ' . euros($cobrat['import']) . ', quota fins al ' . date('d/m/Y', strtotime($cobrat['fins'])) . '.';
@@ -64,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($e->getCode() !== '23000') {
                 throw $e;
             }
-            // Clau única repetida: l'email o la polsera ja són d'un altre usuari
             $st = $connexio->prepare('SELECT COUNT(*) FROM usuaris WHERE email = ?');
             $st->execute([$email]);
             $errors[] = $st->fetchColumn() ? 'Ja hi ha un compte amb aquest correu.' : 'Aquesta polsera ja és d\'un altre usuari.';

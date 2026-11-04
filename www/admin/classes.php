@@ -1,5 +1,4 @@
 <?php
-// Gestió de classes: crear-ne i cancel·lar-ne
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
@@ -27,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             avis('error', 'La classe ha de ser en una data futura.');
         } else {
             if ($places <= 0) {
-                $places = (int) $per_defecte;   // si es deixa buit, les places de l'activitat
+                $places = (int) $per_defecte;
             }
             if ($places > 200) {
                 avis('error', 'Com a màxim 200 places per classe.');
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($accio === 'cancelar') {
-        // Cancel·lar la classe, anul·lar les seves reserves i avisar cada client
         $classe_id = (int) ($_POST['classe_id'] ?? 0);
         $connexio->beginTransaction();
         $st = $connexio->prepare(

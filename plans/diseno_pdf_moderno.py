@@ -1,10 +1,3 @@
-"""
-Sistema de diseño moderno para los PDFs de planes (APP GYM).
-- Letra grande y poco texto, pensado para cualquier edad.
-- Iconos vectoriales dibujados (sin emojis ni imágenes externas).
-- Tarjetas, insignias, escala de esfuerzo por colores y calendario semanal.
-- Todos los textos fijos salen de TXT[idioma] para poder generar el plan en cualquier idioma.
-"""
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import (BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer, PageBreak,
                                 Flowable, KeepTogether)
@@ -23,7 +16,6 @@ pdfmetrics.registerFont(TTFont("Sans-BoldItalic", F + "LiberationSans-BoldItalic
 addMapping("Sans", 0, 0, "Sans"); addMapping("Sans", 1, 0, "Sans-Bold")
 addMapping("Sans", 0, 1, "Sans-Italic"); addMapping("Sans", 1, 1, "Sans-BoldItalic")
 
-# ---------------------------------------------------------------- paleta
 VERDE = HexColor("#2E7D32")
 VERDE_CLARO = HexColor("#E8F5E9")
 NARANJA = HexColor("#EF6C00")
@@ -40,7 +32,6 @@ PAGE_W, PAGE_H = A4
 MARGEN = 42
 ANCHO = PAGE_W - 2 * MARGEN
 
-# ---------------------------------------------------------------- estilos
 S = {
     "h1": ParagraphStyle("h1", fontName="Sans-Bold", fontSize=26, leading=30, textColor=VERDE, spaceAfter=6),
     "h2": ParagraphStyle("h2", fontName="Sans-Bold", fontSize=18, leading=22, textColor=TEXTO, spaceBefore=10, spaceAfter=6),
@@ -54,7 +45,6 @@ S = {
     "tile_l": ParagraphStyle("tile_l", fontName="Sans", fontSize=11, leading=13.5, textColor=GRIS),
 }
 
-# ---------------------------------------------------------------- textos fijos traducibles
 TXT = {
     "es": {
         "plan_de": "Plan de", "pagina": "Página", "series": "series", "veces": "repeticiones",
@@ -110,10 +100,7 @@ TXT = {
     },
 }
 
-
-# ---------------------------------------------------------------- iconos vectoriales
 def icono(c, nombre, x, y, s, color=VERDE):
-    """Dibuja un icono de tamaño s con la esquina inferior izquierda en (x, y)."""
     c.saveState()
     c.setStrokeColor(color)
     c.setFillColor(color)
@@ -219,8 +206,6 @@ def icono(c, nombre, x, y, s, color=VERDE):
         c.line(x + s * .62, cy, x + s * .73, cy)
     c.restoreState()
 
-
-# ---------------------------------------------------------------- flowables
 class Icono(Flowable):
     def __init__(self, nombre, s=28, color=VERDE):
         super().__init__()
@@ -230,9 +215,7 @@ class Icono(Flowable):
     def draw(self):
         icono(self.canv, self.nombre, 0, 0, self.s, self.color)
 
-
 class Titulo(Flowable):
-    """Título de sección grande con icono a la izquierda y subtítulo opcional."""
     def __init__(self, texto, icono_n=None, sub=None, color=VERDE):
         super().__init__()
         self.texto, self.icono_n, self.sub_t, self.color = texto, icono_n, sub, color
@@ -260,9 +243,7 @@ class Titulo(Flowable):
         if self.sub_t:
             self.ps.drawOn(self.canv, off, top - self.h1 - self.h2 - 2)
 
-
 class Tarjeta(Flowable):
-    """Tarjeta redondeada con barra de color y contenido (lista de Paragraph)."""
     def __init__(self, contenido, fondo=GRIS_CLARO, acento=VERDE, pad=12, icono_n=None, ancho=None):
         super().__init__()
         self.contenido, self.fondo, self.acento, self.pad = contenido, fondo, acento, pad
@@ -296,9 +277,7 @@ class Tarjeta(Flowable):
     def split(self, aw, ah):
         return []
 
-
 class Fila(Flowable):
-    """Varias tarjetas/flowables en fila con el mismo alto."""
     def __init__(self, items, gap=10):
         super().__init__()
         self.items, self.gap = items, gap
@@ -320,9 +299,7 @@ class Fila(Flowable):
         for i, it in enumerate(self.items):
             it.drawOn(self.canv, i * (self.wi + self.gap), 0)
 
-
 class Mosaico(Flowable):
-    """Baldosa con icono, número grande y etiqueta (para 'tu plan en un vistazo')."""
     def __init__(self, icono_n, valor, etiqueta, color=VERDE, fondo=VERDE_CLARO):
         super().__init__()
         self.icono_n, self.valor, self.etiqueta, self.color, self.fondo = icono_n, valor, etiqueta, color, fondo
@@ -346,9 +323,7 @@ class Mosaico(Flowable):
         self.pv.drawOn(c, 12, y)
         self.pl.drawOn(c, 12, y - 2 - self.hl)
 
-
 class EscalaEsfuerzo(Flowable):
-    """Escala visual del esfuerzo (RIR) con 4 colores."""
     def __init__(self, idioma="es", marcar=None):
         super().__init__()
         self.t, self.marcar = TXT[idioma], marcar or []
@@ -379,11 +354,8 @@ class EscalaEsfuerzo(Flowable):
                 c.setLineWidth(2.5)
                 c.roundRect(x - 2, -2, w + 4, self.height + 4, 11, stroke=1, fill=0)
 
-
 class Semana(Flowable):
-    """Calendario semanal: 7 casillas con lo que toca cada día."""
     def __init__(self, dias, idioma="es"):
-        # dias: lista de 7 tuplas (texto, color) ; color None = descanso
         super().__init__()
         self.dias, self.t = dias, TXT[idioma]
         self.height = 92
@@ -408,12 +380,10 @@ class Semana(Flowable):
             _, h = p.wrap(w - 6, self.height)
             p.drawOn(c, x + 3, (self.height - 30) / 2 - h / 2 + 4)
 
-
 class Camino(Flowable):
-    """Fases como pasos conectados."""
     def __init__(self, pasos):
         super().__init__()
-        self.pasos = pasos  # [(titulo, detalle)]
+        self.pasos = pasos
 
     def wrap(self, aw, ah):
         self.width = aw
@@ -449,14 +419,11 @@ class Camino(Flowable):
                 p = c.beginPath(); p.moveTo(xx, self.height / 2 + 7); p.lineTo(xx + 10, self.height / 2); p.lineTo(xx, self.height / 2 - 7); p.close()
                 c.drawPath(p, stroke=0, fill=1)
 
-
 def link_video(nombre, idioma="es"):
     q = quote_plus(f"{nombre} {TXT[idioma]['video_q']}")
     return f"https://www.youtube.com/results?search_query={q}"
 
-
 class Ejercicio(Flowable):
-    """Tarjeta de ejercicio: número, nombre, insignia de series, truco, alternativas y enlace al vídeo."""
     def __init__(self, num, ej, idioma="es"):
         super().__init__()
         self.num, self.ej, self.t, self.idioma = num, ej, TXT[idioma], idioma
@@ -506,7 +473,6 @@ class Ejercicio(Flowable):
         x0 = 52
         top = h - 12
         self.pn.drawOn(c, x0, top - self.hn)
-        # insignia
         bx = w - 14 - self.bw
         c.setFillColor(NARANJA)
         c.roundRect(bx, top - 24, self.bw, 24, 12, stroke=0, fill=1)
@@ -519,9 +485,7 @@ class Ejercicio(Flowable):
             p.drawOn(c, x0, y)
             y -= 3
 
-
 class Comida(Flowable):
-    """Tarjeta de comida con hora en círculo, lista de alimentos y alternativas."""
     def __init__(self, hora, titulo, items, alts=None, opcion=None, idioma="es", color=NARANJA):
         super().__init__()
         self.hora, self.titulo, self.items, self.alts, self.opcion = hora, titulo, items, alts or [], opcion
@@ -560,8 +524,6 @@ class Comida(Flowable):
             p.drawOn(c, 80, y)
             y -= 3
 
-
-# ---------------------------------------------------------------- documento
 def documento(salida, cliente, idioma="es", titulo_pdf=None):
     t = TXT[idioma]
 
@@ -581,17 +543,13 @@ def documento(salida, cliente, idioma="es", titulo_pdf=None):
     doc.addPageTemplates([PageTemplate(id="p", frames=[frame], onPage=pie)])
     return doc
 
-
 def P(texto, estilo="body"):
     return Paragraph(texto, S[estilo] if isinstance(estilo, str) else estilo)
-
 
 def esp(h=10):
     return Spacer(1, h)
 
-
 class Punto(Flowable):
-    """Icono grande + texto. Para listas fáciles de leer."""
     def __init__(self, texto, icono_n="check", color=VERDE, estilo="body"):
         super().__init__()
         self.texto, self.icono_n, self.color, self.estilo = texto, icono_n, color, estilo
@@ -606,7 +564,6 @@ class Punto(Flowable):
     def draw(self):
         icono(self.canv, self.icono_n, 0, self.height - 8 - 26 + (2 if self.hp > 26 else 0), 26, self.color)
         self.p.drawOn(self.canv, 40, self.height - 8 - self.hp + (0 if self.hp >= 26 else -(26 - self.hp) / 2))
-
 
 def puntos(items, icono_n="check", color=VERDE):
     return [Punto(it, icono_n, color) for it in items]

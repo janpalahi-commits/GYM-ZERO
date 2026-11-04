@@ -1,5 +1,3 @@
-# Proves de la fase 14: botó "Simular dades (1 setmana)" de admin/usuaris.php.
-# Ús: B=http://127.0.0.1:8099 BD=gz12 bash simulacio.sh
 B=${B:-http://localhost/gymzero}; BD=${BD:-gymzero_db}
 sql(){ mariadb --default-character-set=utf8mb4 -N $BD -e "$1"; }
 csrf(){ curl -s -b $1 -c $1 "$B$2" | grep -o 'name="csrf" value="[a-f0-9]*"' | head -1 | sed 's/.*value="//;s/"//'; }

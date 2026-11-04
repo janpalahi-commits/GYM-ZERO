@@ -1,14 +1,9 @@
 <?php
-// Calculadores: 1RM, IMC i calories diàries.
-// Els càlculs es fan aquí, en PHP. Els formularis van per GET perquè no
-// guarden res: només calculen i ensenyen el resultat.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 
 $u = usuari_actual();
 
-// Llegeix un número del formulari (accepta "62,5" i "62.5").
-// Torna null si no hi és o si no està entre $min i $max.
 function numero($camp, $min, $max)
 {
     $valor = str_replace(',', '.', trim($_GET[$camp] ?? ''));
@@ -18,15 +13,11 @@ function numero($camp, $min, $max)
     return (float) $valor;
 }
 
-// 62.5 -> "62,5"
 function xifra($valor, $decimals = 1)
 {
     return number_format($valor, $decimals, ',', '.');
 }
 
-// Pes màxim estimat per a 1 repetició (1RM) amb la fórmula d'Epley:
-// 1RM = pes x (1 + reps / 30). Es fa servir la mateixa per a totes les màquines.
-// És una estimació: com més repeticions, menys fiable (a partir d'unes 12 l'error ja és gran).
 function u_rm($kg, $reps)
 {
     if ($reps == 1) {
@@ -35,13 +26,11 @@ function u_rm($kg, $reps)
     return $kg * (1 + $reps / 30);
 }
 
-// Al revés: quantes repeticions es poden fer amb un % del 1RM
 function reps_amb($pct)
 {
     return max(1, round(30 * (100 / $pct - 1)));
 }
 
-// Arrodoneix al pes que es pot posar amb discos (de 2,5 en 2,5 kg)
 function discos($kg)
 {
     return round($kg / 2.5) * 2.5;
@@ -50,7 +39,6 @@ function discos($kg)
 $calcul = $_GET['calcul'] ?? '';
 $errors = [];
 
-// --- 1RM ---
 $rm = null;
 if ($calcul === '1rm') {
     $kg   = numero('kg', 1, 500);
@@ -62,7 +50,6 @@ if ($calcul === '1rm') {
     }
 }
 
-// --- IMC ---
 $imc = null;
 if ($calcul === 'imc') {
     $pes    = numero('pes', 30, 300);
@@ -83,7 +70,6 @@ if ($calcul === 'imc') {
     }
 }
 
-// --- Calories diàries (fórmula de Mifflin-St Jeor) ---
 $activitats = [
     '1.2'   => 'Sedentari',
     '1.375' => '1-3 dies/setmana',
@@ -107,8 +93,6 @@ if ($calcul === 'kcal') {
     }
 }
 
-// Si l'usuari ha entrat, el seu 1RM estimat a cada màquina amb les sèries
-// que han enviat les màquines els últims 90 dies (la millor de cada màquina)
 $meus_rm = [];
 if ($u) {
     $st = $connexio->prepare(
@@ -126,7 +110,6 @@ if ($u) {
     ksort($meus_rm);
 }
 
-// Torna a posar al formulari el que s'havia escrit
 function valor($camp)
 {
     return h($_GET[$camp] ?? '');

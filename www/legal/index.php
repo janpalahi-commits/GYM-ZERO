@@ -1,5 +1,4 @@
 <?php
-// Avís legal i política de privacitat (LSSI i RGPD)
 require_once __DIR__ . '/../inc/sessio.php';
 
 $titol = 'Avís legal i privacitat';

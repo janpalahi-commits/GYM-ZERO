@@ -1,29 +1,21 @@
 <?php
-// La llibreta d'entrenament: la rutina del client (files) i les setmanes (columnes), com un full d'Excel.
-// Cada casella té les sèries d'aquella setmana: les que el client apunta a mà (taula registre)
-// i les de les màquines intel·ligents, que arriben soles per l'API (taules series i repeticions).
-
 const DIES = [1 => 'Dilluns', 2 => 'Dimarts', 3 => 'Dimecres', 4 => 'Dijous', 5 => 'Divendres', 6 => 'Dissabte', 7 => 'Diumenge'];
 
-// Pes amb coma i sense ",0" (42,5 / 40)
 function kg($valor)
 {
     return $valor === null ? null : str_replace('.', ',', rtrim(rtrim(number_format((float) $valor, 1, '.', ''), '0'), '.'));
 }
 
-// Text d'una sèrie: "42,5 × 8" o "12 reps" si és amb el pes del cos
 function text_serie($s)
 {
     return $s['kg'] === null ? $s['reps'] . ' reps' : kg($s['kg']) . ' × ' . $s['reps'];
 }
 
-// Per comparar sèries: 1RM estimat amb Epley (el mateix que Càlculs). Sense pes, compten les repeticions.
 function forca_serie($s)
 {
     return $s['kg'] === null ? $s['reps'] : $s['kg'] * (1 + $s['reps'] / 30);
 }
 
-// Els dilluns de les últimes $n setmanes, de la més antiga a l'actual
 function setmanes_llibreta($n = 8)
 {
     $dilluns = strtotime('monday this week');
@@ -45,7 +37,6 @@ function rutina_client(PDO $bd, $usuari_id)
     return $st->fetchAll();
 }
 
-// Totes les sèries de cada fila de la rutina: [rutina_id => [['data','num','kg','reps','origen'], ...]]
 function series_rutina(PDO $bd, $usuari_id, array $rutina)
 {
     $series = array_fill_keys(array_column($rutina, 'id'), []);
@@ -61,7 +52,6 @@ function series_rutina(PDO $bd, $usuari_id, array $rutina)
             'kg' => $f['carrega_kg'] === null ? null : (float) $f['carrega_kg'], 'reps' => (int) $f['reps'], 'origen' => 'ma'];
     }
 
-    // Màquines: si la mateixa màquina surt en dos dies de la rutina, cada sèrie va al dia de la setmana que es va fer
     $vegades = array_count_values(array_filter(array_column($rutina, 'maquina_id')));
     $st = $bd->prepare(
         'SELECT m.id AS maquina_id, v.data, v.num_serie, v.carrega_kg, v.repeticions
@@ -81,7 +71,6 @@ function series_rutina(PDO $bd, $usuari_id, array $rutina)
     return $series;
 }
 
-// La millor sèrie de tota la història d'una fila (el rècord)
 function record_fila(array $series)
 {
     $millor = null;

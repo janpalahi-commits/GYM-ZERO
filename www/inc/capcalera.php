@@ -1,13 +1,8 @@
 <?php
-// Capçalera comuna. Abans d'incloure-la cal definir $titol.
-// Les pàgines que són dins d'una carpeta (reserves/, client/...) no cal que facin res més.
-// La portada (index.php) és a l'arrel: posa $arrel = '' perquè els enllaços no portin ../
-// i $portada = true perquè no surti el títol (ella mateixa dibuixa les seves seccions).
 $u = usuari_actual();
 $arrel = $arrel ?? '../';
 $portada = $portada ?? false;
 
-// Marca a la barra la secció on som
 $seccio = basename(dirname($_SERVER['SCRIPT_NAME']));
 function enllac($href, $text, $carpeta)
 {

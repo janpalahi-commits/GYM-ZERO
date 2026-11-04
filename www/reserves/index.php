@@ -1,6 +1,4 @@
 <?php
-// Llista de les properes classes amb les places lliures.
-// Tothom la pot veure; per reservar cal haver entrat.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 
@@ -20,8 +18,6 @@ $st = $connexio->prepare(
 $st->execute([$u['id'] ?? 0]);
 $classes = $st->fetchAll();
 
-// Per reservar cal tenir la quota pagada fins al dia de la classe (el personal no en paga).
-// Es mira a la base de dades perquè recepció la pot haver canviat amb la sessió oberta.
 $quota_fins = null;
 $personal = false;
 if ($u) {
@@ -37,7 +33,6 @@ function quota_cobreix($inici)
     return $personal || ($quota_fins !== null && $quota_fins >= date('Y-m-d', strtotime($inici)));
 }
 
-// Nom del dia per agrupar les classes: "Avui", "Demà" o "Dijous 29/10"
 function nom_dia($data)
 {
     $dies = ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'];

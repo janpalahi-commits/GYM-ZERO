@@ -1,5 +1,4 @@
 <?php
-// Detall d'una classe: qui l'ha reservada
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);

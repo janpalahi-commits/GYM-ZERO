@@ -1,8 +1,4 @@
 <?php
-// Apuntar a mà les sèries d'un exercici de la rutina que no és de màquina (manuelles, pes corporal...).
-// Les de les màquines amb polsera no cal apuntar-les: arriben soles.
-// Si es torna a obrir el mateix exercici i dia, surten les sèries apuntades i es poden corregir;
-// una sèrie que es deixa buida s'esborra.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/llibreta.php';
@@ -11,14 +7,12 @@ requereix_tarifa($connexio, 2);
 $u = usuari_actual();
 $errors = [];
 
-// Només els exercicis del mateix client i sense màquina
 $st = $connexio->prepare('SELECT * FROM rutina WHERE usuari_id = ? AND maquina_id IS NULL ORDER BY dia, ordre, id');
 $st->execute([$u['id']]);
 $manuals = array_column($st->fetchAll(), null, 'id');
 
 $r = $manuals[(int) ($_POST['r'] ?? $_GET['r'] ?? 0)] ?? null;
 
-// Dia de l'entrenament: avui o un dia anterior (fins a 60 dies enrere)
 $data = $_POST['data'] ?? $_GET['data'] ?? date('Y-m-d');
 $dt = DateTime::createFromFormat('!Y-m-d', $data);
 if (!$dt || $dt->format('Y-m-d') !== $data || $data > date('Y-m-d') || $data < date('Y-m-d', strtotime('-60 days'))) {
@@ -56,7 +50,6 @@ if ($r && $_SERVER['REQUEST_METHOD'] === 'POST' && !$errors) {
         foreach ($valors as $i => $v) {
             $v ? $desa->execute([$r['id'], $data, $i, $v[0], $v[1]]) : $esborra->execute([$r['id'], $data, $i]);
         }
-        // Si abans tenia més sèries a la rutina i ara en té menys, les que sobren també fora
         $connexio->prepare('DELETE FROM registre WHERE rutina_id = ? AND data = ? AND num_serie > ?')
                  ->execute([$r['id'], $data, $r['series']]);
         $connexio->commit();
@@ -68,7 +61,6 @@ if ($r && $_SERVER['REQUEST_METHOD'] === 'POST' && !$errors) {
     }
 }
 
-// Què hi ha apuntat aquell dia i què va fer l'última vegada (per tenir-ho de referència)
 $apuntat = [];
 $ultima = [];
 if ($r) {

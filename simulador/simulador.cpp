@@ -1,17 +1,3 @@
-// GYM-ZERO · Simulador de màquina intel·ligent
-//
-// Fa el que faria la màquina real (dissenyada però no construïda):
-//   1. L'usuari acosta la polsera RFID al lector (aquí s'escriu el codi de la polsera).
-//   2. Fa una sèrie: el simulador inventa les dades de cada repetició
-//      (velocitat, recorregut i durada), com les mesuraria el sensor.
-//   3. Envia la sèrie a l'API PHP en JSON i ensenya la resposta.
-//      Per enviar-la fa servir el programa curl (ve amb Ubuntu), així no cal
-//      instal·lar cap llibreria per compilar.
-//
-// Compilar:  g++ -std=c++17 -Wall -o simulador simulador.cpp
-// Executar:  ./simulador [url_api] [codi_maquina] [clau]
-//   ex.:     ./simulador http://localhost/gymzero/api/serie.php PRESS-01 token-PRESS-01
-
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -26,9 +12,9 @@
 using namespace std;
 
 struct Repeticio {
-    double velocitat;   // m/s
-    double recorregut;  // m
-    double durada;      // s
+    double velocitat;
+    double recorregut;
+    double durada;
 };
 
 mt19937 generador(random_device{}());
@@ -39,9 +25,6 @@ double aleatori(double min, double max)
     return d(generador);
 }
 
-// Genera les repeticions d'una sèrie.
-// Com més pes, més lenta va la barra; i a cada repetició es perd una mica
-// de velocitat pel cansament (entre un 2% i un 5% de la primera).
 vector<Repeticio> simula_serie(double carrega_kg, int num_reps)
 {
     double v_inicial = 1.20 - carrega_kg * 0.007;
@@ -64,7 +47,6 @@ vector<Repeticio> simula_serie(double carrega_kg, int num_reps)
     return reps;
 }
 
-// Munta el JSON que espera l'API (a mà, per no dependre de cap llibreria)
 string crea_json(const string& maquina, const string& targeta, double carrega_kg,
                  const vector<Repeticio>& reps)
 {

@@ -1,17 +1,3 @@
-"""
-GYM-ZERO · Fa el PDF del pla personalitzat d'un client a partir del seu qüestionari.
-
-1. A la fitxa del client (Administració > Plans i seguiment) descarrega les respostes en JSON.
-2. python3 fes_pla.py questionari_2.json
-3. Revisa el PDF i puja'l a la mateixa fitxa. El client el descarrega des de La meva àrea.
-
-Les respostes tenen els mateixos noms que les columnes de la fulla de Google del formulari d'APP GYM
-(el títol de cada pregunta en castellà), així que també serveix una fila d'aquella fulla.
-
-Segueix el mètode d'APP GYM (càlculs F01-F08 i F14, regles de seguretat i divisions PR-01 a PR-05)
-i fa servir el disseny de diseno_pdf_moderno.py. Els exercicis són els de les màquines de Gym Zero,
-cadascun amb dues alternatives. Al final escriu la rutina per entrar-la a la llibreta del client.
-"""
 import argparse
 import json
 import re
@@ -28,8 +14,6 @@ from diseno_pdf_moderno import (Titulo, Fila, Mosaico, Tarjeta, EscalaEsfuerzo, 
 
 IDIOMA = "ca"
 
-# ---------------------------------------------------------------- exercicis
-# clau: (nom, màquina amb polsera o None, grup, molèsties que l'eviten, [2 alternatives], truc, què fer si hi ha molèstia)
 EXERCICIS = {
     "press":      ("Press de banca", "PRESS-01", "pit", {"espatlla"}, ["Contractora de pit", "Flexions"],
                    "Baixa fins a tocar el pit, sense rebotar.", "Press amb manuelles, agafada neutra"),
@@ -61,7 +45,6 @@ EXERCICIS = {
                    "Treu l'aire mentre puges.", "Planxa"),
 }
 
-# Divisions segons els dies (PR-01 a PR-05), amb els dies de la setmana on toca (1 = dilluns)
 DIVISIONS = {
     2: ("Cos sencer A i B", [1, 4], [("Cos sencer A", ["sentadilla", "press", "rem", "laterals", "crunch"]),
                                      ("Cos sencer B", ["hip", "jalo", "militar", "femoral", "curl", "triceps"])]),
@@ -87,7 +70,6 @@ DIVISIONS = {
          ("Cames B", ["hip", "femoral", "extq", "talons"])]),
 }
 
-# Zones que vol millorar: tenen una sèrie més (PR-06) i, si són grups grans, van primer (PR-11)
 ZONES = {"Glúteo": {"glutis"}, "Piernas": {"cames"}, "Pecho": {"pit"}, "Espalda": {"esquena"}, "Hombros": {"espatlla"},
          "Brazos": {"bíceps", "tríceps"}, "Abdomen": {"abdomen"}}
 ODIATS = {"Sentadilla": {"sentadilla"}, "Press banca": {"press"}, "Remo": {"rem"}, "Press militar": {"militar"},
@@ -97,8 +79,6 @@ MOLESTIES = {"espatlla": "l'espatlla", "colze_canell": "el colze o el canell", "
 OBJECTIUS = {"perdre_greix": "Perdre greix", "guanyar_muscul": "Guanyar múscul", "recomposicio": "Perdre greix i guanyar múscul",
              "forca": "Guanyar força", "salut": "Forma i salut"}
 
-# ---------------------------------------------------------------- aliments (per 100 g; l'ou, per unitat)
-# nom, proteïna, hidrats, greix, kcal, què el treu (dieta o al·lèrgia)
 PROTEINES = [
     ("pit de pollastre (cru)", 23, 0, 2, 110, {"vegetariana", "vegana"}),
     ("tonyina al natural", 25, 0, 1, 110, {"vegetariana", "vegana", "peix"}),
@@ -113,29 +93,20 @@ HIDRATS = [
     ("patata", 2, 17, 0.1, 77, set()),
 ]
 
-
 def ascii(text):
     return re.sub(r"[^A-Za-z0-9]+", "_", unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()).strip("_").lower()
-
 
 def arrodoneix(g, pas=5):
     return int(max(pas, round(g / pas) * pas))
 
-
-# ---------------------------------------------------------------- respostes del qüestionari
 def llista(v):
-    """A la web les respostes múltiples són una llista; a la fulla de Google, un text separat per comes."""
     return list(v) if isinstance(v, list) else [x.strip() for x in str(v or "").split(",") if x.strip()]
 
-
 def hora(v):
-    """'07:30 (mañana)' -> (7, 30). Si no n'hi ha cap ('No trabajo...', '> 02:00'), torna None."""
     m = re.match(r"(\d{2}):(\d{2})", str(v or ""))
     return (int(m.group(1)), int(m.group(2))) if m else None
 
-
 def llegeix(f):
-    """Passa les respostes del formulari (columnes en castellà) a les dades que fa servir el pla."""
     def tria(columna, opcions, si_no=None):
         return opcions.get(f.get(columna, ""), si_no)
 
@@ -164,19 +135,17 @@ def llegeix(f):
     ritme = str(f.get("¿A qué ritmo quieres avanzar?", ""))
     r["ritme"] = "suau" if ritme.startswith("Tranquilo") else "rapid" if ritme.startswith("Rápido") else "normal"
 
-    # Activitat fora del gimnàs (F05): la feina, i si camina molt puja un graó
     r["activitat"] = tria("¿Cómo es tu trabajo o estudio?",
                           {"Sentado casi todo el día": "assegut", "De pie o caminando": "dempeus",
                            "Físico (cargo peso, obra, almacén…)": "fisic"}, "assegut")
     if f.get("¿Cuántos pasos haces al día más o menos?") in ("8.000-12.000", "Más de 12.000") and r["activitat"] != "fisic":
         r["activitat"] = "actiu"
 
-    # Son: hores entre que se'n va a dormir i es lleva, i com diu que dorm
     dormir = hora(f.get("¿A qué hora te acuestas normalmente entre semana?"))
     if dormir:
         hores = ((r["hora_llevar"][0] * 60 + r["hora_llevar"][1]) - (dormir[0] * 60 + dormir[1])) % (24 * 60) / 60
     else:
-        hores = 5  # se'n va a dormir després de les 2
+        hores = 5
     r["poc_son"] = hores < 6 or f.get("¿Cómo duermes?") == "Mal, me despierto cansado"
 
     r["zones"] = set().union(*[ZONES.get(z, set()) for z in llista(f.get("¿Qué zonas quieres mejorar más?"))])
@@ -189,7 +158,6 @@ def llegeix(f):
     r["lesions"] = sorted({lesions[x] for x in llista(f.get("¿Dónde?")) if x in lesions})
     altres_molesties = [x for x in llista(f.get("¿Dónde?")) if x not in lesions]
 
-    # Dieta: el que no pot o no vol menjar treu aliments de la llista
     dieta = f.get("¿Sigues alguna dieta especial?", "Ninguna")
     treure = {"Vegetariana": {"vegetariana"}, "Vegana": {"vegetariana", "vegana"}}.get(dieta, set())
     etiquetes = {"Lactosa": "lactosa", "Leche o yogur": "lactosa", "Gluten": "gluten", "Avena": "gluten", "Pescado": "peix",
@@ -199,7 +167,6 @@ def llegeix(f):
             treure.add(etiquetes[x])
     r["treure"] = treure
 
-    # Seguretat (punt 1 del mètode): sense el vistiplau del metge no es fa el pla
     r["bloquejants"] = []
     if f.get("¿Algún médico te ha dicho que tienes un problema de corazón o tensión alta?") == "Sí":
         r["bloquejants"].append("un problema de cor o pressió alta")
@@ -210,7 +177,6 @@ def llegeix(f):
     r["malalties"] = [m for m in llista(f.get("¿Tienes alguna enfermedad diagnosticada?")) if m != "Ninguna"]
     r["medicacio"] = str(f.get("¿Tomas alguna medicación de forma habitual? ¿Cuál?", "")).strip()
 
-    # Coses que ha de saber l'entrenador però que no van al PDF
     r["per_entrenador"] = []
     if f.get("¿Tienes o has tenido una relación difícil con la comida? (atracones, comer muy poco a propósito, compensar con ejercicio)") == "Sí":
         r["per_entrenador"].append("Té o ha tingut una relació difícil amb el menjar: revisa la dieta i no la facis estricta.")
@@ -224,41 +190,36 @@ def llegeix(f):
         r["per_entrenador"].append("Fa esport a part del gimnàs: mira els dies i que no es trepitgin amb la rutina.")
     return r
 
-
-# ---------------------------------------------------------------- càlculs (fórmules 4A del mètode)
 def calculs(r, dies):
     pes, alcada, edat = float(r["pes_kg"]), float(r["alcada_cm"]), int(r["edat"])
     s = {"home": 5, "dona": -161}.get(r["sexe"], -78)
-    bmr = 10 * pes + 6.25 * alcada - 5 * edat + s                                            # F03
+    bmr = 10 * pes + 6.25 * alcada - 5 * edat + s
     punts = dies + {"assegut": 0, "dempeus": 1, "actiu": 2, "fisic": 3}[r["activitat"]]
-    fa = 1.2 if punts == 0 else 1.375 if punts <= 3 else 1.55 if punts <= 5 else 1.725 if punts <= 7 else 1.9   # F05
-    tdee = bmr * fa                                                                           # F06
+    fa = 1.2 if punts == 0 else 1.375 if punts <= 3 else 1.55 if punts <= 5 else 1.725 if punts <= 7 else 1.9
+    tdee = bmr * fa
     ritme = r["ritme"]
     if r["objectiu"] == "perdre_greix":
         ajust = {"suau": -0.10, "normal": -0.20, "rapid": -0.25}[ritme]
     elif r["objectiu"] == "guanyar_muscul":
-        sostre = {"mes_2a": 0.05, "6m_2a": 0.10}.get(r["nivell"], 0.15)                       # com més nivell, menys excedent
+        sostre = {"mes_2a": 0.05, "6m_2a": 0.10}.get(r["nivell"], 0.15)
         ajust = min({"suau": 0.05, "normal": 0.10, "rapid": 0.15}[ritme], sostre)
     elif r["objectiu"] == "recomposicio":
         ajust = {"suau": 0, "normal": -0.05, "rapid": -0.10}[ritme]
     else:
         ajust = 0.05 if r["objectiu"] == "forca" else 0
-    kcal = max(tdee * (1 + ajust), bmr)                                                       # F07
-    imc = pes / (alcada / 100) ** 2                                                           # F01
-    pes_ref = 25 * (alcada / 100) ** 2 if imc > 30 else pes                                   # amb obesitat, proteïna sobre un pes de referència
+    kcal = max(tdee * (1 + ajust), bmr)
+    imc = pes / (alcada / 100) ** 2
+    pes_ref = 25 * (alcada / 100) ** 2 if imc > 30 else pes
     g_prot = {"perdre_greix": 2.0, "recomposicio": 2.0, "guanyar_muscul": 1.8, "forca": 1.8}.get(r["objectiu"], 1.6)
-    prot = g_prot * pes_ref                                                                   # F08
+    prot = g_prot * pes_ref
     greix = 0.8 * pes
     hidr = max((kcal - 4 * prot - 9 * greix) / 4, 0)
     hores = {"30_45": 0.75, "45_60": 0.9, "60_90": 1.25, "mes_90": 1.6}[r["minuts"]]
-    aigua = 35 * pes + 500 * hores                                                            # F14
+    aigua = 35 * pes + 500 * hores
     return dict(bmr=bmr, tdee=tdee, kcal=round(kcal, -1), prot=round(prot), greix=round(greix), hidr=round(hidr),
                 aigua=round(aigua, -2), imc=imc)
 
-
-# ---------------------------------------------------------------- rutina
 def dies_efectius(r):
-    """Els dies que pot venir no són els que ha de venir: el nivell i el son també manen (punt 3 del mètode)."""
     dies = int(r["dies"])
     dies = min(dies, {"mai": 3, "menys_6m": 4}.get(r["nivell"], 6))
     if r["poc_son"]:
@@ -267,32 +228,29 @@ def dies_efectius(r):
         dies = 5
     return dies
 
-
 def rutina(r):
     dies = dies_efectius(r)
     nom_divisio, dies_setmana, sessions = DIVISIONS[dies]
-    max_ex = {"30_45": 4, "45_60": 5, "60_90": 6, "mes_90": 7}[r["minuts"]]                # PR-12
+    max_ex = {"30_45": 4, "45_60": 5, "60_90": 6, "mes_90": 7}[r["minuts"]]
     mes_series = r["zones"]
-    primer = r["zones"] & {"pit", "esquena", "cames", "glutis"}      # els braços i l'abdomen no passen davant dels bàsics
+    primer = r["zones"] & {"pit", "esquena", "cames", "glutis"}
     lesions = set(r["lesions"])
     excloure = r["excloure"]
     principiant = r["nivell"] in ("mai", "menys_6m")
     sortida = []
     for (titol, claus), dia in zip(sessions, dies_setmana):
-        # PR-11: primer la zona que vol prioritzar
         claus = sorted(claus, key=lambda k: EXERCICIS[k][2] not in primer)[:max_ex]
         llista = []
         for k in claus:
             nom, maquina, grup, evitar, alts, truc, segur = EXERCICIS[k]
             nota = None
             if evitar & lesions:
-                # Un exercici que no carregui la zona que fa mal (ja no és de màquina amb polsera)
                 nota = "Canviat per cuidar " + MOLESTIES[sorted(evitar & lesions)[0]]
                 nom, maquina, truc = segur, None, "Sense dolor. Si fa mal, para."
             elif k in r["odia"] or re.search(r"\b" + re.escape(nom.lower().split()[0]) + r"\b", excloure):
                 nota = "Canviat: ens vas dir que no el volies fer"
                 nom, maquina, alts = alts[0], None, [alts[1], nom]
-            series = 3 + (1 if grup in mes_series and not principiant else 0)                 # PR-06
+            series = 3 + (1 if grup in mes_series and not principiant else 0)
             reps = "10-12" if principiant else "8-12" if r["nivell"] == "6m_2a" else "6-10"
             if grup in ("abdomen", "bíceps", "tríceps") or k in ("laterals", "talons", "extq"):
                 reps = "12-15"
@@ -300,25 +258,19 @@ def rutina(r):
         sortida.append((dia, titol, llista))
     return nom_divisio, sortida
 
-
-# ---------------------------------------------------------------- menjar
 def aliments_permesos(aliments, r):
     return [a for a in aliments if not (a[5] & r["treure"])]
 
-
 def apats(r, n):
-    """Hores dels àpats a partir de quan es lleva, i quin és el de després d'entrenar."""
     h, m = r["hora_llevar"]
     he, me = r["hora_entreno"]
     inici, entreno = h * 60 + m + 30, he * 60 + me
-    pas = (13 * 60) // max(n - 1, 1)                     # repartits en unes 13 hores
+    pas = (13 * 60) // max(n - 1, 1)
     hores = [inici + i * pas for i in range(n)]
-    # L'àpat que arriba entre 45 minuts i 3 hores després d'acabar d'entrenar (si n'hi ha cap)
     despres = next((i for i, t in enumerate(hores) if entreno + 60 + 45 <= t <= entreno + 60 + 180), None)
     noms = ["Esmorzar", "Mig matí", "Dinar", "Berenar", "Sopar", "Ressopó"]
     noms = {2: ["Dinar", "Sopar"], 3: ["Esmorzar", "Dinar", "Sopar"], 4: ["Esmorzar", "Dinar", "Berenar", "Sopar"]}.get(n, noms[:n])
     return [(f"{t // 60 % 24:02d}:{t % 60:02d}", noms[i], i == despres) for i, t in enumerate(hores)]
-
 
 def targetes_menjar(r, c):
     n = int(r["apats"])
@@ -341,8 +293,6 @@ def targetes_menjar(r, c):
         sortida.append(Comida(hora, titol, items, alts=alts, idioma=IDIOMA))
     return sortida
 
-
-# ---------------------------------------------------------------- seguretat (punt 1 del mètode)
 def avisos_salut(r):
     avisos = []
     if r["malalties"] or r["medicacio"].lower() not in ("", "cap", "ninguna", "no", "none", "aucun", "aucune"):
@@ -353,8 +303,6 @@ def avisos_salut(r):
         avisos.append(f"Molèstia {'al ' + zona[3:] if zona.startswith('el ') else 'a ' + zona}: hem triat exercicis que no la carreguen. Si fa mal, para i ho mirem. Si dura, ves al fisio.")
     return r["bloquejants"], avisos
 
-
-# ---------------------------------------------------------------- PDF
 def fes_pdf(dades, sortida, vistiplau=False):
     r, nom = llegeix(dades["respostes"]), dades["client"]
     bloquejants, avisos = avisos_salut(r)
@@ -421,7 +369,6 @@ def fes_pdf(dades, sortida, vistiplau=False):
     doc.build(h)
     return sessions
 
-
 def main():
     ap = argparse.ArgumentParser(description="Fa el PDF del pla d'un client a partir del JSON del qüestionari.")
     ap.add_argument("questionari", help="fitxer JSON descarregat de la fitxa del client")
@@ -440,7 +387,6 @@ def main():
         print(f"  {['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte', 'Diumenge'][dia - 1]} · {titol}")
         for e in llista:
             print(f"    {e['n']:<32} {e['s']} sèries  {e['maquina'] or 'a mà'}")
-
 
 if __name__ == "__main__":
     main()

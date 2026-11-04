@@ -1,5 +1,4 @@
 #!/bin/bash
-# Proves de l'API de les màquines (api/serie.php)
 B=${1:-http://127.0.0.1:8090}/api/serie.php
 REPS='[{"velocitat":0.80,"recorregut":0.41,"durada":0.50},{"velocitat":0.74,"recorregut":0.42,"durada":0.55},{"velocitat":0.66,"recorregut":0.40,"durada":0.62}]'
 envia(){ echo "   $(curl -s -w ' [HTTP %{http_code}]' -H "X-Token: $1" -H 'Content-Type: application/json' -d "$2" $B)"; }

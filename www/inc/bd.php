@@ -1,7 +1,4 @@
 <?php
-// Connexió a la base de dades amb PDO.
-// Les dades de connexió són a config.php (que no es puja a GitHub).
-
 require_once __DIR__ . '/config.php';
 
 try {
@@ -15,10 +12,8 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    // L'error real només va al log del servidor; a l'usuari no se li ensenya
     error_log('GYM-ZERO BD: ' . $e->getMessage());
     $text = 'Ara mateix no es pot connectar amb la base de dades. Torna-ho a provar més tard.';
-    // L'API de les màquines i del torn no carrega sessio.php i ha de rebre text, no una pàgina
     if (function_exists('pagina_error')) {
         pagina_error(500, $text);
     }
@@ -26,6 +21,5 @@ try {
     die($text);
 }
 
-// Còpia de seguretat automàtica: un cop enviada la pàgina, si fa més d'un dia de l'última
 require_once __DIR__ . '/copies.php';
 register_shutdown_function('copia_si_toca', $connexio);

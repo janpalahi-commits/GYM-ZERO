@@ -1,5 +1,4 @@
 <?php
-// Gestió d'usuaris (els clients nous es donen d'alta a alta.php): activar/desactivar comptes, canviar el rol, donar la polsera RFID i apuntar la quota
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/pagaments.php';
@@ -16,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accio = $_POST['accio'] ?? '';
 
     if ($accio === 'canviar_polsera') {
-        // Codi (UID) del xip de la polsera, en hexadecimal: 4, 7 o 10 bytes (8, 14 o 20 xifres)
         $codi = strtoupper(preg_replace('/[^0-9a-fA-F]/', '', $_POST['polsera'] ?? ''));
         if ($codi !== '' && !in_array(strlen($codi), [8, 14, 20], true)) {
             avis('error', 'El codi de la polsera ha de tenir 8, 14 o 20 xifres hexadecimals.');
@@ -26,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                          ->execute([$codi === '' ? null : $codi, $usuari_id]);
                 avis('ok', $codi === '' ? 'Polsera treta.' : 'Polsera ' . $codi . ' assignada.');
             } catch (PDOException $e) {
-                // La columna és UNIQUE: una polsera no pot ser de dues persones
                 if ($e->getCode() !== '23000') {
                     throw $e;
                 }
@@ -34,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($accio === 'cobrar') {
-        // Mateixa tarifa: s'allarga el que ja tenia. Tarifa nova (o quota caducada): compta des d'avui.
         $mesos = (int) ($_POST['mesos'] ?? 0);
         $cobrat = in_array($mesos, [1, 3], true)
             ? cobra($connexio, $usuari_id, (int) ($_POST['tarifa_id'] ?? 0), $mesos, $jo)
@@ -44,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               . '). Quota pagada fins al ' . date('d/m/Y', strtotime($cobrat['fins'])) . '.'
             : 'No s\'ha pogut cobrar: revisa la tarifa i els mesos.');
     } elseif ($accio === 'canviar_quota') {
-        // Per corregir la data a mà. Buida vol dir que no té cap quota pagada.
         $data = $_POST['quota_fins'] ?? '';
         $dt = DateTime::createFromFormat('Y-m-d', $data);
         if ($data !== '' && (!$dt || $dt->format('Y-m-d') !== $data)) {
@@ -55,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             avis('ok', 'Quota desada.');
         }
     } elseif ($accio === 'simular') {
-        // Una setmana d'entrenament inventada però realista (inc/simulacio.php)
         try {
             $sim = simula_setmana($connexio, $usuari_id);
             avis('ok', 'Setmana simulada per a ' . $sim['nom'] . ' (del ' . $sim['des_de'] . ' al ' . $sim['fins_a'] . '): '
@@ -66,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             avis('error', $e->getMessage());
         }
     } elseif ($usuari_id === $jo) {
-        // Així l'administrador no es pot treure l'accés a si mateix per error
         avis('error', 'No pots canviar el teu propi compte des d\'aquí.');
     } elseif ($accio === 'canviar_actiu') {
         $connexio->prepare('UPDATE usuaris SET actiu = 1 - actiu WHERE id = ?')->execute([$usuari_id]);

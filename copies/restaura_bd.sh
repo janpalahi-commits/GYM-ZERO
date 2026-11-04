@@ -1,12 +1,4 @@
 #!/bin/bash
-# GYM-ZERO · Restaurar una còpia de seguretat
-#
-# Ús:  bash restaura_bd.sh <fitxer.sql.gz> [base_de_dades]
-#
-# Per defecte restaura a una base de dades nova, gymzero_prova, per comprovar
-# que la còpia funciona sense tocar la de veritat.
-# Per recuperar la base de dades real s'ha d'indicar gymzero_db i confirmar-ho.
-
 FITXER="$1"
 BD="${2:-gymzero_prova}"
 USUARI_BD="root"

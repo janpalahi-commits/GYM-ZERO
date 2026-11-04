@@ -1,6 +1,4 @@
 <?php
-// Activitats del gimnàs amb les seves properes classes.
-// Tothom la pot veure; per reservar s'envia a la llista de classes.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 
@@ -8,7 +6,6 @@ $activitats = $connexio->query(
     'SELECT id, nom, descripcio, durada_min FROM activitats WHERE activa = 1 ORDER BY nom'
 )->fetchAll();
 
-// Classes dels propers 14 dies, agrupades per activitat
 $st = $connexio->query(
     "SELECT c.id, c.activitat_id, c.inici, c.places,
             (SELECT COUNT(*) FROM reserves r WHERE r.classe_id = c.id AND r.estat = 'confirmada') AS ocupades

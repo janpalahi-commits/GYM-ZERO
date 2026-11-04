@@ -1,7 +1,4 @@
 <?php
-// La meva llibreta: la rutina del client en un full com el d'Excel.
-// Files = exercicis del dia triat, columnes = les últimes 8 setmanes.
-// L'administrador pot mirar la de qualsevol client amb ?usuari=ID (només mirar).
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/llibreta.php';
@@ -19,7 +16,6 @@ if ($de_admin) {
 $rutina = rutina_client($connexio, $usuari_id);
 $series = series_rutina($connexio, $usuari_id, $rutina);
 
-// Descarregar-ho tot en CSV (s'obre amb l'Excel: punt i coma i BOM perquè surtin bé els accents)
 if (isset($_GET['csv'])) {
     header('Content-Type: text/csv; charset=UTF-8');
     header('Content-Disposition: attachment; filename="llibreta.csv"');
@@ -36,7 +32,6 @@ if (isset($_GET['csv'])) {
     exit;
 }
 
-// Pestanyes: els dies que té rutina. Per defecte, el d'avui (si hi entrena) o el primer.
 $dies = array_values(array_unique(array_map('intval', array_column($rutina, 'dia'))));
 $dia = (int) ($_GET['dia'] ?? date('N'));
 if (!in_array($dia, $dies, true)) {
@@ -44,7 +39,6 @@ if (!in_array($dia, $dies, true)) {
 }
 $files = array_filter($rutina, fn($r) => (int) $r['dia'] === $dia);
 
-// Les sèries de cada fila repartides per setmanes (clau: el dilluns de la setmana)
 $setmanes = setmanes_llibreta(8);
 $avui = date('Y-m-d');
 $caselles = [];
@@ -134,7 +128,6 @@ require __DIR__ . '/../inc/capcalera.php';
   </div>
   <p class="subtil">Cada casella és el que s'ha fet aquella setmana: una línia per sèrie, amb el pes i les repeticions. En el mòbil, llisca la taula cap a l'esquerra per veure les setmanes anteriors.</p>
   <script>
-    // En pantalles estretes, la taula comença mostrant la setmana actual (l'última columna)
     document.querySelector('.taula').scrollLeft = 99999;
   </script>
 <?php endif; ?>

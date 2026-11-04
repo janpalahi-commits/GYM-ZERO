@@ -1,10 +1,8 @@
 <?php
-// Entrades d'un dia: qui ha passat la polsera pel torn de les sales, i si l'ha deixat passar o no
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);
 
-// Dia que es vol veure (per defecte, avui)
 $dia = $_GET['dia'] ?? date('Y-m-d');
 $dt = DateTime::createFromFormat('Y-m-d', $dia);
 if (!$dt || $dt->format('Y-m-d') !== $dia) {

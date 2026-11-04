@@ -1,8 +1,3 @@
-/* GYM ZERO · estils de tota la web (portada, classes, àrea del client i administració)
-   Fons blanc, verd de pista i vermell de senyal. Lletres: Saira Condensed per als títols,
-   Source Sans 3 per al text i IBM Plex Mono per a les xifres. Les fonts són a /fonts:
-   així la web no demana res a Google quan algú la visita. */
-
 @font-face { font-family: "Saira Condensed"; font-weight: 700; font-display: swap; src: url(../fonts/saira-condensed-700.woff2) format("woff2"); }
 @font-face { font-family: "Saira Condensed"; font-weight: 800; font-display: swap; src: url(../fonts/saira-condensed-800.woff2) format("woff2"); }
 @font-face { font-family: "Source Sans 3"; font-weight: 200 900; font-display: swap; src: url(../fonts/source-sans-3.woff2) format("woff2"); }
@@ -47,7 +42,6 @@ img { display: block; max-width: 100%; height: auto; }
   padding: 0 16px;
 }
 
-/* ---------- Capçalera ---------- */
 .capcalera .wrap {
   display: flex;
   flex-wrap: wrap;
@@ -80,7 +74,6 @@ img { display: block; max-width: 100%; height: auto; }
 .capcalera nav .qui { color: var(--mut); text-transform: none; font: 600 15px/1 var(--text); }
 .capcalera nav .entrar { background: var(--tinta); color: var(--fons); padding: 7px 14px; border-radius: 99px; }
 
-/* ---------- Peu ---------- */
 .peu .wrap {
   margin-top: 48px;
   padding-block: 22px 40px;
@@ -93,10 +86,8 @@ img { display: block; max-width: 100%; height: auto; }
   color: var(--mut);
 }
 
-/* ---------- Pàgines interiors ---------- */
 .pagina { padding-top: 32px; }
 
-/* El contingut va alineat amb el logo però no s'estira més de 960 px */
 .card { max-width: 960px; overflow-x: auto; }
 
 h1 {
@@ -122,7 +113,6 @@ p { line-height: 1.55; }
 
 .subtil { color: var(--mut); font-size: 15px; }
 
-/* Avisos */
 .ok, .error {
   padding: 10px 14px;
   border-radius: 0 8px 8px 0;
@@ -133,7 +123,6 @@ p { line-height: 1.55; }
 .ok { background: #e3f1ea; color: var(--pista); border-left: 5px solid var(--pista); }
 .error { background: #fdecea; color: #b3261e; border-left: 5px solid var(--vermell); }
 
-/* Formularis */
 label {
   display: block;
   margin-top: 14px;
@@ -160,7 +149,6 @@ textarea { min-height: 70px; resize: vertical; }
 .fila-camps { display: flex; flex-wrap: wrap; gap: 0 14px; }
 .fila-camps > div { flex: 1 1 160px; }
 
-/* Botons */
 button, .btn {
   display: inline-block;
   margin-top: 18px;
@@ -188,7 +176,6 @@ button:disabled {
 .btn-secundari { background: #fff; color: var(--tinta); border-color: var(--tinta); }
 .btn-cancel { background: #fff; color: #b3261e; border-color: var(--vermell); }
 
-/* Taules */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -217,7 +204,6 @@ td .accions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
 .places-0 { color: #b3261e; font-weight: 700; }
 
-/* Etiquetes d'estat */
 .etiqueta {
   display: inline-block;
   padding: 2px 9px;
@@ -232,7 +218,6 @@ td .accions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .etiqueta.vermella { background: #fdecea; color: #b3261e; }
 .etiqueta.groga { background: #fbefcf; color: #7a5600; }
 
-/* Xifres del panell (clients, classes...) */
 .xifres {
   display: flex;
   flex-wrap: wrap;
@@ -254,7 +239,6 @@ td .accions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
 .xifra span { color: var(--mut); font-size: 15px; }
 
-/* Resultat dels càlculs */
 .resultat {
   margin-top: 14px;
   padding: 12px 16px;
@@ -265,20 +249,17 @@ td .accions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
 .resultat b { color: var(--vermell); font-size: 20px; }
 
-/* Gràfic de "El meu entrenament" */
 .grafic { width: 100%; height: auto; background: var(--gris); border-radius: 12px; }
 .grafic polyline { fill: none; stroke: var(--pista); stroke-width: 3; }
 .grafic circle { fill: var(--pista); }
 .grafic text { font: 500 13px var(--mono); fill: var(--mut); text-anchor: middle; }
 .grafic text.valor { fill: var(--tinta); font-weight: 600; }
 
-/* Polsera i quota a la llista d'usuaris */
 form.polsera, form.quota { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 form.quota { margin-top: 6px; }
 form.polsera input { width: 9.5em; margin-top: 0; padding: 6px 8px; font: 500 14px var(--mono); }
 form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px; }
 
-/* ================= Portada ================= */
 .portada section .wrap { padding-block: 40px; }
 
 .hero .wrap {
@@ -297,7 +278,6 @@ form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px
 .llegenda span { display: inline-flex; align-items: center; gap: 6px; }
 .llegenda i { width: 14px; height: 14px; border-radius: 3px; background: var(--c); }
 
-/* Tauler de la setmana: una columna per dia i una fila per hora */
 .desplaca { overflow-x: auto; }
 
 .tauler {
@@ -339,7 +319,6 @@ form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px
 .tauler a:hover { outline: 3px solid var(--tinta); outline-offset: -3px; }
 .tauler a b { font: 700 15px/1.05 var(--titol); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Com a molt 8 punts per fila, repartits en files iguals */
 .pl { display: grid; grid-template-columns: repeat(var(--n, 8), 6px); gap: 2px; }
 .pl i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .pl i.o { background: transparent; box-shadow: inset 0 0 0 1px currentColor; opacity: .7; }
@@ -347,7 +326,6 @@ form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px
 
 .nota { font-size: 13px; color: var(--mut); margin-top: 8px; }
 
-/* El gimnàs: maqueta i zones */
 .sala .wrap { display: grid; gap: 16px; padding-top: 8px; }
 .sala h2 { margin: 0; font-size: 44px; line-height: .95; }
 .titol-sala { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 6px 24px; }
@@ -384,7 +362,6 @@ form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px
 .ico-pols { flex: none; width: 30px; height: 16px; border: 3px solid var(--tinta); border-radius: 9px; position: relative; }
 .ico-pols::after { content: ""; position: absolute; left: 7px; top: 1px; width: 10px; height: 8px; border-radius: 2px; background: var(--forca); }
 
-/* Horari d'obertura */
 .obert .wrap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .obert .wrap > div { padding: 6px 20px; border-left: 3px solid var(--tinta); }
 .obert b { display: block; font: 800 46px/1 var(--titol); font-variant-numeric: tabular-nums; }
@@ -412,13 +389,10 @@ form.quota input { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px
   .pin { display: none; }
 }
 
-/* Avís a dalt de la portada (per exemple, després de sortir) */
 .avisos { padding-top: 16px; }
 
-/* Classe on s'arriba des del tauler de la portada */
 tr:target td { background: #fbefcf; }
 
-/* Activitats: una fitxa per activitat, amb el color de l'horari */
 .fitxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 20px 0 8px; }
 .fitxes article { border-top: 6px solid var(--c); background: var(--gris); border-radius: 0 0 8px 8px; padding: 14px 16px; }
 .fitxes h2 { margin: 0; font-size: 26px; }
@@ -428,15 +402,11 @@ tr:target td { background: #fbefcf; }
 .properes a b { font: 600 13px var(--mono); color: var(--tinta); margin-right: 4px; }
 .properes a:hover { box-shadow: inset 0 0 0 2px var(--tinta); }
 
-/* Classes agrupades per dia */
 tr.dia th { padding: 26px 0 6px; border-bottom: none; font: 800 26px/1 var(--titol); color: var(--tinta); }
 table tr.dia:first-child th { padding-top: 6px; }
 td.hora { font: 600 15px var(--mono); }
 .punt { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border-radius: 3px; background: var(--c); vertical-align: -1px; }
 
-/* ---------- Tarifes, pla personalitzat, llibreta i seguiment ---------- */
-
-/* Portada: les tres tarifes */
 .tarifes h2 { margin-top: 0; font-size: 44px; }
 .cartes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
 .cartes article { border: 2px solid var(--linia); border-radius: 12px; padding: 18px 20px; }
@@ -447,7 +417,6 @@ td.hora { font: 600 15px var(--mono); }
 .cartes .preu3 { margin: 2px 0 10px; font: 500 14px/1.4 var(--mono); color: var(--mut); }
 .cartes p:last-child { margin-bottom: 0; }
 
-/* Àrea del client: serveis del pla (oberts o tancats segons la tarifa) */
 .serveis { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
 .serveis article { background: var(--gris); border-radius: 8px; padding: 14px 16px; }
 .serveis h3 { margin: 0; font-size: 20px; }
@@ -455,7 +424,6 @@ td.hora { font: 600 15px var(--mono); }
 .serveis .btn { margin-top: 12px; font-size: 16px; padding: 9px 16px; }
 .serveis article.tancat { background: #fff; border: 2px dashed var(--linia); color: var(--mut); }
 
-/* Qüestionari (el formulari d'APP GYM): pàgines, opcions, escala de l'1 al 10 i graella d'hores */
 form.questionari [hidden] { display: none !important; }
 .idiomes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .idiomes button { margin: 0; padding: 6px 14px; font-size: 15px; background: #fff; color: var(--tinta); border-color: var(--linia); border-radius: 99px; }
@@ -491,7 +459,6 @@ label.opcio.altres input[type="text"] { flex: 1; min-width: 0; margin: 0; paddin
 .botons-questionari button { margin: 0; }
 .botons-questionari [data-seguent], .botons-questionari [data-enviar] { flex: 1 1 200px; }
 
-/* Llibreta: la rutina en un full com el d'Excel */
 .accions-llibreta { display: flex; flex-wrap: wrap; gap: 10px; }
 .accions-llibreta .btn { margin-top: 0; }
 nav.dies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
@@ -520,7 +487,6 @@ form.apunta input { margin-top: 0; padding: 6px 8px; font: 500 16px var(--mono);
 tr.avui td { background: #e3f1ea; }
 .set-linia { font: 500 14px var(--mono); }
 
-/* Seguiment: revisions i missatges */
 .revisio { border-left: 4px solid var(--linia); padding: 2px 0 2px 14px; margin-top: 16px; }
 .revisio p { margin: 4px 0; }
 .resposta { margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #e3f1ea; }
@@ -531,7 +497,6 @@ tr.avui td { background: #e3f1ea; }
 .conversa li p { margin: 4px 0 0; }
 table.respostes td:first-child { color: var(--mut); width: 55%; }
 
-/* Recepció: triar tarifa a l'hora de cobrar */
 form.quota select { width: auto; margin-top: 0; padding: 6px 8px; font-size: 14px; }
 form.quota button { margin-top: 0; padding: 7px 14px; font-size: 16px; }
 form.quota input[type="file"] { width: auto; flex: 1 1 220px; }
@@ -547,6 +512,5 @@ form.quota label { margin-top: 0; }
   table.full .ex { min-width: 150px; }
 }
 
-/* Botó "Simular dades" de la llista d'usuaris, amb "(1 setmana)" a sota */
 form.simular { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 form.simular .subtil { font-size: 13px; }

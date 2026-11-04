@@ -1,10 +1,6 @@
 <?php
-// Seguiment de la tarifa més alta: una revisió cada 2 setmanes i una conversa amb l'entrenador.
-// Ho fan servir la pàgina del client (client/seguiment.php) i la fitxa de l'entrenador (admin/client.php).
-
 const DIES_REVISIO = 14;
 
-// Data a partir de la qual el client pot enviar la propera revisió (la primera, des del primer dia)
 function propera_revisio(PDO $bd, $usuari_id)
 {
     $st = $bd->prepare('SELECT MAX(data) FROM revisions WHERE usuari_id = ?');
@@ -33,7 +29,6 @@ function missatges_client(PDO $bd, $usuari_id)
     return $st->fetchAll();
 }
 
-// Desa un missatge de la conversa del client $usuari_id. Torna l'error o null si ha anat bé.
 function envia_missatge(PDO $bd, $usuari_id, $autor_id, $text)
 {
     $text = trim((string) $text);
@@ -44,7 +39,6 @@ function envia_missatge(PDO $bd, $usuari_id, $autor_id, $text)
     return null;
 }
 
-// La conversa: els missatges propis a la dreta, els de l'altra part a l'esquerra
 function mostra_conversa(array $missatges, $jo_id)
 {
     if (!$missatges) {

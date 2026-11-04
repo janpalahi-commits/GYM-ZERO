@@ -1,13 +1,4 @@
 <?php
-// Qüestionari inicial del pla personalitzat: és el formulari v6 d'APP GYM (4 idiomes, pàgines i salts).
-// Les preguntes són a questionari.json. Les fan servir el formulari del client (client/questionari.php)
-// i la fitxa de l'entrenador (admin/client.php).
-//
-// Mentre el client l'omple, cada resposta es guarda com a "estat" (el número de l'opció triada).
-// Quan l'envia, es desa com una fila de la fulla de Google d'APP GYM: el títol en castellà com a clau
-// i el text de l'opció en castellà com a valor. Així l'eina del pla (plans/fes_pla.py) llegeix igual
-// les respostes de la web i les de la fulla.
-
 const IDIOMES_QUESTIONARI = ['es', 'ca', 'en', 'fr'];
 
 function questionari()
@@ -24,7 +15,6 @@ function idioma_questionari($demanat)
     return in_array($demanat, IDIOMES_QUESTIONARI, true) ? $demanat : 'ca';
 }
 
-// Text en l'idioma triat (si falta, en castellà)
 function tq($o, $idioma)
 {
     if (!is_array($o)) {
@@ -33,7 +23,6 @@ function tq($o, $idioma)
     return ($o[$idioma] ?? '') !== '' ? $o[$idioma] : ($o['es'] ?? '');
 }
 
-// Pàgines: es tallen a cada "page", com al formulari original
 function pagines_questionari()
 {
     $pagines = [];
@@ -50,7 +39,6 @@ function pagines_questionari()
     return $pagines;
 }
 
-// Hores de mitja en mitja hora amb la franja: "07:30 (matí)"
 function hores_questionari($spec, $idioma)
 {
     $franges = questionari()['franjas'];
@@ -78,7 +66,6 @@ function hores_questionari($spec, $idioma)
     return $sortida;
 }
 
-// Nom de la columna a la fulla de Google
 function columna_questionari($q, $fila = null)
 {
     return $q['title']['es'] . ($fila === null ? '' : ' [' . $fila['es'] . ']');
@@ -94,7 +81,6 @@ function pregunta_per_clau($k)
     return null;
 }
 
-// Número de l'opció que ha triat a una pregunta d'una sola resposta (null si no ha respost o ha escrit "Altres")
 function opcio_triada(array $respostes, $k)
 {
     $q = pregunta_per_clau($k);
@@ -107,8 +93,6 @@ function opcio_triada(array $respostes, $k)
     return null;
 }
 
-// ---------------------------------------------------------------- llegir el formulari
-// Del POST a l'estat: només s'agafen números d'opció que existeixen
 function estat_del_post(array $post)
 {
     $p = (array) ($post['p'] ?? []);
@@ -174,7 +158,6 @@ function estat_del_post(array $post)
     return $estat;
 }
 
-// Pàgines per on passa el client segons el que ha respost (els salts de "Sexe", "Dolor ara"...)
 function cami_questionari(array $estat)
 {
     $pagines = pagines_questionari();
@@ -211,7 +194,6 @@ function numero_questionari($v)
     return filter_var(str_replace(',', '.', trim((string) $v)), FILTER_VALIDATE_FLOAT);
 }
 
-// Error d'una pregunta (o null), com al formulari original
 function error_pregunta($q, $v, $idioma)
 {
     $ui = questionari()['ui'];
@@ -242,7 +224,6 @@ function error_pregunta($q, $v, $idioma)
     return null;
 }
 
-// Errors de les pàgines per on passa: [número de pregunta => missatge]
 function errors_questionari(array $estat, $idioma)
 {
     $pagines = pagines_questionari();
@@ -258,8 +239,6 @@ function errors_questionari(array $estat, $idioma)
     return $errors;
 }
 
-// ---------------------------------------------------------------- desar i tornar a llegir
-// De l'estat a la fila de la fulla. Les preguntes de pàgines on no ha passat queden buides.
 function respostes_questionari(array $estat, $idioma)
 {
     $d = questionari();
@@ -306,7 +285,6 @@ function respostes_questionari(array $estat, $idioma)
     return $r;
 }
 
-// De la fila desada a l'estat, per tornar a omplir el formulari
 function estat_de_respostes(array $r)
 {
     $estat = [];
@@ -365,7 +343,6 @@ function estat_de_respostes(array $r)
     return $estat;
 }
 
-// Resposta en text per a l'entrenador, en català
 function resposta_llegible($q, array $r, $idioma = 'ca')
 {
     $trad = function ($llista, $text) use ($idioma) {
@@ -403,7 +380,6 @@ function resposta_llegible($q, array $r, $idioma = 'ca')
     }
 }
 
-// Avisos de salut per a l'entrenador (punt 1 del mètode d'APP GYM)
 function avisos_questionari(array $r)
 {
     $avisos = [];

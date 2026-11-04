@@ -1,9 +1,7 @@
 <?php
-// Contrasenya nova amb l'enllaç que s'ha enviat per correu (compte/oblit.php)
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 
-// El codi va a l'adreça: que el navegador no l'enviï a cap altra web
 header('Referrer-Policy: no-referrer');
 
 $codi = $_POST['codi'] ?? $_GET['codi'] ?? '';
@@ -33,7 +31,6 @@ if ($recuperacio && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $connexio->beginTransaction();
         $connexio->prepare('UPDATE usuaris SET password_hash = ? WHERE id = ?')
                  ->execute([password_hash($pass, PASSWORD_DEFAULT), $recuperacio['usuari_id']]);
-        // Aquest enllaç i els altres que hagi demanat deixen de servir
         $connexio->prepare('UPDATE recuperacions SET usada = 1 WHERE usuari_id = ?')
                  ->execute([$recuperacio['usuari_id']]);
         $connexio->commit();

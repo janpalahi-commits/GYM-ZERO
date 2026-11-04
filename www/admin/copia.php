@@ -1,6 +1,4 @@
 <?php
-// Descarrega una còpia de seguretat de la base de dades (només administradors).
-// Les còpies són fora de la web o en una carpeta tancada: només es poden baixar des d'aquí.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_admin($connexio);

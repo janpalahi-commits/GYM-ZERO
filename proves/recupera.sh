@@ -1,5 +1,3 @@
-# Proves de "Has oblidat la contrasenya?" i de les pàgines d'error (Fase 11)
-# A XAMPP i amb el servidor de proves de PHP els correus es desen a /tmp/gymzero-correus.txt
 B=${B:-http://127.0.0.1:8088}
 CORREUS=/tmp/gymzero-correus.txt
 J=$(mktemp)

@@ -1,8 +1,4 @@
 <?php
-// Qüestionari inicial del pla personalitzat: el formulari v6 d'APP GYM, en 4 idiomes i per pàgines.
-// Amb les respostes, l'entrenador fa el pla del client. Té dades de salut: només es desa si el client
-// marca les 4 confirmacions de l'últim pas (l'última és el permís per fer servir les dades, RGPD art. 9).
-// Sense JavaScript surten totes les pàgines seguides; amb JavaScript, una cada vegada (js/questionari.js).
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 require_once __DIR__ . '/../inc/questionari.php';
@@ -14,7 +10,6 @@ $ui = $d['ui'];
 $errors = [];
 $pagina = 0;
 
-// Si ja l'havia enviat, el formulari surt amb les respostes de l'última vegada
 $st = $connexio->prepare('SELECT respostes, enviat FROM questionaris WHERE usuari_id = ? ORDER BY enviat DESC, id DESC LIMIT 1');
 $st->execute([$u['id']]);
 $anterior = $st->fetch();
@@ -27,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estat = estat_del_post($_POST);
     $pagina = (int) ($_POST['pagina'] ?? 0);
     if (isset($_POST['idioma'])) {
-        // Només canvia l'idioma: torna a sortir el formulari amb el que ja havia posat
         $idioma = idioma_questionari($_POST['idioma']);
     } else {
         $idioma = idioma_questionari($_POST['lang'] ?? '');
@@ -42,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Una pregunta del formulari. Els noms dels camps són p[número] (i o[número] per al text d'"Altres").
 function pinta_pregunta($i, $q, $v, $error, $L)
 {
     $ui = questionari()['ui'];

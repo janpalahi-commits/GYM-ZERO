@@ -1,13 +1,10 @@
 <?php
-// El meu entrenament: les sèries que han enviat les màquines (o el simulador)
-// i com evoluciona el client a cada màquina.
 require_once __DIR__ . '/../inc/sessio.php';
 require_once __DIR__ . '/../inc/bd.php';
 requereix_login();
 
 $u = usuari_actual();
 
-// Xifres dels últims 30 dies
 $st = $connexio->prepare(
     'SELECT COUNT(DISTINCT e.id) AS dies, COUNT(s.id) AS series,
             COALESCE(SUM(s.carrega_kg * (SELECT COUNT(*) FROM repeticions r WHERE r.serie_id = s.id)), 0) AS kg_totals
@@ -17,7 +14,6 @@ $st = $connexio->prepare(
 $st->execute([$u['id']]);
 $xifres = $st->fetch();
 
-// Evolució: per a cada màquina i dia, la càrrega màxima i com de ràpid s'ha mogut
 $st = $connexio->prepare(
     'SELECT m.nom, v.data, MAX(v.carrega_kg) AS carrega_max,
             ROUND(AVG(v.velocitat_mitjana), 2) AS velocitat, ROUND(AVG(v.perdua_velocitat_pct), 1) AS perdua
@@ -32,7 +28,6 @@ foreach ($st->fetchAll() as $fila) {
     $evolucio[$fila['nom']][] = $fila;
 }
 
-// Historial: les sèries dels últims 10 dies que ha entrenat
 $st = $connexio->prepare('SELECT data FROM entrenaments WHERE usuari_id = ? ORDER BY data DESC LIMIT 10');
 $st->execute([$u['id']]);
 $dies = $st->fetchAll(PDO::FETCH_COLUMN);
@@ -51,14 +46,11 @@ if ($dies) {
     }
 }
 
-// 67.5 -> "67,5" (amb coma, com s'escriu en català)
 function kg($valor)
 {
     return str_replace('.', ',', (string) (float) $valor);
 }
 
-// Com de dura ha estat una sèrie, segons quanta velocitat s'ha perdut
-// (valors orientatius, els que se solen fer servir en entrenament per velocitat)
 function esforc($perdua)
 {
     if ($perdua < 20) {
@@ -70,8 +62,6 @@ function esforc($perdua)
     return '<span class="etiqueta vermella">Molt exigent</span>';
 }
 
-// Quins punts del gràfic porten text: d'esquerra a dreta, només si queda prou lloc des de l'anterior.
-// L'últim punt sempre en porta (si no hi cap, es treu el d'abans).
 function etiquetes_que_caben(array $coords, $espai, callable $vol)
 {
     $n = count($coords);
@@ -91,7 +81,6 @@ function etiquetes_que_caben(array $coords, $espai, callable $vol)
     return $triats;
 }
 
-// Gràfic de línia en SVG de la càrrega màxima de cada dia (sense cap llibreria)
 function grafic(array $punts)
 {
     $amplada = 600;
@@ -109,8 +98,6 @@ function grafic(array $punts)
         $coords[] = [round($x), round($y), $p];
     }
 
-    // Amb moltes setmanes els textos es trepitjarien: només s'escriuen els que hi caben.
-    // Pes: el primer, l'últim i quan canvia. Data: repartides i sempre l'última.
     $pes = etiquetes_que_caben($coords, 70, fn($i) => $i === 0 || $i === $n - 1
         || $coords[$i][2]['carrega_max'] != $coords[$i - 1][2]['carrega_max']);
     $dates = etiquetes_que_caben($coords, 55, fn($i) => true);

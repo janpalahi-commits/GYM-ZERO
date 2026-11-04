@@ -1,6 +1,4 @@
 <?php
-// Per a les proves: passa respostes "clau=text en català" als camps del formulari (p[número]=opció).
-// Ex.: php camps.php sexe=Home "zones=Pit|Braços" alcada=178  ->  p[9]=0&p[27][]=3&p[27][]=6&p[4]=178
 require __DIR__ . '/../www/inc/questionari.php';
 $camps = [];
 foreach (array_slice($argv, 1) as $arg) {
@@ -15,7 +13,7 @@ foreach (array_slice($argv, 1) as $arg) {
                     return $n;
                 }
             }
-            return $text;   // una opció que no existeix: es passa tal qual (per provar que es descarta)
+            return $text;
         };
         switch ($q['type']) {
             case 'mc':

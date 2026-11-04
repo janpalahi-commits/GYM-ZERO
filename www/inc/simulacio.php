@@ -1,17 +1,4 @@
 <?php
-// Simular una setmana d'entrenament d'un client (botó "Simular dades" de admin/usuaris.php).
-//
-// Fa el mateix que passaria si el client anés al gimnàs una setmana sencera:
-//   - entra pel torn amb la polsera (taula entrades),
-//   - fa les sèries a les màquines intel·ligents (entrenaments, series, repeticions),
-//   - i, si té rutina a la llibreta, també apunta a mà els exercicis que no són de màquina (registre).
-//
-// Cada vegada que es prem omple la setmana (de dilluns a diumenge) d'abans de les dades que ja té.
-// Així, prement-lo 4 vegades, el client té un mes d'historial, i les càrregues pugen d'una setmana a l'altra
-// com passa de veritat.
-
-// Cada màquina: càrrega de 10 repeticions d'un client "mitjà" (kg), recorregut (m), velocitat de la 1a repetició (m/s)
-// i si és un exercici gran (multiarticular), que és on la càrrega puja més ràpid.
 const SIM_MAQUINES = [
     'PRESS-01'   => [50, [0.38, 0.45], 0.55, true],
     'SQUAT-01'   => [70, [0.55, 0.65], 0.65, true],
@@ -35,7 +22,6 @@ const SIM_MAQUINES = [
     'ROTA-01'    => [25, [0.30, 0.36], 0.45, false],
 ];
 
-// Si el client no té rutina: torso / cames, 4 dies (o 3 algunes setmanes). [dia de la setmana => [màquina => sèries]]
 const SIM_SETMANA = [
     1 => ['PRESS-01' => 4, 'REM-01' => 4, 'MILITAR-01' => 3, 'JALO-01' => 3, 'CURL-01' => 3, 'TRICEP-01' => 3],
     2 => ['SQUAT-01' => 4, 'EXTQ-01' => 3, 'FEMS-01' => 3, 'HIP-01' => 3, 'TALOD-01' => 3, 'CRUNCH-01' => 3],
@@ -43,7 +29,6 @@ const SIM_SETMANA = [
     5 => ['HIP-01' => 4, 'SQUAT-01' => 3, 'FEME-01' => 3, 'ABDUC-01' => 3, 'TALOA-01' => 3, 'ROTA-01' => 3],
 ];
 
-// Exercicis de la rutina sense màquina: càrrega orientativa segons el nom (null = pes del cos)
 const SIM_LLIURES = [
     'dominad' => null, 'flexion' => null, 'fons' => null, 'planxa' => null, 'plancha' => null, 'burpee' => null,
     'pes mort' => 70, 'peso muerto' => 70, 'sentadilla' => 60, 'esquat' => 60, 'zancad' => 16, 'gambad' => 16,
@@ -55,22 +40,18 @@ function sim_aleatori($min, $max)
     return $min + mt_rand() / mt_getrandmax() * ($max - $min);
 }
 
-// Arrodonir a 2,5 kg, que és el salt dels discos i de les plaques de les màquines
 function sim_kg($kg)
 {
     return max(2.5, round($kg / 2.5) * 2.5);
 }
 
-// Com de fort és el client: sempre el mateix número per a la mateixa persona (entre 0,65 i 1,25)
 function sim_factor(array $usuari)
 {
     return 0.65 + (crc32('gymzero' . $usuari['id'] . $usuari['email']) % 61) / 100;
 }
 
-// Les repeticions d'una sèrie tal com les enviaria la màquina: la velocitat baixa a mesura que es cansa
 function sim_repeticions($reps, $v_inicial, array $recorregut)
 {
-    // Pèrdua de velocitat entre la 1a i l'última: més repeticions, més cansament (entre un 15 i un 40 %)
     $perdua = min(0.40, 0.12 + 0.02 * ($reps - 6) + sim_aleatori(0, 0.08));
     $rom = sim_aleatori($recorregut[0], $recorregut[1]);
     $llista = [];
@@ -83,7 +64,6 @@ function sim_repeticions($reps, $v_inicial, array $recorregut)
     return $llista;
 }
 
-// Primer dia que el client ja té dades (de màquina, apuntades a mà o d'entrada), o null si no en té
 function sim_primer_dia(PDO $bd, $usuari_id)
 {
     $st = $bd->prepare(
@@ -97,11 +77,6 @@ function sim_primer_dia(PDO $bd, $usuari_id)
     return $dia === '9999-12-31' ? null : $dia;
 }
 
-// Càrrega d'una màquina aquesta setmana.
-// Si ja té sèries més noves, surt de la més antiga: la setmana d'abans a vegades movia 2,5 kg menys.
-// Com passa de veritat, la càrrega puja a poc a poc (un 1,2 % per setmana als exercicis grans i un 0,7 %
-// als petits, de mitjana), i mai baixa del 80 % del que mou ara, per molt enrere que es vagi.
-// Si no té sèries, la d'un client mitjà multiplicada per com de fort és.
 function sim_carrega_setmana($kg_mes_nou, $kg_base, $gran, $factor)
 {
     $kg_ara = sim_kg($kg_base * $factor);
@@ -113,8 +88,6 @@ function sim_carrega_setmana($kg_mes_nou, $kg_base, $gran, $factor)
     return max(sim_kg($kg_ara * 0.8), $kg_mes_nou - ($baixa ? 2.5 : 0));
 }
 
-// Clients amb la llibreta (tarifa amb pla) que encara no tenen rutina: se'ls posa la de torso / cames,
-// la mateixa que fa la simulació, perquè a la llibreta es vegin les sèries. L'entrenador la pot canviar.
 function sim_rutina_si_cal(PDO $bd, $usuari_id, array $maquines)
 {
     $st = $bd->prepare(
@@ -151,7 +124,6 @@ function simula_setmana(PDO $bd, $usuari_id)
         throw new RuntimeException('Només es poden simular dades de clients.');
     }
 
-    // La setmana que toca: la d'abans del primer dia amb dades, o la setmana passada si no en té
     $primer = sim_primer_dia($bd, $usuari_id);
     $dilluns = new DateTime($primer ?? 'today', new DateTimeZone('Europe/Madrid'));
     $dilluns->modify('monday this week')->modify('-1 week');
@@ -168,7 +140,6 @@ function simula_setmana(PDO $bd, $usuari_id)
 
     $rutina_nova = sim_rutina_si_cal($bd, $usuari_id, $maquines);
 
-    // Què fa cada dia: la rutina de la llibreta si en té, si no la setmana de torso / cames
     $st = $bd->prepare('SELECT id, dia, exercici, series, maquina_id FROM rutina WHERE usuari_id = ? ORDER BY dia, ordre, id');
     $st->execute([$usuari_id]);
     $dies = [];
@@ -185,7 +156,6 @@ function simula_setmana(PDO $bd, $usuari_id)
             }
         }
     }
-    // Una setmana de cada tres en falta un dia, com passa de veritat
     if (count($dies) > 2 && mt_rand(1, 3) === 1) {
         unset($dies[array_rand($dies)]);
     }
@@ -194,11 +164,9 @@ function simula_setmana(PDO $bd, $usuari_id)
     }
 
     $factor = sim_factor($usuari);
-    // Hora a la qual sol venir (sempre la mateixa per a la mateixa persona): matí, migdia o tarda
     $hores = [7.5, 9.5, 13.5, 18.0, 19.5];
     $hora_habitual = $hores[crc32('hora' . $usuari['id']) % count($hores)];
 
-    // La càrrega de la sèrie més antiga que ja té a cada màquina i a cada exercici apuntat a mà
     $st = $bd->prepare(
         'SELECT s.maquina_id, s.carrega_kg FROM series s JOIN entrenaments e ON e.id = s.entrenament_id
           WHERE e.usuari_id = ? AND e.data = (SELECT MIN(e2.data) FROM entrenaments e2 JOIN series s2 ON s2.entrenament_id = e2.id
@@ -222,7 +190,6 @@ function simula_setmana(PDO $bd, $usuari_id)
 
     $bd->beginTransaction();
     try {
-        // Sense polsera no pot passar pel torn ni fer servir les màquines: n'hi posem una
         $polsera = $usuari['targeta_rfid'];
         if (!$polsera) {
             $comprova = $bd->prepare('SELECT COUNT(*) FROM usuaris WHERE targeta_rfid = ?');
@@ -253,7 +220,7 @@ function simula_setmana(PDO $bd, $usuari_id)
             if ($torn) {
                 $nova_entrada->execute([$torn, $usuari_id, $polsera, $hora->format('Y-m-d H:i:s')]);
             }
-            $hora->modify('+' . mt_rand(8, 14) . ' minutes');   // canviar-se i escalfar
+            $hora->modify('+' . mt_rand(8, 14) . ' minutes');
 
             $entrenament_id = null;
             $num_maquina = [];
@@ -261,7 +228,6 @@ function simula_setmana(PDO $bd, $usuari_id)
                 if ($ex['maquina'] !== null) {
                     [$kg_base, $recorregut, $v_base, $gran] = SIM_MAQUINES[$ex['maquina']] ?? [30, [0.35, 0.45], 0.5, false];
                     $maquina_id = $maquines[$ex['maquina']];
-                    // La mateixa càrrega tota la setmana, encara que la màquina surti dos dies
                     $kg = $setmana_maquina[$maquina_id] ??= sim_carrega_setmana($antiga_maquina[$maquina_id] ?? null, $kg_base, $gran, $factor);
                     if ($entrenament_id === null) {
                         $nou_entrenament->execute([$usuari_id, $data->format('Y-m-d')]);
@@ -276,16 +242,14 @@ function simula_setmana(PDO $bd, $usuari_id)
                         $segons = 0;
                         foreach (sim_repeticions($reps, $v, $recorregut) as $i => [$vel, $rom, $durada]) {
                             $nova_rep->execute([$serie_id, $i + 1, $vel, $rom, $durada]);
-                            $segons += $durada * 2.5;   // pujar + baixar (la baixada és més lenta)
+                            $segons += $durada * 2.5;
                         }
-                        $hora->modify('+' . (int) round($segons + mt_rand(90, 150)) . ' seconds');   // la sèrie i el descans
-                        // La sèrie següent: una mica més cansat
+                        $hora->modify('+' . (int) round($segons + mt_rand(90, 150)) . ' seconds');
                         $reps = max(6, $reps - mt_rand(0, 1));
                         $v -= 0.02;
                         $total['series']++;
                     }
                 } else {
-                    // Exercici sense màquina: el client l'apunta a mà a la llibreta
                     $abans = $antiga_registre[$ex['rutina_id']] ?? null;
                     $nom = mb_strtolower($ex['nom']);
                     $kg_base = 20;
@@ -311,7 +275,7 @@ function simula_setmana(PDO $bd, $usuari_id)
                     }
                     $hora->modify('+' . ($ex['series'] * mt_rand(2, 3)) . ' minutes');
                 }
-                $hora->modify('+' . mt_rand(1, 3) . ' minutes');   // canviar de màquina
+                $hora->modify('+' . mt_rand(1, 3) . ' minutes');
             }
             $total['dies']++;
         }

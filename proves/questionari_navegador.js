@@ -1,6 +1,3 @@
-// Omple el qüestionari al navegador com el Pau, pàgina a pàgina: errors, salts, canvi d'idioma a mitges i les 4 confirmacions.
-// node questionari_navegador.js carpeta_captures   (B=http://... per canviar el servidor)
-// Fes-la després de premium.sh: al final (prova 13) esborra el qüestionari del Pau i així el formulari surt buit.
 const { chromium } = require('playwright');
 const B = process.env.B || 'http://127.0.0.1:8088', OUT = process.argv[2] || '.';
 (async () => {
@@ -14,7 +11,7 @@ const B = process.env.B || 'http://127.0.0.1:8088', OUT = process.argv[2] || '.'
   const next = async () => { await p.click('[data-seguent]'); const e = await p.$$eval('.pregunta.err', m => m.map(x => x.querySelector('.enunciat').textContent + ' => ' + x.querySelector('.msg').textContent)); if (e.length) console.log('ERR', e); console.log('->', (await vis()).join(','), await p.textContent('section.full-questionari:not([hidden]) .pas').catch(() => '')); };
   console.log('inici', await vis());
   await p.screenshot({ path: OUT + '/1-inici.png', fullPage: false });
-  await next(); // sense res: errors
+  await next();
   console.log('errors visibles:', await p.$$eval('.pregunta.err .msg', m => m.map(x => x.textContent).slice(0, 3)));
   await p.waitForTimeout(1000); await p.screenshot({ path: OUT + '/2-errors.png' });
   await radio('En quin idioma', 'Català');
@@ -47,7 +44,6 @@ const B = process.env.B || 'http://127.0.0.1:8088', OUT = process.argv[2] || '.'
   for (const d of ['Dilluns', 'Dimecres', 'Divendres']) await (await q('Quins dies podries')).locator('label.opcio', { hasText: d }).click();
   await radio('temps tens per sessió', '45-60');
   await (await q('A quina hora acostumes')).locator('select').selectOption({ label: '07:00 (matí)' });
-  // canvi d'idioma a mitges
   await p.click('.idiomes button[value=es]'); await p.waitForLoadState();
   console.log('després de canviar a castellà:', await vis(), await p.textContent('section.full-questionari:not([hidden]) h2'));
   await p.screenshot({ path: OUT + '/4-castella.png', fullPage: true });
