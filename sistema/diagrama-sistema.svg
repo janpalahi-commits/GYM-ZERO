@@ -1,0 +1,79 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1520 1000' width='1520' height='1000'>
+<defs><marker id='r' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='9' markerHeight='9' orient='auto-start-reverse'><path d='M0 0 L10 5 L0 10' fill='none' stroke='#d6332f' stroke-width='1.6'/></marker><marker id='k' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='10' markerHeight='10' orient='auto'><path d='M0 0 L10 5 L0 10' fill='none' stroke='#2b2f33' stroke-width='1.6'/></marker></defs>
+<rect width='1520' height='1000' fill='#ffffff'/>
+<text x='24' y='42' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='26' fill='#1f6fc4'>Composició → Components</text>
+<text x='24' y='76' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='26' fill='#d6332f'>Estructura → Interrelacions</text>
+<text x='24' y='110' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='26' fill='#2e9a43'>Entorn → Actors</text>
+<rect x='210' y='130' width='1090' height='840' rx='70' fill='none' stroke='#2b2f33' stroke-width='7'/>
+<text x='560' y='190' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='46' font-weight='700' fill='#1b1d1f'>GYM-ZERO</text>
+<rect x='250' y='210' width='1010' height='300' rx='14' fill='none' stroke='#8a96a0' stroke-width='2' stroke-dasharray='8 6'/>
+<text x='266' y='236' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='19' fill='#6b7680'>Al núvol: servidor web (hosting)</text>
+<rect x='250' y='560' width='1010' height='380' rx='14' fill='none' stroke='#8a96a0' stroke-width='2' stroke-dasharray='8 6'/>
+<text x='266' y='586' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='19' fill='#6b7680'>Al gimnàs</text>
+<path d='M280 270 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='280' y='270' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='380.0' y='308.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Web</text>
+<text x='380.0' y='334.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>pública</text>
+<path d='M520 270 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='520' y='270' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='620.0' y='308.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Panell</text>
+<text x='620.0' y='334.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'> d'administració</text>
+<path d='M760 270 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='760' y='270' width='200' height='86' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='860.0' y='321.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Correu</text>
+<path d='M1020 270 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='1020' y='270' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='1120.0' y='308.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Àrea del</text>
+<text x='1120.0' y='334.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>client</text>
+<path d='M280 400 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='280' y='400' width='200' height='86' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='380.0' y='451.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>API</text>
+<path d='M640 400 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='640' y='400' width='200' height='86' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='740.0' y='438.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Base de</text>
+<text x='740.0' y='464.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>dades</text>
+<path d='M1020 400 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='1020' y='400' width='200' height='86' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='1120.0' y='438.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Còpies de</text>
+<text x='1120.0' y='464.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>seguretat</text>
+<path d='M280 630 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='280' y='630' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='380.0' y='668.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>PC de</text>
+<text x='380.0' y='694.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>recepció</text>
+<path d='M640 630 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='640' y='630' width='200' height='86' fill='#e8eaed' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='740.0' y='668.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Xarxa</text>
+<text x='740.0' y='694.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>del gimnàs</text>
+<path d='M1020 630 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='1020' y='630' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='1120.0' y='668.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Torn</text>
+<text x='1120.0' y='694.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>d'accés</text>
+<path d='M1020 810 v-16 q0 -6 6 -6 h70 q6 0 6 6 v16' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<rect x='1020' y='810' width='200' height='86' fill='#ead9d3' stroke='#1f6fc4' stroke-width='2.5'/>
+<text x='1120.0' y='848.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>Màquina</text>
+<text x='1120.0' y='874.0' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='23' fill='#1f6fc4'>intel·ligent</text>
+<path d='M430 356 L634 424' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M650 356 L770 396' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M1060 356 L840 410' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M720 312 L756 312' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M1020 312 L964 312' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M480 443 L636 443' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M1020 443 L844 443' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M480 673 L636 673' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M1020 673 L844 673' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M1020 850 L800 722' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<path d='M700 630 L420 492' fill='none' stroke='#d6332f' stroke-width='2.6' stroke-dasharray='10 7' marker-end='url(#r)'/>
+<text x='452' y='590' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='19' fill='#d6332f' transform='rotate(26 452 590)'>Internet (HTTPS)</text>
+<g stroke='#2e9a43' stroke-width='3' fill='none'><circle cx='110' cy='250' r='22' fill='#e8f3ea'/><line x1='110' y1='272' x2='110' y2='340'/><line x1='65' y1='300' x2='155' y2='300'/><line x1='110' y1='340' x2='72' y2='385'/><line x1='110' y1='340' x2='148' y2='385'/></g>
+<text x='110' y='420' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='25' fill='#2e9a43'>Visitant</text>
+<path d='M155 300 L274 312' fill='none' stroke='#2b2f33' stroke-width='2.6' marker-end='url(#k)'/>
+<g stroke='#2e9a43' stroke-width='3' fill='none'><circle cx='110' cy='620' r='22' fill='#e8f3ea'/><line x1='110' y1='642' x2='110' y2='710'/><line x1='65' y1='670' x2='155' y2='670'/><line x1='110' y1='710' x2='72' y2='755'/><line x1='110' y1='710' x2='148' y2='755'/></g>
+<text x='110' y='790' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='25' fill='#2e9a43'>Personal del</text>
+<text x='110' y='818' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='25' fill='#2e9a43'>gimnàs</text>
+<path d='M155 670 L274 673' fill='none' stroke='#2b2f33' stroke-width='2.6' marker-end='url(#k)'/>
+<g stroke='#2e9a43' stroke-width='3' fill='none'><circle cx='1420' cy='560' r='22' fill='#e8f3ea'/><line x1='1420' y1='582' x2='1420' y2='650'/><line x1='1375' y1='610' x2='1465' y2='610'/><line x1='1420' y1='650' x2='1382' y2='695'/><line x1='1420' y1='650' x2='1458' y2='695'/></g>
+<text x='1420' y='730' text-anchor='middle' font-family='Comic Neue, Patrick Hand, DejaVu Sans, sans-serif' font-size='25' fill='#2e9a43'>Client</text>
+<path d='M1375 600 L1226 330' fill='none' stroke='#2b2f33' stroke-width='2.6' marker-end='url(#k)'/>
+<path d='M1375 610 L1226 673' fill='none' stroke='#2b2f33' stroke-width='2.6' marker-end='url(#k)'/>
+<path d='M1375 620 L1226 850' fill='none' stroke='#2b2f33' stroke-width='2.6' marker-end='url(#k)'/>
+</svg>
